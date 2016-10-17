@@ -12,6 +12,11 @@ I am using Netbeans 8.2 and JDK 1.8.25
 
 Open project then build from Netbeans.
 
+## License
+License Apache 2.0 to this sources. 
+
+License dependences see lib folder.
+
 ## Contact
 Facebook: https://www.facebook.com/rollsoftwarebr
 
