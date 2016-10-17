@@ -1,0 +1,4 @@
+jetty-web.xml
+- Jetty 9 xml context
+web.xml
+- Servlet xml configuration
