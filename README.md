@@ -4,6 +4,14 @@ A simple web RESTful using JAX-RS
 ## Install
 Download as ZIP or git clone
 
+### clone
+git clone https://github.com/R0g3r10LL31t3/AccountManager-ROLLSoftware.git
+
+### build
+I am using Netbeans 8.2 and JDK 1.8.25
+
+Open project then build from Netbeans.
+
 ## Contact
 Facebook: https://www.facebook.com/rollsoftwarebr
 
