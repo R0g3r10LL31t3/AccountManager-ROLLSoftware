@@ -23,6 +23,7 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 /**
  *
@@ -74,5 +75,28 @@ public final class Utils {
 
     public static String formatToTimestamp(long value) {
         return TIMESTAMP.format(value);
+    }
+
+    public static String replace(
+            String target, Map<String, String> replacements) {
+
+        String oldTarget;
+        while (target.contains("${")) {
+            oldTarget = target;
+            int indexOf1 = target.lastIndexOf("${");
+            int indexOf2 = target.indexOf("}", indexOf1);
+            String replace = target.substring(
+                    indexOf1, indexOf2 + 1);
+            String key = replace.substring(
+                    2, replace.length() - 1);
+            String value = replacements.get(key);
+            target = target.replace(replace, value);
+
+            if (oldTarget.equals(target)) {
+                throw new IllegalArgumentException();
+            }
+        }
+
+        return target;
     }
 }
