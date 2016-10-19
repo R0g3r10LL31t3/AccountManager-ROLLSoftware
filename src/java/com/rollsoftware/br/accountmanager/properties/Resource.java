@@ -17,8 +17,6 @@
  */
 package com.rollsoftware.br.accountmanager.properties;
 
-import java.util.Properties;
-
 /**
  *
  * @author Rogério
@@ -29,13 +27,9 @@ public class Resource {
     private Resource() {
     }
 
-    public static Properties getProperties() {
-        return ROLLSoftwareProperties.getProperties();
-    }
-
     public static String getProperty(String key) {
         String value = "Please check \"?.properties\".";
-        String readValue = ROLLSoftwareProperties.getProperties()
+        String readValue = ApplicationProperties.getProperties()
                 .getProperty(key);
         return readValue != null ? readValue : value;
     }

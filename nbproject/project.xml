@@ -29,10 +29,19 @@
                     <file>${libs.restlib-media-jaxb.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
+                <library dirs="200">
+                    <file>${file.reference.Encoder.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${libs.restlib-media-moxy.classpath}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
             </web-module-libraries>
             <web-module-additional-libraries/>
             <source-roots>
-                <root id="src.dir" name="Source Packages"/>
+                <root id="src.example.dir" name="Example Packages"/>
+                <root id="src.dir"/>
                 <root id="src.resources.dir" name="Resource Pakages"/>
             </source-roots>
             <test-roots>
