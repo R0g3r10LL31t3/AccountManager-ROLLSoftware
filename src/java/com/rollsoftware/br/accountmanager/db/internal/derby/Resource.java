@@ -17,6 +17,8 @@
  */
 package com.rollsoftware.br.accountmanager.db.internal.derby;
 
+import java.util.Properties;
+
 /**
  *
  * @author Rogério
@@ -32,5 +34,42 @@ public class Resource {
         String readValue = DerbyProperties.getProperties()
                 .getProperty(key);
         return readValue != null ? readValue : value;
+    }
+
+    public static Properties getSystemProperties() {
+        Properties properties = new Properties();
+
+        for (Object key : DerbyProperties.getProperties().keySet()) {
+            if (key.toString().startsWith("derby.")
+                    && !key.toString().startsWith("derby.user.")) {
+                properties.put((String) key, getProperty(key.toString()));
+            }
+        }
+
+        return properties;
+    }
+
+    public static Properties getDerbyUsers() {
+        Properties properties = new Properties();
+
+        for (Object key : DerbyProperties.getProperties().keySet()) {
+            if (key.toString().startsWith("derby.user.")) {
+                properties.put((String) key, getProperty(key.toString()));
+            }
+        }
+
+        return properties;
+    }
+
+    public static Properties getApplicationProperties() {
+        Properties properties = new Properties();
+
+        for (Object key : DerbyProperties.getProperties().keySet()) {
+            if (!key.toString().startsWith("derby.")) {
+                properties.put((String) key, getProperty(key.toString()));
+            }
+        }
+
+        return properties;
     }
 }

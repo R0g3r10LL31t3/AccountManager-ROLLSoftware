@@ -18,6 +18,7 @@
 package com.rollsoftware.br.accountmanager.db.internal.derby;
 
 import com.rollsoftware.br.util.Utils;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +30,12 @@ import java.util.Properties;
  * @date October, 2016
  */
 public class DerbyProperties {
+
+    private static final String USER_DIR = System.getProperty("user.dir");
+    private static final String JETTY_BASE = System.getProperty("jetty.base");
+    private static final String JETTY_HOME = System.getProperty("jetty.home");
+    private static final String CATALINA_BASE = System.getProperty("catalina.base");
+    private static final String CATALINA_HOME = System.getProperty("catalina.home");
 
     private DerbyProperties() {
     }
@@ -57,6 +64,27 @@ public class DerbyProperties {
             String getValue = (String) entry.getValue();
             dst.put(getKey, getValue);
         });
+    }
+
+    private static void updateDerbySystemHome(Map map) {
+        File path = null;
+
+        if (CATALINA_BASE != null) {
+            path = new File(CATALINA_BASE
+                    + File.separator + map.get("derby.system.home"));
+        } else if (JETTY_BASE != null) {
+            path = new File(JETTY_BASE
+                    + File.separator + map.get("derby.system.home"));
+        } else {
+            path = new File(USER_DIR
+                    + File.separator + map.get("derby.system.home"));
+        }
+        if (path != null) {
+            map.put("derby.system.home", path.toPath().toString());
+            File pathLog = new File(path.toPath()
+                    + File.separator + map.get("derby.stream.error.file"));
+            map.put("derby.stream.error.file", pathLog.toPath().toString());
+        }
     }
 
     public static Properties getProperties() {
@@ -100,6 +128,8 @@ public class DerbyProperties {
                 });
 
                 copy(replacements, Singleton.INSTANCE);
+
+                updateDerbySystemHome(Singleton.INSTANCE);
 
             } catch (IOException ex) {
                 throw new Error(ex);
