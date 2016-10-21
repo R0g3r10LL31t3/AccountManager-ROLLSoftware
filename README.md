@@ -29,3 +29,7 @@ e-mail: ?
 phone: ?
 
 Country: Brasil, SP
+
+## Read WIKI and Issues
+### https://github.com/R0g3r10LL31t3/AccountManager-ROLLSoftware/issues?q=is%3Aissue+is%3Aclosed
+### https://github.com/R0g3r10LL31t3/AccountManager-ROLLSoftware/wiki
