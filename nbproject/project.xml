@@ -27,10 +27,14 @@
                 </library>
                 <library dirs="200">
                     <file>${libs.restlib-media-moxy.classpath}</file>
-		    <path-in-war>WEB-INF/lib</path-in-war>
+                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
                     <file>${libs.restlib-media-multipart.classpath}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${libs.eclipselink.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
