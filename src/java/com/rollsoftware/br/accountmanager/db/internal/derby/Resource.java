@@ -41,7 +41,8 @@ public class Resource {
 
         for (Object key : DerbyProperties.getProperties().keySet()) {
             if (key.toString().startsWith("derby.")
-                    && !key.toString().startsWith("derby.user.")) {
+                    && !key.toString().startsWith("derby.user.")
+                    && !key.toString().startsWith("javax.")) {
                 properties.put((String) key, getProperty(key.toString()));
             }
         }
@@ -53,7 +54,8 @@ public class Resource {
         Properties properties = new Properties();
 
         for (Object key : DerbyProperties.getProperties().keySet()) {
-            if (key.toString().startsWith("derby.user.")) {
+            if (key.toString().startsWith("derby.user.")
+                    && !key.toString().startsWith("javax.")) {
                 properties.put((String) key, getProperty(key.toString()));
             }
         }
@@ -65,7 +67,20 @@ public class Resource {
         Properties properties = new Properties();
 
         for (Object key : DerbyProperties.getProperties().keySet()) {
-            if (!key.toString().startsWith("derby.")) {
+            if (!key.toString().startsWith("derby.")
+                    && !key.toString().startsWith("javax.")) {
+                properties.put((String) key, getProperty(key.toString()));
+            }
+        }
+
+        return properties;
+    }
+
+    public static Properties getJPAProperties() {
+        Properties properties = new Properties();
+
+        for (Object key : DerbyProperties.getProperties().keySet()) {
+            if (!key.toString().startsWith("javax.")) {
                 properties.put((String) key, getProperty(key.toString()));
             }
         }

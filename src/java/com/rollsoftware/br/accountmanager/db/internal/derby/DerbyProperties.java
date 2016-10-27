@@ -84,6 +84,10 @@ public class DerbyProperties {
             File pathLog = new File(path.toPath()
                     + File.separator + map.get("derby.stream.error.file"));
             map.put("derby.stream.error.file", pathLog.toPath().toString());
+            System.setProperty("derby.system.home",
+                    (String) map.get("derby.system.home"));
+            System.setProperty("derby.stream.error.file",
+                    (String) map.get("derby.stream.error.file"));
         }
     }
 

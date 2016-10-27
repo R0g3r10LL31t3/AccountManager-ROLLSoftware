@@ -17,6 +17,9 @@
  */
 package com.rollsoftware.br.accountmanager.properties;
 
+import com.rollsoftware.br.accountmanager.db.internal.derby.DerbyProperties;
+import java.util.Properties;
+
 /**
  *
  * @author Rogério
@@ -32,5 +35,15 @@ public class Resource {
         String readValue = ApplicationProperties.getProperties()
                 .getProperty(key);
         return readValue != null ? readValue : value;
+    }
+
+    public static Properties getDatabaseProperties() {
+        switch (getProperty("roll.software.br.application.database")) {
+            case "MYSQL":
+                return null;
+            case "DERBY":
+            default:
+                return DerbyProperties.getProperties();
+        }
     }
 }
