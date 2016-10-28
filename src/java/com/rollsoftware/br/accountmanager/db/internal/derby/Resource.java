@@ -80,7 +80,7 @@ public class Resource {
         Properties properties = new Properties();
 
         for (Object key : DerbyProperties.getProperties().keySet()) {
-            if (!key.toString().startsWith("javax.")) {
+            if (key.toString().startsWith("javax.")) {
                 properties.put((String) key, getProperty(key.toString()));
             }
         }
