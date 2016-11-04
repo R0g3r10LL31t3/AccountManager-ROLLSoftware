@@ -105,8 +105,8 @@ public final class CypherUtils {
         }
     }
 
-    public static String encrypt(String value) {
-        return encrypt0(value);
+    public static String encrypt(String decrypted) {
+        return encrypt0(decrypted);
     }
 
     public static String encrypt(

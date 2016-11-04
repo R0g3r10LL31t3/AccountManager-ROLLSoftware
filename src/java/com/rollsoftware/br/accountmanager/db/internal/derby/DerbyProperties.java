@@ -31,11 +31,16 @@ import java.util.Properties;
  */
 public class DerbyProperties {
 
-    private static final String USER_DIR = System.getProperty("user.dir");
-    private static final String JETTY_BASE = System.getProperty("jetty.base");
-    private static final String JETTY_HOME = System.getProperty("jetty.home");
-    private static final String CATALINA_BASE = System.getProperty("catalina.base");
-    private static final String CATALINA_HOME = System.getProperty("catalina.home");
+    private static final String USER_DIR
+            = System.getProperty("user.dir");
+    private static final String JETTY_BASE
+            = System.getProperty("jetty.base");
+    private static final String JETTY_HOME
+            = System.getProperty("jetty.home");
+    private static final String CATALINA_BASE
+            = System.getProperty("catalina.base");
+    private static final String CATALINA_HOME
+            = System.getProperty("catalina.home");
 
     private DerbyProperties() {
     }
