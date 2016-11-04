@@ -31,6 +31,8 @@ import org.junit.Test;
  */
 public class TokenInfoTest extends ObjectDataTest {
 
+    private Integer loginInfoIdSaved;
+
     public TokenInfoTest() {
     }
 
@@ -62,7 +64,7 @@ public class TokenInfoTest extends ObjectDataTest {
     @Override
     protected ObjectData createObjectData() {
 
-        Integer loginInfoId = saveLoginInfo();
+        Integer loginInfoId = loginInfoIdSaved;
 
         TokenInfo tokeInfo = new TokenInfo();
         tokeInfo.setHash("unknown" + Math.random());
@@ -97,6 +99,7 @@ public class TokenInfoTest extends ObjectDataTest {
     @Before
     @Override
     public void setUp() throws Exception {
+        loginInfoIdSaved = saveLoginInfo();
         super.setUp();
     }
 
