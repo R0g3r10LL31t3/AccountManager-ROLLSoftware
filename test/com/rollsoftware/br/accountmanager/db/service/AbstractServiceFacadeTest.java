@@ -43,8 +43,8 @@ public abstract class AbstractServiceFacadeTest {
     private static final Properties DB_PROPS
             = Resource.getDatabaseProperties();
 
-    protected EntityManagerFactory emf;
-    protected EntityManager em;
+    protected static EntityManagerFactory EMF;
+    protected static EntityManager EM;
 
     public AbstractServiceFacadeTest() {
     }
@@ -58,35 +58,23 @@ public abstract class AbstractServiceFacadeTest {
     @BeforeClass
     public static void setUpClass() {
         DriverManager.setLogWriter(new java.io.PrintWriter(System.out));
+        EMF = Persistence.createEntityManagerFactory(PU);
+        EM = EMF.createEntityManager(DB_PROPS);
     }
 
     @AfterClass
     public static void tearDownClass() {
+        EM.close();
+        EMF.close();
         DriverManager.setLogWriter(null);
     }
 
     @Before
     public void setUp() {
-        try {
-            emf = Persistence.createEntityManagerFactory(PU);
-            em = emf.createEntityManager(DB_PROPS);
-
-            em.getTransaction().begin();
-
-            em.createNativeQuery("set schema ACCOUNT_MANAGER_DB_APP");
-
-            em.getTransaction().commit();
-
-        } catch (Throwable ex) {
-            ex.printStackTrace(System.out);
-            throw ex;
-        }
     }
 
     @After
     public void tearDown() {
-        em.close();
-        emf.close();
     }
 
     /**
@@ -200,6 +188,8 @@ public abstract class AbstractServiceFacadeTest {
 
     /**
      * Test of count method, of class AbstractFacade.
+     *
+     * @throws java.lang.Exception
      */
     @Test
     public void testCount() throws Exception {

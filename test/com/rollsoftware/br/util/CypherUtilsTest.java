@@ -17,6 +17,8 @@
  */
 package com.rollsoftware.br.util;
 
+import java.util.Arrays;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -98,6 +100,49 @@ public class CypherUtilsTest {
         System.out.println("decrypt: " + decrypt);
 
         assertEquals(text, decrypt);
+    }
+
+    /**
+     * Test of generateHash method, of class CypherUtils.
+     */
+    @Test
+    public void testGenerateHash_ObjectArray() {
+        System.out.println("generateHash");
+        Object[] values = {1, "2", 3.0};
+
+        String result0 = CypherUtils.generateHash(values);
+        String result1 = CypherUtils.generateHash(values[0]);
+        String result2 = CypherUtils.generateHash(values[1]);
+        String result3 = CypherUtils.generateHash(values[2]);
+        String result4 = CypherUtils.generateHash(values[2], values[1], values[0]);
+
+        System.out.println("result0: " + result0);
+        System.out.println("result1: " + result1);
+        System.out.println("result2: " + result2);
+        System.out.println("result3: " + result3);
+        System.out.println("result4: " + result4);
+
+        assertEquals(32, result0.length());
+        assertEquals(32, result1.length());
+        assertEquals(32, result2.length());
+        assertEquals(32, result3.length());
+        assertEquals(32, result4.length());
+    }
+
+    /**
+     * Test of generateHash method, of class CypherUtils.
+     */
+    @Test
+    public void testGenerateHash_List() {
+        System.out.println("generateHash");
+        Object[] values = {1, "2", 3.0};
+        List valuesList = Arrays.asList(values);
+
+        String result = CypherUtils.generateHash(valuesList);
+
+        System.out.println("result: " + result);
+
+        assertEquals(32, result.length());
     }
 
 }

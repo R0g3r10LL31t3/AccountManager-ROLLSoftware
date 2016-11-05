@@ -5,15 +5,17 @@
  */
 package com.rollsoftware.br.accountmanager.db.entity;
 
+import com.rollsoftware.br.util.CypherUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -35,8 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "LOGIN_INFO",
         schema = "ACCOUNT_MANAGER_DB_APP",
         uniqueConstraints = {
-            @UniqueConstraint(columnNames = {"LIIDFK"})
-            ,@UniqueConstraint(columnNames = {"LIUSER"})
+            @UniqueConstraint(columnNames = {"LIUSER"})
         }
 )
 @DiscriminatorValue("LoginInfo")
@@ -45,11 +46,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class LoginInfo extends ObjectData implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "LIIDFK", nullable = false)
-    private Integer idFK;
 
     @Basic(optional = false)
     @NotNull
@@ -116,25 +112,26 @@ public class LoginInfo extends ObjectData implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateBlocked;
 
-    @OneToMany(mappedBy = "loginInfo")
-    @JoinColumn(name = "TI_LOGIN_INFO_FK")
+    @OneToMany(mappedBy = "loginInfo", fetch = FetchType.EAGER)
+    @JoinColumn(name = "TIIDPK", referencedColumnName = "ODIDPK")
     @OrderBy("dateCreated ASC")
-    private Collection<TokenInfo> tokenInfos;
+    private List<TokenInfo> tokenInfos;
 
     public LoginInfo() {
         this(0);
     }
 
-    public LoginInfo(Integer idFK) {
-        this(idFK, "LoginInfo", "", "", "", "", "",
+    public LoginInfo(Integer id) {
+        this(id, "LoginInfo", "",
+                "", "", "", "",
                 Calendar.getInstance().getTime(),
                 Calendar.getInstance().getTime());
     }
 
-    public LoginInfo(Integer idFK, String type, String hash,
+    public LoginInfo(Integer id, String type, String hash,
             String user, String pass, String firstName, String lastName,
             Date dateCreated, Date dateAccessed) {
-        this(idFK, type, hash,
+        this(id, type, hash,
                 user, pass, firstName, lastName,
                 0, 0, 0,
                 null, null,
@@ -143,15 +140,14 @@ public class LoginInfo extends ObjectData implements Serializable {
                 new ArrayList());
     }
 
-    public LoginInfo(Integer idFK, String type, String hash,
+    public LoginInfo(Integer id, String type, String hash,
             String user, String pass, String firstName, String lastName,
             Integer successCount, Integer errorCount, Integer blockedCount,
             Date dateSoftban, Date datePermBan,
             Date dateCreated, Date dateAccessed, Date dateActivated,
             Date dateExpired, Date dateBlocked,
-            Collection<TokenInfo> tokenInfos) {
-        super(idFK, type, hash);
-        this.idFK = idFK;
+            List<TokenInfo> tokenInfos) {
+        super(id, type, hash);
         this.user = user;
         this.pass = pass;
         this.firstName = firstName;
@@ -169,13 +165,12 @@ public class LoginInfo extends ObjectData implements Serializable {
         this.tokenInfos = tokenInfos;
     }
 
-    public Integer getIdFK() {
-        return getId();
-    }
-
-    public void setIdFK(Integer idFK) {
-        setId(idFK);
-        this.idFK = idFK;
+    @Override
+    public void generateHash() {
+        String _hash = CypherUtils.generateHash(
+                user, firstName, lastName
+        );
+        setHash(_hash);
     }
 
     public String getUser() {
@@ -194,10 +189,14 @@ public class LoginInfo extends ObjectData implements Serializable {
         this.pass = pass;
     }
 
-    public void encrypt() {
+    public void encryptPass() {
+        pass = CypherUtils.encrypt(
+                getHash(), getHash(), pass);
     }
 
-    public void decrypt() {
+    public void decryptPass() {
+        pass = CypherUtils.decrypt(
+                getHash(), getHash(), pass);
     }
 
     public String getFirstName() {
@@ -296,11 +295,11 @@ public class LoginInfo extends ObjectData implements Serializable {
         this.dateBlocked = dateBlocked;
     }
 
-    public Collection<TokenInfo> getTokenInfos() {
+    public List<TokenInfo> getTokenInfos() {
         return tokenInfos;
     }
 
-    public void setTokenInfos(Collection<TokenInfo> tokenInfos) {
+    public void setTokenInfos(List<TokenInfo> tokenInfos) {
         this.tokenInfos = tokenInfos;
     }
 
@@ -327,7 +326,8 @@ public class LoginInfo extends ObjectData implements Serializable {
 
     @Override
     public String toString() {
-        return "LoginInfo[idFK=" + getId() + ", user=" + getUser() + "]";
+        return "LoginInfo[id=" + getId()
+                + ", hash=" + getHash()
+                + ", user=" + getUser() + "]";
     }
-
 }

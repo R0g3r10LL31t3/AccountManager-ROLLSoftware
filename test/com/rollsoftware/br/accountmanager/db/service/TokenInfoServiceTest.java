@@ -33,35 +33,72 @@ import org.junit.BeforeClass;
  */
 public class TokenInfoServiceTest extends ObjectDataServiceTest {
 
+    private Integer loginInfoPKSaved;
+
     public TokenInfoServiceTest() {
+    }
+
+    private Integer saveLoginInfo() {
+
+        LoginInfo loginInfo = new LoginInfo();
+
+        loginInfo.setHash("unknown" + Math.random());
+        loginInfo.setType("unknown");
+        loginInfo.setUser("unknown" + Math.random());
+        loginInfo.setPass("unknown" + Math.random());
+        loginInfo.setFirstName("unknown");
+        loginInfo.setLastName("unknown");
+
+        loginInfo.generateHash();
+        loginInfo.encryptPass();
+
+        EM.getTransaction().begin();
+
+        EM.createNativeQuery("set schema ACCOUNT_MANAGER_DB_APP");
+
+        EM.persist(loginInfo);
+        EM.flush();
+
+        EM.getTransaction().commit();
+
+        System.out.println("Save LoginInfo: " + loginInfo.getHash());
+
+        return loginInfo.getId();
     }
 
     @Override
     protected ObjectData createObjectData() {
-        TokenInfo tokeInfo = new TokenInfo();
-        tokeInfo.setHash("unknown" + Math.random());
-        tokeInfo.setType("unknown");
 
-        tokeInfo.setAccessToken("unknown" + Math.random());
-        tokeInfo.setUserIP("unknown" + Math.random());
+        Integer loginInfoPK = loginInfoPKSaved;
+
+        TokenInfo tokenInfo = new TokenInfo();
+
+        tokenInfo.setHash("unknown" + Math.random());
+        tokenInfo.setType("unknown");
+
+        tokenInfo.setAccessToken("unknown" + Math.random());
+        tokenInfo.setUserIP("unknown" + Math.random());
 
         Calendar instance = Calendar.getInstance();
 
         instance.add(Calendar.MINUTE, 10);
 
-        tokeInfo.setDateCreated(Calendar.getInstance().getTime());
-        tokeInfo.setDateAccessed(Calendar.getInstance().getTime());
-        tokeInfo.setDateExpires(instance.getTime());
+        tokenInfo.setDateCreated(Calendar.getInstance().getTime());
+        tokenInfo.setDateAccessed(Calendar.getInstance().getTime());
+        tokenInfo.setDateExpires(instance.getTime());
 
-        tokeInfo.setLoginInfo(new LoginInfo(301));
+        tokenInfo.setLoginInfo(new LoginInfo(loginInfoPK));
 
-        return tokeInfo;
+        tokenInfo.generateHash();
+        tokenInfo.generateToken();
+
+        return tokenInfo;
     }
 
     @Override
     protected <T extends AbstractServiceFacade>
             T createServiceFacade() {
-        return (T) new TokenInfoService(em);
+        return (T) new TokenInfoService(EM);
     }
 
     @BeforeClass
@@ -77,6 +114,7 @@ public class TokenInfoServiceTest extends ObjectDataServiceTest {
     @Before
     @Override
     public void setUp() {
+        loginInfoPKSaved = saveLoginInfo();
         super.setUp();
     }
 

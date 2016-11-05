@@ -41,16 +41,16 @@ public class ObjectDataTest {
     protected static final Properties DB_PROPS
             = Resource.getDatabaseProperties();
 
-    protected EntityManagerFactory emf;
-    protected EntityManager em;
+    protected static EntityManagerFactory EMF;
+    protected static EntityManager EM;
 
-    private Integer objectDataId;
+    private Integer objectDataPK;
 
     public ObjectDataTest() {
     }
 
-    protected Integer getObjectDataId() {
-        return objectDataId;
+    protected Integer getObjectDataPK() {
+        return objectDataPK;
     }
 
     protected <T extends ObjectData>
@@ -62,35 +62,40 @@ public class ObjectDataTest {
         ObjectData objectData = new ObjectData();
         objectData.setHash("unknown" + Math.random());
         objectData.setType("unknown");
+        objectData.generateHash();
         return objectData;
     }
 
     public void save(ObjectData objectData) {
-        em.getTransaction().begin();
+        EM.getTransaction().begin();
 
-        em.createNativeQuery("set schema ACCOUNT_MANAGER_DB_APP");
+        EM.createNativeQuery("set schema ACCOUNT_MANAGER_DB_APP");
 
-        em.persist(objectData);
-        em.flush();
+        EM.persist(objectData);
+        EM.flush();
 
-        em.getTransaction().commit();
+        EM.getTransaction().commit();
     }
 
     public <T extends ObjectData>
             T load() {
         ObjectData objectData
-                = em.find(getObjectDataClass(), getObjectDataId());
-        em.refresh(objectData);
+                = EM.find(getObjectDataClass(), getObjectDataPK());
+        EM.refresh(objectData);
         return (T) objectData;
     }
 
     @BeforeClass
     public static void setUpClass() {
         DriverManager.setLogWriter(new java.io.PrintWriter(System.out));
+        EMF = Persistence.createEntityManagerFactory(PU);
+        EM = EMF.createEntityManager(DB_PROPS);
     }
 
     @AfterClass
     public static void tearDownClass() {
+        EM.close();
+        EMF.close();
         DriverManager.setLogWriter(null);
     }
 
@@ -98,14 +103,12 @@ public class ObjectDataTest {
     public void setUp() throws Exception {
 
         try {
-            emf = Persistence.createEntityManagerFactory(PU);
-            em = emf.createEntityManager(DB_PROPS);
 
             ObjectData objectData = createObjectData();
 
             save(objectData);
 
-            objectDataId = objectData.getId();
+            objectDataPK = objectData.getId();
         } catch (Throwable ex) {
             ex.printStackTrace(System.out);
             throw ex;
@@ -114,8 +117,6 @@ public class ObjectDataTest {
 
     @After
     public void tearDown() throws Exception {
-        em.close();
-        emf.close();
     }
 
     @Test

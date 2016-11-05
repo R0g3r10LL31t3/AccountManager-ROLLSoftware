@@ -5,6 +5,7 @@
  */
 package com.rollsoftware.br.accountmanager.db.entity;
 
+import com.rollsoftware.br.util.CypherUtils;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,9 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "TOKEN_INFO", schema = "ACCOUNT_MANAGER_DB_APP",
         uniqueConstraints = {
-            @UniqueConstraint(columnNames = {"TIIDFK"})
-            ,@UniqueConstraint(columnNames = {"LIUSER"})
-            ,@UniqueConstraint(columnNames = {"LIIDFK"})
+            @UniqueConstraint(columnNames = {"TIACCESSTOKEN"})
         }
 )
 @DiscriminatorValue("TokenInfo")
@@ -43,11 +42,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class TokenInfo extends ObjectData implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "TIIDFK", nullable = false)
-    private Integer idFK;
 
     @Basic(optional = false)
     @NotNull
@@ -88,9 +82,10 @@ public class TokenInfo extends ObjectData implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateExpires;
 
+    @NotNull
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(
-            name = "TI_LOGIN_INFO_FK",
+            name = "TI_LOGININFO_IDFK",
             referencedColumnName = "LIIDFK",
             nullable = false
     )
@@ -100,8 +95,8 @@ public class TokenInfo extends ObjectData implements Serializable {
         this(0);
     }
 
-    public TokenInfo(Integer idFK) {
-        this(idFK, "TokenInfo", "",
+    public TokenInfo(Integer id) {
+        this(id, "TokenInfo", "",
                 "", "",
                 0, 0, 0,
                 Calendar.getInstance().getTime(),
@@ -109,13 +104,12 @@ public class TokenInfo extends ObjectData implements Serializable {
                 null, null);
     }
 
-    public TokenInfo(Integer idFK, String type, String hash,
+    public TokenInfo(Integer id, String type, String hash,
             String accessToken, String userIP,
             Integer successCount, Integer refusedCount, Integer errorCount,
             Date dateCreated, Date dateAccessed, Date dateExpires,
             LoginInfo loginInfo) {
-        super(idFK, type, hash);
-        this.idFK = idFK;
+        super(id, type, hash);
         this.accessToken = accessToken;
         this.userIP = userIP;
         this.successCount = successCount;
@@ -127,13 +121,19 @@ public class TokenInfo extends ObjectData implements Serializable {
         this.loginInfo = loginInfo;
     }
 
-    public Integer getIdFK() {
-        return getId();
+    @Override
+    public void generateHash() {
+        String _hash = CypherUtils.generateHash(
+                loginInfo.getHash(), accessToken, userIP
+        );
+        setHash(_hash);
     }
 
-    public void setIdFK(Integer idFK) {
-        setId(idFK);
-        this.idFK = idFK;
+    public void generateToken() {
+        String _hash = CypherUtils.generateHash(
+                loginInfo.getHash(), accessToken, userIP
+        );
+        setHash(_hash);
     }
 
     public String getAccessToken() {
@@ -231,7 +231,8 @@ public class TokenInfo extends ObjectData implements Serializable {
 
     @Override
     public String toString() {
-        return "TokenInfo[idFK=" + getId()
+        return "TokenInfo[id=" + getId()
+                + ", hash=" + getHash()
                 + ", token=" + getAccessToken() + "]";
     }
 }

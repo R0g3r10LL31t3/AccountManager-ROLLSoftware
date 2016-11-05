@@ -42,12 +42,13 @@ public class ObjectDataServiceTest extends AbstractServiceFacadeTest {
         ObjectData _objectData = new ObjectData();
         _objectData.setHash("unknown" + Math.random());
         _objectData.setType("unknown");
+        _objectData.generateHash();
         return _objectData;
     }
 
     protected <T extends AbstractServiceFacade>
             T createServiceFacade() {
-        return (T) new ObjectDataService(em);
+        return (T) new ObjectDataService(EM);
     }
 
     @Override
@@ -80,15 +81,15 @@ public class ObjectDataServiceTest extends AbstractServiceFacadeTest {
     public void setUp() {
         super.setUp();
         try {
-            em.getTransaction().begin();
+            EM.getTransaction().begin();
 
-            em.createNativeQuery("set schema ACCOUNT_MANAGER_DB_APP");
+            EM.createNativeQuery("set schema ACCOUNT_MANAGER_DB_APP");
 
             objectData = createObjectData();
 
-            em.persist(objectData);
+            EM.persist(objectData);
 
-            em.getTransaction().commit();
+            EM.getTransaction().commit();
 
             objectDataId = objectData.getId();
 

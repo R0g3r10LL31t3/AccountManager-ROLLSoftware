@@ -17,6 +17,9 @@
  */
 package com.rollsoftware.br.util;
 
+import java.util.List;
+import java.util.Objects;
+
 /**
  *
  * @author Rogério
@@ -105,6 +108,46 @@ public final class CypherUtils {
         }
     }
 
+    private static String generateHash0(Object... values) {
+        Object instance;
+        Class clazz;
+
+        try {
+            clazz = Class.forName("com.rollsoftware.br.cipher.CypherUtils");
+            java.lang.reflect.Constructor constructor
+                    = clazz.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            instance = constructor.newInstance();
+            java.lang.reflect.Method decrypt
+                    = clazz.getMethod("generateHash", new Class[]{
+                Object[].class
+            });
+            return (String) decrypt.invoke(instance, new Object[]{values});
+        } catch (Throwable ex) {
+            return String.valueOf(Objects.hash(values));
+        }
+    }
+
+    private static String generateHash0(List values) {
+        Object instance;
+        Class clazz;
+
+        try {
+            clazz = Class.forName("com.rollsoftware.br.cipher.CypherUtils");
+            java.lang.reflect.Constructor constructor
+                    = clazz.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            instance = constructor.newInstance();
+            java.lang.reflect.Method decrypt
+                    = clazz.getMethod("generateHash", new Class[]{
+                List.class
+            });
+            return (String) decrypt.invoke(instance, values);
+        } catch (Throwable ex) {
+            return String.valueOf(Objects.hash(values));
+        }
+    }
+
     public static String encrypt(String decrypted) {
         return encrypt0(decrypted);
     }
@@ -121,5 +164,13 @@ public final class CypherUtils {
     public static String decrypt(
             String key, String initVector, String encrypted) {
         return decrypt0(key, initVector, encrypted);
+    }
+
+    public static String generateHash(Object... values) {
+        return generateHash0(values);
+    }
+
+    public static String generateHash(List values) {
+        return generateHash0(values);
     }
 }

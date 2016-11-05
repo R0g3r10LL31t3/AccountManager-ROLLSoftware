@@ -46,7 +46,8 @@ public class LoginInfoServiceTest extends ObjectDataServiceTest {
         loginInfo.setFirstName("unknown");
         loginInfo.setLastName("unknown");
 
-        loginInfo.encrypt();
+        loginInfo.generateHash();
+        loginInfo.encryptPass();
 
         return loginInfo;
     }
@@ -54,7 +55,7 @@ public class LoginInfoServiceTest extends ObjectDataServiceTest {
     @Override
     protected <T extends AbstractServiceFacade>
             T createServiceFacade() {
-        return (T) new LoginInfoService(em);
+        return (T) new LoginInfoService(EM);
     }
 
     @BeforeClass

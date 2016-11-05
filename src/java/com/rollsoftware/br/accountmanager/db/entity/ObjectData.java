@@ -99,10 +99,14 @@ public class ObjectData implements Serializable {
         this.hash = hash;
     }
 
+    public void generateHash() {
+    }
+
     @Override
     public int hashCode() {
         int _hash = 0;
         _hash += (id != null ? id.hashCode() : 0);
+        _hash += (type != null ? type.hashCode() : 0);
         return _hash;
     }
 
@@ -123,6 +127,8 @@ public class ObjectData implements Serializable {
 
     @Override
     public String toString() {
-        return "ObjectData[id=" + getId() + ", type=" + getType() + "]";
+        return "ObjectData[id=" + getId()
+                + ", hash=" + getHash()
+                + ", type=" + getType() + "]";
     }
 }

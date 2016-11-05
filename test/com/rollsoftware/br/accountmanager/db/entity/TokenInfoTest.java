@@ -31,7 +31,7 @@ import org.junit.Test;
  */
 public class TokenInfoTest extends ObjectDataTest {
 
-    private Integer loginInfoIdSaved;
+    private Integer loginInfoPKSaved;
 
     public TokenInfoTest() {
     }
@@ -46,11 +46,13 @@ public class TokenInfoTest extends ObjectDataTest {
         loginInfo.setPass("unknown" + Math.random());
         loginInfo.setFirstName("unknown");
         loginInfo.setLastName("unknown");
-        loginInfo.encrypt();
+
+        loginInfo.generateHash();
+        loginInfo.encryptPass();
 
         save(loginInfo);
 
-        System.out.println("Save LoginInfo: " + loginInfo.getId());
+        System.out.println("Save LoginInfo: " + loginInfo.getHash());
 
         return loginInfo.getId();
     }
@@ -64,7 +66,7 @@ public class TokenInfoTest extends ObjectDataTest {
     @Override
     protected ObjectData createObjectData() {
 
-        Integer loginInfoId = loginInfoIdSaved;
+        Integer loginInfoPK = loginInfoPKSaved;
 
         TokenInfo tokeInfo = new TokenInfo();
         tokeInfo.setHash("unknown" + Math.random());
@@ -81,7 +83,10 @@ public class TokenInfoTest extends ObjectDataTest {
         tokeInfo.setDateAccessed(Calendar.getInstance().getTime());
         tokeInfo.setDateExpires(instance.getTime());
 
-        tokeInfo.setLoginInfo(new LoginInfo(loginInfoId));
+        tokeInfo.setLoginInfo(new LoginInfo(loginInfoPK));
+
+        tokeInfo.generateToken();
+        tokeInfo.generateHash();
 
         return tokeInfo;
     }
@@ -99,7 +104,7 @@ public class TokenInfoTest extends ObjectDataTest {
     @Before
     @Override
     public void setUp() throws Exception {
-        loginInfoIdSaved = saveLoginInfo();
+        loginInfoPKSaved = saveLoginInfo();
         super.setUp();
     }
 

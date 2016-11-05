@@ -51,14 +51,16 @@ public class LoginInfoTest extends ObjectDataTest {
         tokeInfo.setDateAccessed(Calendar.getInstance().getTime());
         tokeInfo.setDateExpires(instance.getTime());
 
-        tokeInfo.setLoginInfo(new LoginInfo(getObjectDataId()));
+        tokeInfo.setLoginInfo(load());
+
+        tokeInfo.generateHash();
 
         save(tokeInfo);
 
         System.out.println("Save TokenInfo: " + tokeInfo.getId());
         System.out.println("Save TokenInfo: "
-                + tokeInfo.getId() + " with LoginInfo: "
-                + tokeInfo.getLoginInfo().getId());
+                + tokeInfo.getHash() + " with LoginInfo: "
+                + tokeInfo.getLoginInfo().getHash());
 
         return tokeInfo.getId();
     }
@@ -81,7 +83,8 @@ public class LoginInfoTest extends ObjectDataTest {
         loginInfo.setFirstName("unknown");
         loginInfo.setLastName("unknown");
 
-        loginInfo.encrypt();
+        loginInfo.generateHash();
+        loginInfo.encryptPass();
 
         return loginInfo;
     }
@@ -100,7 +103,6 @@ public class LoginInfoTest extends ObjectDataTest {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        saveTokenInfo();
     }
 
     @After
@@ -114,6 +116,7 @@ public class LoginInfoTest extends ObjectDataTest {
 
         System.out.println("Test Basic Login Info");
 
+        saveTokenInfo();
         LoginInfo loginInfo = load();
 
         System.out.println("Login Info: " + loginInfo);
