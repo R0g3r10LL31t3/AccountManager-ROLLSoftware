@@ -33,12 +33,12 @@ import org.junit.BeforeClass;
  */
 public class TokenInfoServiceTest extends ObjectDataServiceTest {
 
-    private Integer loginInfoPKSaved;
+    private Object loginInfoPKSaved;
 
     public TokenInfoServiceTest() {
     }
 
-    private Integer saveLoginInfo() {
+    private Object saveLoginInfo() {
 
         LoginInfo loginInfo = new LoginInfo();
 
@@ -63,13 +63,13 @@ public class TokenInfoServiceTest extends ObjectDataServiceTest {
 
         System.out.println("Save LoginInfo: " + loginInfo.getHash());
 
-        return loginInfo.getId();
+        return loginInfo.getHash();
     }
 
     @Override
     protected ObjectData createObjectData() {
 
-        Integer loginInfoPK = loginInfoPKSaved;
+        LoginInfo loginInfo = load(LoginInfo.class, loginInfoPKSaved);
 
         TokenInfo tokenInfo = new TokenInfo();
 
@@ -87,7 +87,7 @@ public class TokenInfoServiceTest extends ObjectDataServiceTest {
         tokenInfo.setDateAccessed(Calendar.getInstance().getTime());
         tokenInfo.setDateExpires(instance.getTime());
 
-        tokenInfo.setLoginInfo(new LoginInfo(loginInfoPK));
+        tokenInfo.setLoginInfo(loginInfo);
 
         tokenInfo.generateHash();
         tokenInfo.generateToken();

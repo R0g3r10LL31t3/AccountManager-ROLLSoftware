@@ -18,6 +18,9 @@
 package com.rollsoftware.br.accountmanager.db.entity;
 
 import java.util.Calendar;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -31,21 +34,22 @@ import org.junit.Test;
  */
 public class TokenInfoTest extends ObjectDataTest {
 
-    private Integer loginInfoPKSaved;
+    private Object loginInfoPKSaved;
 
     public TokenInfoTest() {
     }
 
-    private Integer saveLoginInfo() {
+    private Object saveLoginInfo() {
 
         LoginInfo loginInfo = new LoginInfo();
 
-        loginInfo.setHash("unknown" + Math.random());
-        loginInfo.setType("unknown");
-        loginInfo.setUser("unknown" + Math.random());
-        loginInfo.setPass("unknown" + Math.random());
-        loginInfo.setFirstName("unknown");
-        loginInfo.setLastName("unknown");
+        loginInfo.setHash("hash" + Math.random());
+        loginInfo.setType("type");
+
+        loginInfo.setUser("user" + Math.random());
+        loginInfo.setPass("pass" + Math.random());
+        loginInfo.setFirstName("firstName" + Math.random());
+        loginInfo.setLastName("lastName" + Math.random());
 
         loginInfo.generateHash();
         loginInfo.encryptPass();
@@ -54,7 +58,7 @@ public class TokenInfoTest extends ObjectDataTest {
 
         System.out.println("Save LoginInfo: " + loginInfo.getHash());
 
-        return loginInfo.getId();
+        return loginInfo.getHash();
     }
 
     @Override
@@ -66,14 +70,14 @@ public class TokenInfoTest extends ObjectDataTest {
     @Override
     protected ObjectData createObjectData() {
 
-        Integer loginInfoPK = loginInfoPKSaved;
+        LoginInfo loginInfo = load(LoginInfo.class, loginInfoPKSaved);
 
         TokenInfo tokeInfo = new TokenInfo();
-        tokeInfo.setHash("unknown" + Math.random());
-        tokeInfo.setType("unknown");
+        tokeInfo.setHash("hash" + Math.random());
+        tokeInfo.setType("type");
 
-        tokeInfo.setAccessToken("unknown" + Math.random());
-        tokeInfo.setUserIP("unknown" + Math.random());
+        tokeInfo.setAccessToken("accessToken" + Math.random());
+        tokeInfo.setUserIP("userIP" + Math.random());
 
         Calendar instance = Calendar.getInstance();
 
@@ -83,10 +87,10 @@ public class TokenInfoTest extends ObjectDataTest {
         tokeInfo.setDateAccessed(Calendar.getInstance().getTime());
         tokeInfo.setDateExpires(instance.getTime());
 
-        tokeInfo.setLoginInfo(new LoginInfo(loginInfoPK));
+        tokeInfo.setLoginInfo(loginInfo);
 
-        tokeInfo.generateToken();
         tokeInfo.generateHash();
+        tokeInfo.generateToken();
 
         return tokeInfo;
     }
@@ -116,11 +120,27 @@ public class TokenInfoTest extends ObjectDataTest {
 
     @Test
     public void testBasicTokenInfo() {
-        System.out.println("Test Basic Token Info");
+        System.out.println("testBasicTokenInfo");
 
         TokenInfo tokenInfo = load();
 
         System.out.println("Token Info: " + tokenInfo);
         System.out.println("Login Info: " + tokenInfo.getLoginInfo());
+    }
+
+    @Test
+    public void testTokenInfoToXML() throws JAXBException {
+
+        System.out.println("testTokenInfoToXML");
+
+        JAXBContext jc = JAXBContext.newInstance(TokenInfo.class);
+
+        TokenInfo tokenInfo = load();
+
+        Marshaller marshaller = jc.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+        System.out.println("XML Output:");
+        marshaller.marshal(tokenInfo, System.out);
     }
 }

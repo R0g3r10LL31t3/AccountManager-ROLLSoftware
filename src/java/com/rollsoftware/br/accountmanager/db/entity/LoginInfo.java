@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -26,7 +27,12 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  *
@@ -41,8 +47,17 @@ import javax.xml.bind.annotation.XmlRootElement;
         }
 )
 @DiscriminatorValue("LoginInfo")
-@PrimaryKeyJoinColumn(name = "LIIDFK", referencedColumnName = "ODIDPK")
-@XmlRootElement
+@PrimaryKeyJoinColumn(name = "LIHASHFK", referencedColumnName = "ODHASHPK")
+@XmlRootElement(name = "login")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder = {
+    "user", "pass",
+    "firstName", "lastName",
+    "dateCreated", "dateAccessed", "dateActivated", "dateExpired",
+    "successCount", "blockedCount", "errorCount",
+    "dateBlocked", "dateSoftban", "datePermBan",
+    "tokenInfos"
+})
 public class LoginInfo extends ObjectData implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,7 +65,8 @@ public class LoginInfo extends ObjectData implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 128)
-    @Column(name = "LIUSER", nullable = false, length = 128)
+    @Column(name = "LIUSER",
+            unique = true, nullable = false, length = 128)
     private String user;
 
     @Basic(optional = false)
@@ -112,17 +128,23 @@ public class LoginInfo extends ObjectData implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateBlocked;
 
-    @OneToMany(mappedBy = "loginInfo", fetch = FetchType.EAGER)
-    @JoinColumn(name = "TIIDPK", referencedColumnName = "ODIDPK")
+    @OneToMany(
+            mappedBy = "loginInfo",
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.ALL}
+    )
+    @JoinColumn(name = "TIHASHPK", referencedColumnName = "ODHASHPK")
     @OrderBy("dateCreated ASC")
+    @XmlElement(name = "token")
+    @XmlIDREF
     private List<TokenInfo> tokenInfos;
 
     public LoginInfo() {
-        this(0);
+        this("");
     }
 
-    public LoginInfo(Integer id) {
-        this(id, "LoginInfo", "",
+    public LoginInfo(String hash) {
+        this(0, "LoginInfo", hash,
                 "", "", "", "",
                 Calendar.getInstance().getTime(),
                 Calendar.getInstance().getTime());

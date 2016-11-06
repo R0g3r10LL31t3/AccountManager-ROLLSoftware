@@ -23,6 +23,9 @@ import java.util.Properties;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -44,12 +47,12 @@ public class ObjectDataTest {
     protected static EntityManagerFactory EMF;
     protected static EntityManager EM;
 
-    private Integer objectDataPK;
+    private Object objectDataPK;
 
     public ObjectDataTest() {
     }
 
-    protected Integer getObjectDataPK() {
+    protected Object getObjectDataPK() {
         return objectDataPK;
     }
 
@@ -79,8 +82,13 @@ public class ObjectDataTest {
 
     public <T extends ObjectData>
             T load() {
+        return load(getObjectDataClass(), getObjectDataPK());
+    }
+
+    public <T extends ObjectData>
+            T load(Class<T> clazz, Object id) {
         ObjectData objectData
-                = EM.find(getObjectDataClass(), getObjectDataPK());
+                = EM.find(clazz, id);
         EM.refresh(objectData);
         return (T) objectData;
     }
@@ -108,7 +116,7 @@ public class ObjectDataTest {
 
             save(objectData);
 
-            objectDataPK = objectData.getId();
+            objectDataPK = objectData.getHash();
         } catch (Throwable ex) {
             ex.printStackTrace(System.out);
             throw ex;
@@ -121,10 +129,26 @@ public class ObjectDataTest {
 
     @Test
     public void testBasic() {
-        System.out.println("Test Basic");
+        System.out.println("testBasic");
 
         ObjectData objectData = load();
 
         System.out.println("Object Data: " + objectData);
+    }
+
+    @Test
+    public void testObjectDataToXML() throws JAXBException {
+
+        System.out.println("testObjectDataToXML");
+
+        JAXBContext jc = JAXBContext.newInstance(ObjectData.class);
+
+        ObjectData objectData = load();
+
+        Marshaller marshaller = jc.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+        System.out.println("XML Output:");
+        marshaller.marshal(objectData, System.out);
     }
 }

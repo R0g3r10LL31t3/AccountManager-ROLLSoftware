@@ -32,10 +32,29 @@ public class ObjectDataServiceTest extends AbstractServiceFacadeTest {
 
     private AbstractServiceFacade rest;
 
-    private Integer objectDataId;
+    private Object objectDataPK;
     private ObjectData objectData;
 
     public ObjectDataServiceTest() {
+    }
+
+    public void save(ObjectData objectData) {
+        EM.getTransaction().begin();
+
+        EM.createNativeQuery("set schema ACCOUNT_MANAGER_DB_APP");
+
+        EM.persist(objectData);
+        EM.flush();
+
+        EM.getTransaction().commit();
+    }
+
+    public <T extends ObjectData>
+            T load(Class<T> clazz, Object id) {
+        ObjectData _objectData
+                = EM.find(clazz, id);
+        EM.refresh(_objectData);
+        return (T) _objectData;
     }
 
     protected ObjectData createObjectData() {
@@ -62,8 +81,8 @@ public class ObjectDataServiceTest extends AbstractServiceFacadeTest {
     }
 
     @Override
-    public Object getId() {
-        return objectDataId;
+    public Object getObjectDataPK() {
+        return objectDataPK;
     }
 
     @BeforeClass
@@ -91,7 +110,7 @@ public class ObjectDataServiceTest extends AbstractServiceFacadeTest {
 
             EM.getTransaction().commit();
 
-            objectDataId = objectData.getId();
+            objectDataPK = objectData.getHash();
 
             rest = createServiceFacade();
         } catch (Throwable ex) {

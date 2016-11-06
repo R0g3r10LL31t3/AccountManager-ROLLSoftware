@@ -5,6 +5,7 @@
  */
 package com.rollsoftware.br.accountmanager.db.entity;
 
+import com.rollsoftware.br.util.CypherUtils;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -20,7 +21,12 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  *
@@ -31,22 +37,24 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "OBJECT_DATA",
         schema = "ACCOUNT_MANAGER_DB_APP",
         uniqueConstraints = {
-            @UniqueConstraint(columnNames = {"ODTYPE", "ODHASH"})
+            @UniqueConstraint(columnNames = {"ODID"})
+            @UniqueConstraint(columnNames = {"ODTYPE", "ODHASHPK"})
         }
 )
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(
         name = "ODTYPE",
         discriminatorType = DiscriminatorType.STRING)
-@XmlRootElement
+@XmlRootElement(name = "object")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder = {"id", "type", "hash"})
 public class ObjectData implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ODIDPK", nullable = false)
+    @Column(name = "ODID", nullable = false)
     private Integer id;
 
     @Basic(optional = false)
@@ -55,10 +63,13 @@ public class ObjectData implements Serializable {
     @Column(name = "ODTYPE", nullable = false, length = 64)
     private String type;
 
+    @Id
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 128)
-    @Column(name = "ODHASH", nullable = false, length = 128)
+    @Column(name = "ODHASHPK", nullable = false, length = 128)
+    @XmlAttribute
+    @XmlID
     private String hash;
 
     public ObjectData() {
@@ -100,6 +111,8 @@ public class ObjectData implements Serializable {
     }
 
     public void generateHash() {
+        String _hash = CypherUtils.generateHash(hash);
+        setHash(_hash);
     }
 
     @Override

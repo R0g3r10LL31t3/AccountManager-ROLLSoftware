@@ -51,7 +51,7 @@ public abstract class AbstractServiceFacadeTest {
 
     public abstract AbstractServiceFacade getInstance();
 
-    public abstract Object getId();
+    public abstract Object getObjectDataPK();
 
     public abstract Object getEntity();
 
@@ -140,7 +140,7 @@ public abstract class AbstractServiceFacadeTest {
     @Test
     public void testFind() {
         System.out.println("find");
-        Object id = getId();
+        Object id = getObjectDataPK();
         AbstractServiceFacade instance = getInstance();
 
         Object result = instance.find(id);

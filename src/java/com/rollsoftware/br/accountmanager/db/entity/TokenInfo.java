@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -23,7 +24,12 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  *
@@ -37,8 +43,15 @@ import javax.xml.bind.annotation.XmlRootElement;
         }
 )
 @DiscriminatorValue("TokenInfo")
-@PrimaryKeyJoinColumn(name = "TIIDFK", referencedColumnName = "ODIDPK")
-@XmlRootElement
+@PrimaryKeyJoinColumn(name = "TIHASHFK", referencedColumnName = "ODHASHPK")
+@XmlRootElement(name = "token")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder = {
+    "accessToken", "userIP",
+    "dateCreated", "dateAccessed", "dateExpires",
+    "successCount", "refusedCount", "errorCount",
+    "loginInfo"
+})
 public class TokenInfo extends ObjectData implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,7 +59,8 @@ public class TokenInfo extends ObjectData implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 128)
-    @Column(name = "TIACCESSTOKEN", nullable = false, length = 128)
+    @Column(name = "TIACCESSTOKEN",
+            unique = true, nullable = false, length = 128)
     private String accessToken;
 
     @Basic(optional = false)
@@ -83,20 +97,26 @@ public class TokenInfo extends ObjectData implements Serializable {
     private Date dateExpires;
 
     @NotNull
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(
+            optional = false,
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.ALL}
+    )
     @JoinColumn(
-            name = "TI_LOGININFO_IDFK",
-            referencedColumnName = "LIIDFK",
+            name = "TI_LOGININFO_HASHFK",
+            referencedColumnName = "LIHASHFK",
             nullable = false
     )
+    @XmlIDREF
+    @XmlElement(name = "login")
     private LoginInfo loginInfo;
 
     public TokenInfo() {
-        this(0);
+        this("");
     }
 
-    public TokenInfo(Integer id) {
-        this(id, "TokenInfo", "",
+    public TokenInfo(String hash) {
+        this(0, "TokenInfo", hash,
                 "", "",
                 0, 0, 0,
                 Calendar.getInstance().getTime(),
@@ -133,7 +153,7 @@ public class TokenInfo extends ObjectData implements Serializable {
         String _hash = CypherUtils.generateHash(
                 loginInfo.getHash(), accessToken, userIP
         );
-        setHash(_hash);
+        setAccessToken(_hash);
     }
 
     public String getAccessToken() {
