@@ -37,14 +37,14 @@ public class LoginInfoServiceTest extends ObjectDataServiceTest {
     @Override
     protected ObjectData createObjectData() {
         LoginInfo loginInfo = new LoginInfo();
-        loginInfo.setHash("unknown" + Math.random());
-        loginInfo.setType("unknown");
 
-        loginInfo.setUser("unknown" + Math.random());
-        loginInfo.setPass("unknown" + Math.random());
+        loginInfo.setHash("hash" + Math.random());
+        loginInfo.setType("type");
 
-        loginInfo.setFirstName("unknown");
-        loginInfo.setLastName("unknown");
+        loginInfo.setUser("user" + Math.random());
+        loginInfo.setPass("pass" + Math.random());
+        loginInfo.setFirstName("firstName" + Math.random());
+        loginInfo.setLastName("lastName" + Math.random());
 
         loginInfo.generateHash();
         loginInfo.encryptPass();

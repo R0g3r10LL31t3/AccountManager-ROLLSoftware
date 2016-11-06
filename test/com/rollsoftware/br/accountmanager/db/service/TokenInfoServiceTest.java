@@ -42,12 +42,13 @@ public class TokenInfoServiceTest extends ObjectDataServiceTest {
 
         LoginInfo loginInfo = new LoginInfo();
 
-        loginInfo.setHash("unknown" + Math.random());
-        loginInfo.setType("unknown");
-        loginInfo.setUser("unknown" + Math.random());
-        loginInfo.setPass("unknown" + Math.random());
-        loginInfo.setFirstName("unknown");
-        loginInfo.setLastName("unknown");
+        loginInfo.setHash("hash" + Math.random());
+        loginInfo.setType("type");
+
+        loginInfo.setUser("user" + Math.random());
+        loginInfo.setPass("pass" + Math.random());
+        loginInfo.setFirstName("firstName" + Math.random());
+        loginInfo.setLastName("lastName" + Math.random());
 
         loginInfo.generateHash();
         loginInfo.encryptPass();
@@ -73,11 +74,11 @@ public class TokenInfoServiceTest extends ObjectDataServiceTest {
 
         TokenInfo tokenInfo = new TokenInfo();
 
-        tokenInfo.setHash("unknown" + Math.random());
-        tokenInfo.setType("unknown");
+        tokenInfo.setHash("hash" + Math.random());
+        tokenInfo.setType("type");
 
-        tokenInfo.setAccessToken("unknown" + Math.random());
-        tokenInfo.setUserIP("unknown" + Math.random());
+        tokenInfo.setAccessToken("accessToken" + Math.random());
+        tokenInfo.setUserIP("userIP" + Math.random());
 
         Calendar instance = Calendar.getInstance();
 

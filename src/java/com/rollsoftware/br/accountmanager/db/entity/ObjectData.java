@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlType;
         schema = "ACCOUNT_MANAGER_DB_APP",
         uniqueConstraints = {
             @UniqueConstraint(columnNames = {"ODID"})
-            @UniqueConstraint(columnNames = {"ODTYPE", "ODHASHPK"})
+            ,@UniqueConstraint(columnNames = {"ODTYPE", "ODHASHPK"})
         }
 )
 @Inheritance(strategy = InheritanceType.JOINED)
