@@ -39,36 +39,45 @@ public class EntityManagerContextListener implements ServletContextListener {
     private static final Properties DB_PROPS = Resource.getDatabaseProperties();
 
     private static EntityManagerFactory EMF;
-    private static EntityManager EM;
+    private static final ThreadLocal<EntityManager> THREADLOCAL_EM;
+
+    static {
+        THREADLOCAL_EM = new ThreadLocal();
+    }
 
     @Override
     public void contextInitialized(ServletContextEvent event) {
-        try {
-            EMF = Persistence.createEntityManagerFactory(PU);
-            EM = EMF.createEntityManager(DB_PROPS);
-        } catch (Throwable ex) {
-            ex.printStackTrace(System.err);
-        }
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent event) {
         try {
-            EM.close();
-            EMF.close();
+            if (THREADLOCAL_EM.get() != null) {
+                THREADLOCAL_EM.get().close();
+            }
+            if (EMF != null) {
+                EMF.close();
+            }
         } catch (Throwable ex) {
-            ex.printStackTrace(System.err);
+            throw ex;
         }
     }
 
     //@Produces
     //@RequestScoped
     public static EntityManager getEntityManager() {
-        if (EMF == null || EM == null) {
+        if (EMF == null) {
+            EMF = Persistence.createEntityManagerFactory(PU);
+        }
+
+        if (THREADLOCAL_EM.get() == null) {
+            THREADLOCAL_EM.set(EMF.createEntityManager(DB_PROPS));
+        }
+
+        if (EMF == null || THREADLOCAL_EM.get() == null) {
             throw new IllegalStateException("Context is not initialized yet.");
         }
 
-        return EM;
+        return THREADLOCAL_EM.get();
     }
-
 }

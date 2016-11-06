@@ -26,7 +26,6 @@ import org.glassfish.jersey.server.ResourceConfig;
  * @date October, 2016
  */
 @ApplicationPath("/rest/*")
-
 public class AccountManagerJAXRS extends ResourceConfig {
 
     public AccountManagerJAXRS() {

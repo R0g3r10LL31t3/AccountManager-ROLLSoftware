@@ -26,6 +26,7 @@ import javax.persistence.Persistence;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -150,5 +151,27 @@ public class ObjectDataTest {
 
         System.out.println("XML Output:");
         marshaller.marshal(objectData, System.out);
+        System.out.println();
+    }
+
+    @Test
+    public void testObjectDataToJSON() throws JAXBException {
+
+        System.out.println("testObjectDataToJSON");
+
+        JAXBContext jc = JAXBContext.newInstance(ObjectData.class);
+
+        ObjectData objectData = load();
+
+        Marshaller marshaller = jc.createMarshaller();
+
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshaller.setProperty(
+                MarshallerProperties.MEDIA_TYPE, "application/json");
+        marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, false);
+
+        System.out.println("JSON Output:");
+        marshaller.marshal(objectData, System.out);
+        System.out.println();
     }
 }

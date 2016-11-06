@@ -21,6 +21,7 @@ import java.util.Calendar;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -147,5 +148,27 @@ public class LoginInfoTest extends ObjectDataTest {
 
         System.out.println("XML Output:");
         marshaller.marshal(loginInfo, System.out);
+        System.out.println();
+    }
+
+    @Test
+    public void testLoginInfoToJSON() throws JAXBException {
+
+        System.out.println("testLoginInfoToJSON");
+
+        JAXBContext jc = JAXBContext.newInstance(LoginInfo.class);
+
+        LoginInfo loginInfo = load();
+
+        Marshaller marshaller = jc.createMarshaller();
+
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshaller.setProperty(
+                MarshallerProperties.MEDIA_TYPE, "application/json");
+        marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, false);
+
+        System.out.println("JSON Output:");
+        marshaller.marshal(loginInfo, System.out);
+        System.out.println();
     }
 }

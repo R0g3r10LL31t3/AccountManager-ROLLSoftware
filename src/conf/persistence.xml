@@ -31,6 +31,30 @@
             <property name="javax.persistence.jdbc.url" value="${url.database.connect}"/>
             <property name="javax.persistence.jdbc.user" value="${javax.persistence.jdbc.user}"/>
             <property name="javax.persistence.jdbc.password" value="${javax.persistence.jdbc.password}"/>
+            <!--
+            <property name="eclipselink.ddl-generation" value="create-tables" />
+            <property name="eclipselink.ddl-generation.output-mode" value="database" />
+            -->
+            <property name="eclipselink.canonicalmodel.subpackage" value="derby"/>
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="AccountManagerPU_MYSQL" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <class>com.rollsoftware.br.accountmanager.db.entity.TokenInfo</class>
+        <class>com.rollsoftware.br.accountmanager.db.entity.LoginInfo</class>
+        <class>com.rollsoftware.br.accountmanager.db.entity.ObjectData</class>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <properties>
+            <property name="javax.persistence.target-database" value="MYSQL"/>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="${url.database.connect}"/>
+            <property name="javax.persistence.jdbc.user" value="${javax.persistence.jdbc.user}"/>
+            <property name="javax.persistence.jdbc.password" value="${javax.persistence.jdbc.password}"/>
+            <!--
+            <property name="eclipselink.ddl-generation" value="create-tables" />
+            <property name="eclipselink.ddl-generation.output-mode" value="database" />
+            -->
+            <property name="eclipselink.canonicalmodel.subpackage" value="mysql"/>
         </properties>
     </persistence-unit>
 </persistence>
