@@ -7,6 +7,8 @@ A simple web RESTful using JAX-RS
 
 ## Install
 Download as ZIP or git clone
+Use Tomcat 8(*), Jetty 9(*) or other server.
+(*) Configured and tested.
 
 ### clone
 git clone https://github.com/R0g3r10LL31t3/AccountManager-ROLLSoftware.git
