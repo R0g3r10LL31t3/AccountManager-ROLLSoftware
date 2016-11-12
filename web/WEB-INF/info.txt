@@ -1,4 +1,16 @@
+beans.xml
+- CDI Weld, only auto-config
 jetty-web.xml
-- Jetty 9 xml context
+- Jetty 9 xml context, call before load war
+jetty-env.xml
+- Jetty 9 xml context, call after load war
 web.xml
-- Servlet xml configuration
+- Servlet and Frameworks xml configuration
+
+NOTE:
+Jetty Configuration
+
+command line:
+java -jar %JETTY_HOME%\start.jar - -add-to-startd=ext,http,jsp,deploy
+
+after put all derby*.jar on lib/ext created

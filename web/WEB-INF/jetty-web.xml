@@ -22,5 +22,21 @@
 */
 -->
 <Configure class="org.eclipse.jetty.server.handler.ContextHandler">
-    <Set name="contextPath">/account-manager/*</Set>
+    <!-- CONFIGURING -->
+    <Get class="java.lang.System" name="out">
+        <Call name="println">
+            <Arg>jetty-web.xml configuring</Arg>
+        </Call>
+    </Get>
+
+    <!-- CONTEXT -->
+    <!--Configure contextPath before web.xml.-->
+    <Set name="contextPath">/account-manager</Set>
+
+    <!-- CONFIGURED -->
+    <Get class="java.lang.System" name="out">
+        <Call name="println">
+            <Arg>jetty-web.xml configured</Arg>
+        </Call>
+    </Get>
 </Configure>

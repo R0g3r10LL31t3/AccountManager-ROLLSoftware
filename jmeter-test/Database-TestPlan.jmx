@@ -19,683 +19,683 @@
 */
 -->
 <jmeterTestPlan version="1.2" properties="2.9" jmeter="3.0 r1743807">
-  <hashTree>
-    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Derby Test Plan" enabled="true">
-      <stringProp name="TestPlan.comments"></stringProp>
-      <boolProp name="TestPlan.functional_mode">false</boolProp>
-      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
-      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-        <collectionProp name="Arguments.arguments"/>
-      </elementProp>
-      <stringProp name="TestPlan.user_define_classpath"></stringProp>
-    </TestPlan>
     <hashTree>
-      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="JDBC Connection Configuration - Derby Create" enabled="false">
-        <boolProp name="autocommit">true</boolProp>
-        <stringProp name="checkQuery">values(1)</stringProp>
-        <stringProp name="connectionAge">5000</stringProp>
-        <stringProp name="dataSource">jdbcConfig</stringProp>
-        <stringProp name="dbUrl">${url.database.connect}</stringProp>
-        <stringProp name="driver">org.apache.derby.jdbc.EmbeddedDriver</stringProp>
-        <boolProp name="keepAlive">true</boolProp>
-        <stringProp name="password">${javax.persistence.jdbc.password}</stringProp>
-        <stringProp name="poolMax">10</stringProp>
-        <stringProp name="timeout">10000</stringProp>
-        <stringProp name="transactionIsolation">DEFAULT</stringProp>
-        <stringProp name="trimInterval">60000</stringProp>
-        <stringProp name="username">${javax.persistence.jdbc.user}</stringProp>
-      </JDBCDataSource>
-      <hashTree/>
-      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="JDBC Connection Configuration - Derby Connect" enabled="true">
-        <boolProp name="autocommit">true</boolProp>
-        <stringProp name="checkQuery">values(1)</stringProp>
-        <stringProp name="connectionAge">5000</stringProp>
-        <stringProp name="dataSource">jdbcConfig</stringProp>
-        <stringProp name="dbUrl">${url.database.connect}</stringProp>
-        <stringProp name="driver">org.apache.derby.jdbc.EmbeddedDriver</stringProp>
-        <boolProp name="keepAlive">true</boolProp>
-        <stringProp name="password">${javax.persistence.jdbc.password}</stringProp>
-        <stringProp name="poolMax">10</stringProp>
-        <stringProp name="timeout">10000</stringProp>
-        <stringProp name="transactionIsolation">DEFAULT</stringProp>
-        <stringProp name="trimInterval">60000</stringProp>
-        <stringProp name="username">${javax.persistence.jdbc.user}</stringProp>
-      </JDBCDataSource>
-      <hashTree/>
-      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="JDBC Connection Configuration - Derby Shutdown" enabled="false">
-        <boolProp name="autocommit">true</boolProp>
-        <stringProp name="checkQuery">values(1)</stringProp>
-        <stringProp name="connectionAge">5000</stringProp>
-        <stringProp name="dataSource">jdbcConfig</stringProp>
-        <stringProp name="dbUrl">${url.database.connect}</stringProp>
-        <stringProp name="driver">org.apache.derby.jdbc.EmbeddedDriver</stringProp>
-        <boolProp name="keepAlive">true</boolProp>
-        <stringProp name="password">${javax.persistence.jdbc.password}</stringProp>
-        <stringProp name="poolMax">10</stringProp>
-        <stringProp name="timeout">10000</stringProp>
-        <stringProp name="transactionIsolation">DEFAULT</stringProp>
-        <stringProp name="trimInterval">60000</stringProp>
-        <stringProp name="username">${javax.persistence.jdbc.user}</stringProp>
-      </JDBCDataSource>
-      <hashTree/>
-      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="JDBC Connection Configuration - Mysql Connect" enabled="false">
-        <boolProp name="autocommit">true</boolProp>
-        <stringProp name="checkQuery">values(1)</stringProp>
-        <stringProp name="connectionAge">5000</stringProp>
-        <stringProp name="dataSource">jdbcConfig</stringProp>
-        <stringProp name="dbUrl">${url.database.connect}</stringProp>
-        <stringProp name="driver">org.apache.derby.jdbc.EmbeddedDriver</stringProp>
-        <boolProp name="keepAlive">true</boolProp>
-        <stringProp name="password">${javax.persistence.jdbc.password}</stringProp>
-        <stringProp name="poolMax">10</stringProp>
-        <stringProp name="timeout">10000</stringProp>
-        <stringProp name="transactionIsolation">DEFAULT</stringProp>
-        <stringProp name="trimInterval">60000</stringProp>
-        <stringProp name="username">${javax.persistence.jdbc.user}</stringProp>
-      </JDBCDataSource>
-      <hashTree/>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Validation" enabled="true">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
-        </elementProp>
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-        <longProp name="ThreadGroup.start_time">1478201385000</longProp>
-        <longProp name="ThreadGroup.end_time">1478201385000</longProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
-        <stringProp name="ThreadGroup.delay"></stringProp>
-      </ThreadGroup>
-      <hashTree>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Validation Query - Derby" enabled="true">
-          <stringProp name="dataSource">jdbcConfig</stringProp>
-          <stringProp name="queryType">Prepared Select Statement</stringProp>
-          <stringProp name="query">values(1)</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Validation Query - Mysql" enabled="false">
-          <stringProp name="dataSource">jdbcConfig</stringProp>
-          <stringProp name="queryType">Prepared Select Statement</stringProp>
-          <stringProp name="query">select 1</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
-        <hashTree/>
-      </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Get Tables" enabled="false">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
-        </elementProp>
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-        <longProp name="ThreadGroup.start_time">1370729701000</longProp>
-        <longProp name="ThreadGroup.end_time">1370729701000</longProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
-        <stringProp name="ThreadGroup.delay"></stringProp>
-      </ThreadGroup>
-      <hashTree>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Table(OBJECT_DATA) exists?" enabled="true">
-          <stringProp name="dataSource">jdbcConfig</stringProp>
-          <stringProp name="query">select * from sys.systables as systables
-	left join sys.sysschemas as sysschemas
-	on sysschemas.schemaid=systables.schemaid
-	where systables.tablename = ?
-	and sysschemas.schemaname = ?</stringProp>
-          <stringProp name="queryArguments">&apos;OBJECT_DATA&apos;,&apos;ACCOUNT_MANAGER_DB_APP&apos;</stringProp>
-          <stringProp name="queryArgumentsTypes">VARCHAR,VARCHAR</stringProp>
-          <stringProp name="queryType">Prepared Select Statement</stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Table(LOGIN_INFO) exists?" enabled="true">
-          <stringProp name="dataSource">jdbcConfig</stringProp>
-          <stringProp name="query">select * from sys.systables as systables
-	left join sys.sysschemas as sysschemas
-	on sysschemas.schemaid=systables.schemaid
-	where systables.tablename = ?
-	and sysschemas.schemaname = ?</stringProp>
-          <stringProp name="queryArguments">&apos;LOGIN_INFO&apos;,&apos;ACCOUNT_MANAGER_DB_APP&apos;</stringProp>
-          <stringProp name="queryArgumentsTypes">VARCHAR,VARCHAR</stringProp>
-          <stringProp name="queryType">Prepared Select Statement</stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Table(TOKEN_INFO) exists?" enabled="true">
-          <stringProp name="dataSource">jdbcConfig</stringProp>
-          <stringProp name="query">select * from sys.systables as systables
-	left join sys.sysschemas as sysschemas
-	on sysschemas.schemaid=systables.schemaid
-	where systables.tablename = ?
-	and sysschemas.schemaname = ?</stringProp>
-          <stringProp name="queryArguments">&apos;TOKEN_INFO&apos;,&apos;ACCOUNT_MANAGER_DB_APP&apos;</stringProp>
-          <stringProp name="queryArgumentsTypes">VARCHAR,VARCHAR</stringProp>
-          <stringProp name="queryType">Prepared Select Statement</stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
-        <hashTree/>
-      </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Create Rules - Derby" enabled="false">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
-        </elementProp>
-        <stringProp name="ThreadGroup.num_threads">13</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-        <longProp name="ThreadGroup.start_time">1370729701000</longProp>
-        <longProp name="ThreadGroup.end_time">1370729701000</longProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
-        <stringProp name="ThreadGroup.delay"></stringProp>
-      </ThreadGroup>
-      <hashTree>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Create Rules" enabled="true">
-          <stringProp name="dataSource">jdbcConfig</stringProp>
-          <stringProp name="query">CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY(?,?)</stringProp>
-          <stringProp name="queryArguments">${dbKey},${dbValue}</stringProp>
-          <stringProp name="queryArgumentsTypes">VARCHAR,VARCHAR</stringProp>
-          <stringProp name="queryType">Prepared Update Statement</stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
+        <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Database Test Plan" enabled="true">
+            <stringProp name="TestPlan.comments"></stringProp>
+            <boolProp name="TestPlan.functional_mode">false</boolProp>
+            <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+            <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+                <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="TestPlan.user_define_classpath"></stringProp>
+        </TestPlan>
         <hashTree>
-          <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-            <stringProp name="filename">J:\Projetos\MapGo\AccountManager\jmeter-test\derby_rules.csv</stringProp>
-            <stringProp name="fileEncoding"></stringProp>
-            <stringProp name="variableNames">dbKey,dbValue</stringProp>
-            <stringProp name="delimiter">;</stringProp>
-            <boolProp name="quotedData">true</boolProp>
-            <boolProp name="recycle">false</boolProp>
-            <boolProp name="stopThread">true</boolProp>
-            <stringProp name="shareMode">shareMode.thread</stringProp>
-          </CSVDataSet>
-          <hashTree/>
+            <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="JDBC Connection Configuration - Derby Create" enabled="false">
+                <boolProp name="autocommit">true</boolProp>
+                <stringProp name="checkQuery">values(1)</stringProp>
+                <stringProp name="connectionAge">5000</stringProp>
+                <stringProp name="dataSource">jdbcConfig</stringProp>
+                <stringProp name="dbUrl">${url.database.connect}</stringProp>
+                <stringProp name="driver">org.apache.derby.jdbc.EmbeddedDriver</stringProp>
+                <boolProp name="keepAlive">true</boolProp>
+                <stringProp name="password">${javax.persistence.jdbc.password}</stringProp>
+                <stringProp name="poolMax">10</stringProp>
+                <stringProp name="timeout">10000</stringProp>
+                <stringProp name="transactionIsolation">DEFAULT</stringProp>
+                <stringProp name="trimInterval">60000</stringProp>
+                <stringProp name="username">${javax.persistence.jdbc.user}</stringProp>
+            </JDBCDataSource>
+            <hashTree/>
+            <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="JDBC Connection Configuration - Derby Connect" enabled="true">
+                <boolProp name="autocommit">true</boolProp>
+                <stringProp name="checkQuery">values(1)</stringProp>
+                <stringProp name="connectionAge">5000</stringProp>
+                <stringProp name="dataSource">jdbcConfig</stringProp>
+                <stringProp name="dbUrl">${url.database.connect}</stringProp>
+                <stringProp name="driver">org.apache.derby.jdbc.EmbeddedDriver</stringProp>
+                <boolProp name="keepAlive">true</boolProp>
+                <stringProp name="password">${javax.persistence.jdbc.password}</stringProp>
+                <stringProp name="poolMax">10</stringProp>
+                <stringProp name="timeout">10000</stringProp>
+                <stringProp name="transactionIsolation">DEFAULT</stringProp>
+                <stringProp name="trimInterval">60000</stringProp>
+                <stringProp name="username">${javax.persistence.jdbc.user}</stringProp>
+            </JDBCDataSource>
+            <hashTree/>
+            <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="JDBC Connection Configuration - Derby Shutdown" enabled="false">
+                <boolProp name="autocommit">true</boolProp>
+                <stringProp name="checkQuery">values(1)</stringProp>
+                <stringProp name="connectionAge">5000</stringProp>
+                <stringProp name="dataSource">jdbcConfig</stringProp>
+                <stringProp name="dbUrl">${url.database.connect}</stringProp>
+                <stringProp name="driver">org.apache.derby.jdbc.EmbeddedDriver</stringProp>
+                <boolProp name="keepAlive">true</boolProp>
+                <stringProp name="password">${javax.persistence.jdbc.password}</stringProp>
+                <stringProp name="poolMax">10</stringProp>
+                <stringProp name="timeout">10000</stringProp>
+                <stringProp name="transactionIsolation">DEFAULT</stringProp>
+                <stringProp name="trimInterval">60000</stringProp>
+                <stringProp name="username">${javax.persistence.jdbc.user}</stringProp>
+            </JDBCDataSource>
+            <hashTree/>
+            <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="JDBC Connection Configuration - Mysql Connect" enabled="false">
+                <boolProp name="autocommit">true</boolProp>
+                <stringProp name="checkQuery">values(1)</stringProp>
+                <stringProp name="connectionAge">5000</stringProp>
+                <stringProp name="dataSource">jdbcConfig</stringProp>
+                <stringProp name="dbUrl">${url.database.connect}</stringProp>
+                <stringProp name="driver">org.apache.derby.jdbc.EmbeddedDriver</stringProp>
+                <boolProp name="keepAlive">true</boolProp>
+                <stringProp name="password">${javax.persistence.jdbc.password}</stringProp>
+                <stringProp name="poolMax">10</stringProp>
+                <stringProp name="timeout">10000</stringProp>
+                <stringProp name="transactionIsolation">DEFAULT</stringProp>
+                <stringProp name="trimInterval">60000</stringProp>
+                <stringProp name="username">${javax.persistence.jdbc.user}</stringProp>
+            </JDBCDataSource>
+            <hashTree/>
+            <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Validation" enabled="true">
+                <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+                <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+                    <boolProp name="LoopController.continue_forever">false</boolProp>
+                    <stringProp name="LoopController.loops">1</stringProp>
+                </elementProp>
+                <stringProp name="ThreadGroup.num_threads">1</stringProp>
+                <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+                <longProp name="ThreadGroup.start_time">1478201385000</longProp>
+                <longProp name="ThreadGroup.end_time">1478201385000</longProp>
+                <boolProp name="ThreadGroup.scheduler">false</boolProp>
+                <stringProp name="ThreadGroup.duration"></stringProp>
+                <stringProp name="ThreadGroup.delay"></stringProp>
+            </ThreadGroup>
+            <hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Validation Query - Derby" enabled="true">
+                    <stringProp name="dataSource">jdbcConfig</stringProp>
+                    <stringProp name="queryType">Prepared Select Statement</stringProp>
+                    <stringProp name="query">values(1)</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Validation Query - Mysql" enabled="false">
+                    <stringProp name="dataSource">jdbcConfig</stringProp>
+                    <stringProp name="queryType">Prepared Select Statement</stringProp>
+                    <stringProp name="query">select 1</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+            </hashTree>
+            <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Get Tables" enabled="false">
+                <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+                <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+                    <boolProp name="LoopController.continue_forever">false</boolProp>
+                    <stringProp name="LoopController.loops">1</stringProp>
+                </elementProp>
+                <stringProp name="ThreadGroup.num_threads">1</stringProp>
+                <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+                <longProp name="ThreadGroup.start_time">1370729701000</longProp>
+                <longProp name="ThreadGroup.end_time">1370729701000</longProp>
+                <boolProp name="ThreadGroup.scheduler">false</boolProp>
+                <stringProp name="ThreadGroup.duration"></stringProp>
+                <stringProp name="ThreadGroup.delay"></stringProp>
+            </ThreadGroup>
+            <hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Table(OBJECT_DATA) exists?" enabled="true">
+                    <stringProp name="dataSource">jdbcConfig</stringProp>
+                    <stringProp name="query">select * from sys.systables as systables
+                        left join sys.sysschemas as sysschemas
+                        on sysschemas.schemaid=systables.schemaid
+                        where systables.tablename = ?
+                        and sysschemas.schemaname = ?</stringProp>
+                    <stringProp name="queryArguments">&apos;OBJECT_DATA&apos;,&apos;ACCOUNT_MANAGER_DB_APP&apos;</stringProp>
+                    <stringProp name="queryArgumentsTypes">VARCHAR,VARCHAR</stringProp>
+                    <stringProp name="queryType">Prepared Select Statement</stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Table(LOGIN_INFO) exists?" enabled="true">
+                    <stringProp name="dataSource">jdbcConfig</stringProp>
+                    <stringProp name="query">select * from sys.systables as systables
+                        left join sys.sysschemas as sysschemas
+                        on sysschemas.schemaid=systables.schemaid
+                        where systables.tablename = ?
+                        and sysschemas.schemaname = ?</stringProp>
+                    <stringProp name="queryArguments">&apos;LOGIN_INFO&apos;,&apos;ACCOUNT_MANAGER_DB_APP&apos;</stringProp>
+                    <stringProp name="queryArgumentsTypes">VARCHAR,VARCHAR</stringProp>
+                    <stringProp name="queryType">Prepared Select Statement</stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Table(TOKEN_INFO) exists?" enabled="true">
+                    <stringProp name="dataSource">jdbcConfig</stringProp>
+                    <stringProp name="query">select * from sys.systables as systables
+                        left join sys.sysschemas as sysschemas
+                        on sysschemas.schemaid=systables.schemaid
+                        where systables.tablename = ?
+                        and sysschemas.schemaname = ?</stringProp>
+                    <stringProp name="queryArguments">&apos;TOKEN_INFO&apos;,&apos;ACCOUNT_MANAGER_DB_APP&apos;</stringProp>
+                    <stringProp name="queryArgumentsTypes">VARCHAR,VARCHAR</stringProp>
+                    <stringProp name="queryType">Prepared Select Statement</stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+            </hashTree>
+            <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Create Rules - Derby" enabled="false">
+                <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+                <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+                    <boolProp name="LoopController.continue_forever">false</boolProp>
+                    <stringProp name="LoopController.loops">1</stringProp>
+                </elementProp>
+                <stringProp name="ThreadGroup.num_threads">13</stringProp>
+                <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+                <longProp name="ThreadGroup.start_time">1370729701000</longProp>
+                <longProp name="ThreadGroup.end_time">1370729701000</longProp>
+                <boolProp name="ThreadGroup.scheduler">false</boolProp>
+                <stringProp name="ThreadGroup.duration"></stringProp>
+                <stringProp name="ThreadGroup.delay"></stringProp>
+            </ThreadGroup>
+            <hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Create Rules" enabled="true">
+                    <stringProp name="dataSource">jdbcConfig</stringProp>
+                    <stringProp name="query">CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY(?,?)</stringProp>
+                    <stringProp name="queryArguments">${dbKey},${dbValue}</stringProp>
+                    <stringProp name="queryArgumentsTypes">VARCHAR,VARCHAR</stringProp>
+                    <stringProp name="queryType">Prepared Update Statement</stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                    <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+                        <stringProp name="filename">J:\Projetos\MapGo\AccountManager\jmeter-test\derby_rules.csv</stringProp>
+                        <stringProp name="fileEncoding"></stringProp>
+                        <stringProp name="variableNames">dbKey,dbValue</stringProp>
+                        <stringProp name="delimiter">;</stringProp>
+                        <boolProp name="quotedData">true</boolProp>
+                        <boolProp name="recycle">false</boolProp>
+                        <boolProp name="stopThread">true</boolProp>
+                        <stringProp name="shareMode">shareMode.thread</stringProp>
+                    </CSVDataSet>
+                    <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Rules" enabled="true">
+                    <stringProp name="dataSource">jdbcConfig</stringProp>
+                    <stringProp name="query">VALUES SYSCS_UTIL.SYSCS_GET_DATABASE_PROPERTY(?)</stringProp>
+                    <stringProp name="queryArguments">${dbKey}</stringProp>
+                    <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
+                    <stringProp name="queryType">Prepared Select Statement</stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+            </hashTree>
+            <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Create Tables - Derby" enabled="false">
+                <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+                <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+                    <boolProp name="LoopController.continue_forever">false</boolProp>
+                    <stringProp name="LoopController.loops">1</stringProp>
+                </elementProp>
+                <stringProp name="ThreadGroup.num_threads">1</stringProp>
+                <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+                <longProp name="ThreadGroup.start_time">1370729701000</longProp>
+                <longProp name="ThreadGroup.end_time">1370729701000</longProp>
+                <boolProp name="ThreadGroup.scheduler">false</boolProp>
+                <stringProp name="ThreadGroup.duration"></stringProp>
+                <stringProp name="ThreadGroup.delay"></stringProp>
+            </ThreadGroup>
+            <hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Schema ACCOUNT_MANAGER_DB_APP" enabled="true">
+                    <stringProp name="dataSource">jdbcConfig</stringProp>
+                    <stringProp name="query">create schema account_manager_db_app authorization account_manager</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="queryType">Prepared Update Statement</stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Table OBJECT_DATA" enabled="true">
+                    <stringProp name="dataSource">jdbcConfig</stringProp>
+                    <stringProp name="query">create table account_manager_db_app.object_data (
+                        odid int not null generated always as identity (start with 1, increment by 1),
+                        odType varchar(64) not null,
+                        odHashPK varchar(32) not null,
+                        constraint od_object_data_PK primary key (odHashPK),
+                        constraint od_object_data_ID unique (odid),
+                        constraint od_object_data_unique unique (odType, odHashPK)
+                        )</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="queryType">Prepared Update Statement</stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Table LOGIN_INFO" enabled="true">
+                    <stringProp name="dataSource">jdbcConfig</stringProp>
+                    <stringProp name="query">create table account_manager_db_app.login_info (
+                        liHashFK varchar(32) not null,
+                        liUser varchar(128) not null,
+                        liPass varchar(128) not null,
+                        liFirstName varchar(64) not null,
+                        liLastName varchar(256) not null,
+                        liSuccessCount int default 0,
+                        liErrorCount int default 0,
+                        liBlockedCount int default 0,
+                        liDateSoftban timestamp default null,
+                        liDatePermban timestamp default null,
+                        liDateCreated timestamp not null default current_timestamp,
+                        liDateAccessed timestamp not null default current_timestamp,
+                        liDateActivated timestamp default null,
+                        liDateExpired timestamp default null,
+                        liDateBlocked timestamp default null,
+                        constraint li_login_info_PK primary key (liHashFK),
+                        constraint li_login_info_unique unique (liUser),
+                        constraint li_object_data_FK
+                        foreign key (liHashFK)
+                        references account_manager_db_app.object_data (odHashPK)
+                        on update restrict
+                        on delete cascade
+                        )</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="queryType">Prepared Update Statement</stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Table TOKEN_INFO" enabled="true">
+                    <stringProp name="dataSource">jdbcConfig</stringProp>
+                    <stringProp name="query">create table account_manager_db_app.token_info (
+                        tiHashFK varchar(32) not null,
+                        ti_loginInfo_hashFK varchar(32) not null,
+                        tiAccessToken varchar(128) not null,
+                        tiUserIP varchar(64) not null,
+                        tiSuccessCount int default 0,
+                        tiRefusedCount int default 0,
+                        tiErrorCount int default 0,
+                        tiDateCreated timestamp not null default current_timestamp,
+                        tiDateAccessed timestamp not null default current_timestamp,
+                        tiDateExpires timestamp not null default current_timestamp,
+                        constraint ti_token_info_PK primary key (tiAccessToken),
+                        constraint ti_object_data_FK
+                        foreign key (tiHashFK)
+                        references account_manager_db_app.object_data (odHashPK)
+                        on update restrict
+                        on delete cascade,
+                        constraint ti_login_info_FK
+                        foreign key (ti_loginInfo_hashFK)
+                        references account_manager_db_app.login_info (liHashFK)
+                        on update restrict
+                        on delete cascade
+                        )</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="queryType">Prepared Update Statement</stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+            </hashTree>
+            <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Data OBJECT_DATA" enabled="false">
+                <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+                <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+                    <boolProp name="LoopController.continue_forever">false</boolProp>
+                    <stringProp name="LoopController.loops">1</stringProp>
+                </elementProp>
+                <stringProp name="ThreadGroup.num_threads">10</stringProp>
+                <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+                <longProp name="ThreadGroup.start_time">1370729701000</longProp>
+                <longProp name="ThreadGroup.end_time">1370729701000</longProp>
+                <boolProp name="ThreadGroup.scheduler">false</boolProp>
+                <stringProp name="ThreadGroup.duration"></stringProp>
+                <stringProp name="ThreadGroup.delay"></stringProp>
+            </ThreadGroup>
+            <hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert" enabled="false">
+                    <stringProp name="dataSource">jdbcConfig</stringProp>
+                    <stringProp name="query">insert into ACCOUNT_MANAGER_DB_APP.OBJECT_DATA (odType,odHashPK) values (?,?)</stringProp>
+                    <stringProp name="queryArguments">${odType},${odHashPK}</stringProp>
+                    <stringProp name="queryArgumentsTypes">VARCHAR,VARCHAR</stringProp>
+                    <stringProp name="queryType">Prepared Update Statement</stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                    <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+                        <stringProp name="delimiter">;</stringProp>
+                        <stringProp name="fileEncoding"></stringProp>
+                        <stringProp name="filename">J:\Projetos\MapGo\AccountManager\jmeter-test\insert_object_data.csv</stringProp>
+                        <boolProp name="quotedData">true</boolProp>
+                        <boolProp name="recycle">false</boolProp>
+                        <stringProp name="shareMode">shareMode.group</stringProp>
+                        <boolProp name="stopThread">true</boolProp>
+                        <stringProp name="variableNames">odid,odType,odHashPK</stringProp>
+                    </CSVDataSet>
+                    <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Select" enabled="true">
+                    <stringProp name="dataSource">jdbcConfig</stringProp>
+                    <stringProp name="query">select * from ACCOUNT_MANAGER_DB_APP.OBJECT_DATA</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="queryType">Prepared Select Statement</stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Delete" enabled="false">
+                    <stringProp name="dataSource">jdbcConfig</stringProp>
+                    <stringProp name="query">DELETE FROM ACCOUNT_MANAGER_DB_APP.OBJECT_DATA</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="queryType">Prepared Update Statement</stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+            </hashTree>
+            <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Data LOGIN_INFO" enabled="false">
+                <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+                <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+                    <boolProp name="LoopController.continue_forever">false</boolProp>
+                    <stringProp name="LoopController.loops">1</stringProp>
+                </elementProp>
+                <stringProp name="ThreadGroup.num_threads">10</stringProp>
+                <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+                <longProp name="ThreadGroup.start_time">1370729701000</longProp>
+                <longProp name="ThreadGroup.end_time">1370729701000</longProp>
+                <boolProp name="ThreadGroup.scheduler">false</boolProp>
+                <stringProp name="ThreadGroup.duration"></stringProp>
+                <stringProp name="ThreadGroup.delay"></stringProp>
+            </ThreadGroup>
+            <hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert" enabled="false">
+                    <stringProp name="dataSource">jdbcConfig</stringProp>
+                    <stringProp name="query">insert into ACCOUNT_MANAGER_DB_APP.LOGIN_INFO (liHashFK,liUser,liPass,liFirstName,liLastName) values (?,?,?,?,?)</stringProp>
+                    <stringProp name="queryArguments">${liHashFK},${liUser},${liPass},${liFirstName},${liLastName}</stringProp>
+                    <stringProp name="queryArgumentsTypes">VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR</stringProp>
+                    <stringProp name="queryType">Prepared Update Statement</stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                    <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+                        <stringProp name="delimiter">;</stringProp>
+                        <stringProp name="fileEncoding"></stringProp>
+                        <stringProp name="filename">J:\Projetos\MapGo\AccountManager\jmeter-test\insert_login_info.csv</stringProp>
+                        <boolProp name="quotedData">true</boolProp>
+                        <boolProp name="recycle">false</boolProp>
+                        <stringProp name="shareMode">shareMode.group</stringProp>
+                        <boolProp name="stopThread">true</boolProp>
+                        <stringProp name="variableNames">liHashFK,liUser,liPass,liFirstName,liLastName</stringProp>
+                    </CSVDataSet>
+                    <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Select" enabled="true">
+                    <stringProp name="dataSource">jdbcConfig</stringProp>
+                    <stringProp name="query">select * from ACCOUNT_MANAGER_DB_APP.LOGIN_INFO</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="queryType">Prepared Select Statement</stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Delete" enabled="false">
+                    <stringProp name="dataSource">jdbcConfig</stringProp>
+                    <stringProp name="query">DELETE FROM ACCOUNT_MANAGER_DB_APP.LOGIN_INFO</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="queryType">Prepared Update Statement</stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+            </hashTree>
+            <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Data TOKEN_INFO" enabled="false">
+                <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+                <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+                    <boolProp name="LoopController.continue_forever">false</boolProp>
+                    <stringProp name="LoopController.loops">10</stringProp>
+                </elementProp>
+                <stringProp name="ThreadGroup.num_threads">10</stringProp>
+                <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+                <longProp name="ThreadGroup.start_time">1370729701000</longProp>
+                <longProp name="ThreadGroup.end_time">1370729701000</longProp>
+                <boolProp name="ThreadGroup.scheduler">false</boolProp>
+                <stringProp name="ThreadGroup.duration"></stringProp>
+                <stringProp name="ThreadGroup.delay"></stringProp>
+            </ThreadGroup>
+            <hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert" enabled="false">
+                    <stringProp name="dataSource">jdbcConfig</stringProp>
+                    <stringProp name="query">insert into ACCOUNT_MANAGER_DB_APP.TOKEN_INFO (tiHashFK,ti_loginInfo_hashFK,tiAccessToken,tiUserIP) values (?,?,?,?)</stringProp>
+                    <stringProp name="queryArguments">${tiHashFK},${ti_loginInfo_hashFK},${tiAccessToken},${tiUserIP}</stringProp>
+                    <stringProp name="queryArgumentsTypes">VARCHAR,VARCHAR,VARCHAR,VARCHAR</stringProp>
+                    <stringProp name="queryType">Prepared Update Statement</stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                    <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+                        <stringProp name="delimiter">;</stringProp>
+                        <stringProp name="fileEncoding"></stringProp>
+                        <stringProp name="filename">J:\Projetos\MapGo\AccountManager\jmeter-test\insert_token_info.csv</stringProp>
+                        <boolProp name="quotedData">true</boolProp>
+                        <boolProp name="recycle">false</boolProp>
+                        <stringProp name="shareMode">shareMode.group</stringProp>
+                        <boolProp name="stopThread">true</boolProp>
+                        <stringProp name="variableNames">tiHashFK,ti_loginInfo_hashFK,tiAccessToken,tiUserIP</stringProp>
+                    </CSVDataSet>
+                    <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Select" enabled="true">
+                    <stringProp name="dataSource">jdbcConfig</stringProp>
+                    <stringProp name="query">select * from ACCOUNT_MANAGER_DB_APP.TOKEN_INFO</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="queryType">Prepared Select Statement</stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Delete" enabled="false">
+                    <stringProp name="dataSource">jdbcConfig</stringProp>
+                    <stringProp name="query">DELETE FROM ACCOUNT_MANAGER_DB_APP.TOKEN_INFO</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="queryType">Prepared Update Statement</stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+            </hashTree>
+            <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+                <boolProp name="ResultCollector.error_logging">false</boolProp>
+                <objProp>
+                    <name>saveConfig</name>
+                    <value class="SampleSaveConfiguration">
+                        <time>true</time>
+                        <latency>true</latency>
+                        <timestamp>true</timestamp>
+                        <success>true</success>
+                        <label>true</label>
+                        <code>true</code>
+                        <message>true</message>
+                        <threadName>true</threadName>
+                        <dataType>false</dataType>
+                        <encoding>false</encoding>
+                        <assertions>true</assertions>
+                        <subresults>false</subresults>
+                        <responseData>false</responseData>
+                        <samplerData>false</samplerData>
+                        <xml>false</xml>
+                        <fieldNames>true</fieldNames>
+                        <responseHeaders>false</responseHeaders>
+                        <requestHeaders>false</requestHeaders>
+                        <responseDataOnError>true</responseDataOnError>
+                        <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                        <assertionsResultsToSave>0</assertionsResultsToSave>
+                        <bytes>true</bytes>
+                        <hostname>true</hostname>
+                        <threadCounts>true</threadCounts>
+                        <sampleCount>true</sampleCount>
+                    </value>
+                </objProp>
+                <stringProp name="filename"></stringProp>
+            </ResultCollector>
+            <hashTree/>
+            <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
+                <boolProp name="ResultCollector.error_logging">false</boolProp>
+                <objProp>
+                    <name>saveConfig</name>
+                    <value class="SampleSaveConfiguration">
+                        <time>true</time>
+                        <latency>true</latency>
+                        <timestamp>true</timestamp>
+                        <success>true</success>
+                        <label>true</label>
+                        <code>true</code>
+                        <message>true</message>
+                        <threadName>true</threadName>
+                        <dataType>true</dataType>
+                        <encoding>false</encoding>
+                        <assertions>true</assertions>
+                        <subresults>true</subresults>
+                        <responseData>false</responseData>
+                        <samplerData>false</samplerData>
+                        <xml>false</xml>
+                        <fieldNames>true</fieldNames>
+                        <responseHeaders>false</responseHeaders>
+                        <requestHeaders>false</requestHeaders>
+                        <responseDataOnError>false</responseDataOnError>
+                        <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                        <assertionsResultsToSave>0</assertionsResultsToSave>
+                        <bytes>true</bytes>
+                        <threadCounts>true</threadCounts>
+                        <idleTime>true</idleTime>
+                    </value>
+                </objProp>
+                <stringProp name="filename"></stringProp>
+            </ResultCollector>
+            <hashTree/>
+            <ResultCollector guiclass="RespTimeGraphVisualizer" testclass="ResultCollector" testname="Response Time Graph" enabled="true">
+                <boolProp name="ResultCollector.error_logging">false</boolProp>
+                <objProp>
+                    <name>saveConfig</name>
+                    <value class="SampleSaveConfiguration">
+                        <time>true</time>
+                        <latency>true</latency>
+                        <timestamp>true</timestamp>
+                        <success>true</success>
+                        <label>true</label>
+                        <code>true</code>
+                        <message>true</message>
+                        <threadName>true</threadName>
+                        <dataType>true</dataType>
+                        <encoding>false</encoding>
+                        <assertions>true</assertions>
+                        <subresults>true</subresults>
+                        <responseData>false</responseData>
+                        <samplerData>false</samplerData>
+                        <xml>false</xml>
+                        <fieldNames>true</fieldNames>
+                        <responseHeaders>false</responseHeaders>
+                        <requestHeaders>false</requestHeaders>
+                        <responseDataOnError>false</responseDataOnError>
+                        <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                        <assertionsResultsToSave>0</assertionsResultsToSave>
+                        <bytes>true</bytes>
+                        <threadCounts>true</threadCounts>
+                        <idleTime>true</idleTime>
+                    </value>
+                </objProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="RespTimeGraph.graphtitle">Response Time Graph</stringProp>
+            </ResultCollector>
+            <hashTree/>
+            <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results" enabled="true">
+                <boolProp name="ResultCollector.error_logging">false</boolProp>
+                <objProp>
+                    <name>saveConfig</name>
+                    <value class="SampleSaveConfiguration">
+                        <time>true</time>
+                        <latency>true</latency>
+                        <timestamp>true</timestamp>
+                        <success>true</success>
+                        <label>true</label>
+                        <code>true</code>
+                        <message>true</message>
+                        <threadName>true</threadName>
+                        <dataType>true</dataType>
+                        <encoding>false</encoding>
+                        <assertions>true</assertions>
+                        <subresults>true</subresults>
+                        <responseData>false</responseData>
+                        <samplerData>false</samplerData>
+                        <xml>false</xml>
+                        <fieldNames>true</fieldNames>
+                        <responseHeaders>false</responseHeaders>
+                        <requestHeaders>false</requestHeaders>
+                        <responseDataOnError>false</responseDataOnError>
+                        <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                        <assertionsResultsToSave>0</assertionsResultsToSave>
+                        <bytes>true</bytes>
+                        <threadCounts>true</threadCounts>
+                        <idleTime>true</idleTime>
+                    </value>
+                </objProp>
+                <stringProp name="filename"></stringProp>
+            </ResultCollector>
+            <hashTree/>
         </hashTree>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Rules" enabled="true">
-          <stringProp name="dataSource">jdbcConfig</stringProp>
-          <stringProp name="query">VALUES SYSCS_UTIL.SYSCS_GET_DATABASE_PROPERTY(?)</stringProp>
-          <stringProp name="queryArguments">${dbKey}</stringProp>
-          <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
-          <stringProp name="queryType">Prepared Select Statement</stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
-        <hashTree/>
-      </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Create Tables - Derby" enabled="false">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
-        </elementProp>
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-        <longProp name="ThreadGroup.start_time">1370729701000</longProp>
-        <longProp name="ThreadGroup.end_time">1370729701000</longProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
-        <stringProp name="ThreadGroup.delay"></stringProp>
-      </ThreadGroup>
-      <hashTree>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Schema ACCOUNT_MANAGER_DB_APP" enabled="true">
-          <stringProp name="dataSource">jdbcConfig</stringProp>
-          <stringProp name="query">create schema account_manager_db_app authorization account_manager</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryType">Prepared Update Statement</stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Table OBJECT_DATA" enabled="true">
-          <stringProp name="dataSource">jdbcConfig</stringProp>
-          <stringProp name="query">create table account_manager_db_app.object_data (
-    odid int not null generated always as identity (start with 1, increment by 1),
-    odType varchar(64) not null,
-    odHashPK varchar(32) not null,
-    constraint od_object_data_PK primary key (odHashPK),
-    constraint od_object_data_ID unique (odid),
-    constraint od_object_data_unique unique (odType, odHashPK)
-)</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryType">Prepared Update Statement</stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Table LOGIN_INFO" enabled="true">
-          <stringProp name="dataSource">jdbcConfig</stringProp>
-          <stringProp name="query">create table account_manager_db_app.login_info (
-    liHashFK varchar(32) not null,
-    liUser varchar(128) not null,
-    liPass varchar(128) not null,
-    liFirstName varchar(64) not null,
-    liLastName varchar(256) not null,
-    liSuccessCount int default 0,
-    liErrorCount int default 0,
-    liBlockedCount int default 0,
-    liDateSoftban timestamp default null,
-    liDatePermban timestamp default null,
-    liDateCreated timestamp not null default current_timestamp,
-    liDateAccessed timestamp not null default current_timestamp,
-    liDateActivated timestamp default null,
-    liDateExpired timestamp default null,
-    liDateBlocked timestamp default null,
-    constraint li_login_info_PK primary key (liHashFK),
-    constraint li_login_info_unique unique (liUser),
-    constraint li_object_data_FK
-    foreign key (liHashFK)
-    references account_manager_db_app.object_data (odHashPK)
-    on update restrict
-    on delete cascade
-)</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryType">Prepared Update Statement</stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Table TOKEN_INFO" enabled="true">
-          <stringProp name="dataSource">jdbcConfig</stringProp>
-          <stringProp name="query">create table account_manager_db_app.token_info (
-    tiHashFK varchar(32) not null,
-    ti_loginInfo_hashFK varchar(32) not null,
-    tiAccessToken varchar(128) not null,
-    tiUserIP varchar(64) not null,
-    tiSuccessCount int default 0,
-    tiRefusedCount int default 0,
-    tiErrorCount int default 0,
-    tiDateCreated timestamp not null default current_timestamp,
-    tiDateAccessed timestamp not null default current_timestamp,
-    tiDateExpires timestamp not null default current_timestamp,
-    constraint ti_token_info_PK primary key (tiAccessToken),
-    constraint ti_object_data_FK
-    foreign key (tiHashFK)
-    references account_manager_db_app.object_data (odHashPK)
-    on update restrict
-    on delete cascade,
-    constraint ti_login_info_FK
-    foreign key (ti_loginInfo_hashFK)
-    references account_manager_db_app.login_info (liHashFK)
-    on update restrict
-    on delete cascade
-)</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryType">Prepared Update Statement</stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
-        <hashTree/>
-      </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Data OBJECT_DATA" enabled="false">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
-        </elementProp>
-        <stringProp name="ThreadGroup.num_threads">10</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-        <longProp name="ThreadGroup.start_time">1370729701000</longProp>
-        <longProp name="ThreadGroup.end_time">1370729701000</longProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
-        <stringProp name="ThreadGroup.delay"></stringProp>
-      </ThreadGroup>
-      <hashTree>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert" enabled="false">
-          <stringProp name="dataSource">jdbcConfig</stringProp>
-          <stringProp name="query">insert into ACCOUNT_MANAGER_DB_APP.OBJECT_DATA (odType,odHashPK) values (?,?)</stringProp>
-          <stringProp name="queryArguments">${odType},${odHashPK}</stringProp>
-          <stringProp name="queryArgumentsTypes">VARCHAR,VARCHAR</stringProp>
-          <stringProp name="queryType">Prepared Update Statement</stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
-        <hashTree>
-          <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-            <stringProp name="delimiter">;</stringProp>
-            <stringProp name="fileEncoding"></stringProp>
-            <stringProp name="filename">J:\Projetos\MapGo\AccountManager\jmeter-test\insert_object_data.csv</stringProp>
-            <boolProp name="quotedData">true</boolProp>
-            <boolProp name="recycle">false</boolProp>
-            <stringProp name="shareMode">shareMode.group</stringProp>
-            <boolProp name="stopThread">true</boolProp>
-            <stringProp name="variableNames">odid,odType,odHashPK</stringProp>
-          </CSVDataSet>
-          <hashTree/>
-        </hashTree>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Select" enabled="true">
-          <stringProp name="dataSource">jdbcConfig</stringProp>
-          <stringProp name="query">select * from ACCOUNT_MANAGER_DB_APP.OBJECT_DATA</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryType">Prepared Select Statement</stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Delete" enabled="false">
-          <stringProp name="dataSource">jdbcConfig</stringProp>
-          <stringProp name="query">DELETE FROM ACCOUNT_MANAGER_DB_APP.OBJECT_DATA</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryType">Prepared Update Statement</stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
-        <hashTree/>
-      </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Data LOGIN_INFO" enabled="false">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
-        </elementProp>
-        <stringProp name="ThreadGroup.num_threads">10</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-        <longProp name="ThreadGroup.start_time">1370729701000</longProp>
-        <longProp name="ThreadGroup.end_time">1370729701000</longProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
-        <stringProp name="ThreadGroup.delay"></stringProp>
-      </ThreadGroup>
-      <hashTree>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert" enabled="false">
-          <stringProp name="dataSource">jdbcConfig</stringProp>
-          <stringProp name="query">insert into ACCOUNT_MANAGER_DB_APP.LOGIN_INFO (liHashFK,liUser,liPass,liFirstName,liLastName) values (?,?,?,?,?)</stringProp>
-          <stringProp name="queryArguments">${liHashFK},${liUser},${liPass},${liFirstName},${liLastName}</stringProp>
-          <stringProp name="queryArgumentsTypes">VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR</stringProp>
-          <stringProp name="queryType">Prepared Update Statement</stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
-        <hashTree>
-          <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-            <stringProp name="delimiter">;</stringProp>
-            <stringProp name="fileEncoding"></stringProp>
-            <stringProp name="filename">J:\Projetos\MapGo\AccountManager\jmeter-test\insert_login_info.csv</stringProp>
-            <boolProp name="quotedData">true</boolProp>
-            <boolProp name="recycle">false</boolProp>
-            <stringProp name="shareMode">shareMode.group</stringProp>
-            <boolProp name="stopThread">true</boolProp>
-            <stringProp name="variableNames">liHashFK,liUser,liPass,liFirstName,liLastName</stringProp>
-          </CSVDataSet>
-          <hashTree/>
-        </hashTree>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Select" enabled="true">
-          <stringProp name="dataSource">jdbcConfig</stringProp>
-          <stringProp name="query">select * from ACCOUNT_MANAGER_DB_APP.LOGIN_INFO</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryType">Prepared Select Statement</stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Delete" enabled="false">
-          <stringProp name="dataSource">jdbcConfig</stringProp>
-          <stringProp name="query">DELETE FROM ACCOUNT_MANAGER_DB_APP.LOGIN_INFO</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryType">Prepared Update Statement</stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
-        <hashTree/>
-      </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Data TOKEN_INFO" enabled="false">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">10</stringProp>
-        </elementProp>
-        <stringProp name="ThreadGroup.num_threads">10</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-        <longProp name="ThreadGroup.start_time">1370729701000</longProp>
-        <longProp name="ThreadGroup.end_time">1370729701000</longProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
-        <stringProp name="ThreadGroup.delay"></stringProp>
-      </ThreadGroup>
-      <hashTree>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert" enabled="false">
-          <stringProp name="dataSource">jdbcConfig</stringProp>
-          <stringProp name="query">insert into ACCOUNT_MANAGER_DB_APP.TOKEN_INFO (tiHashFK,ti_loginInfo_hashFK,tiAccessToken,tiUserIP) values (?,?,?,?)</stringProp>
-          <stringProp name="queryArguments">${tiHashFK},${ti_loginInfo_hashFK},${tiAccessToken},${tiUserIP}</stringProp>
-          <stringProp name="queryArgumentsTypes">VARCHAR,VARCHAR,VARCHAR,VARCHAR</stringProp>
-          <stringProp name="queryType">Prepared Update Statement</stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
-        <hashTree>
-          <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-            <stringProp name="delimiter">;</stringProp>
-            <stringProp name="fileEncoding"></stringProp>
-            <stringProp name="filename">J:\Projetos\MapGo\AccountManager\jmeter-test\insert_token_info.csv</stringProp>
-            <boolProp name="quotedData">true</boolProp>
-            <boolProp name="recycle">false</boolProp>
-            <stringProp name="shareMode">shareMode.group</stringProp>
-            <boolProp name="stopThread">true</boolProp>
-            <stringProp name="variableNames">tiHashFK,ti_loginInfo_hashFK,tiAccessToken,tiUserIP</stringProp>
-          </CSVDataSet>
-          <hashTree/>
-        </hashTree>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Select" enabled="true">
-          <stringProp name="dataSource">jdbcConfig</stringProp>
-          <stringProp name="query">select * from ACCOUNT_MANAGER_DB_APP.TOKEN_INFO</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryType">Prepared Select Statement</stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Delete" enabled="false">
-          <stringProp name="dataSource">jdbcConfig</stringProp>
-          <stringProp name="query">DELETE FROM ACCOUNT_MANAGER_DB_APP.TOKEN_INFO</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryType">Prepared Update Statement</stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
-        <hashTree/>
-      </hashTree>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
-        <boolProp name="ResultCollector.error_logging">false</boolProp>
-        <objProp>
-          <name>saveConfig</name>
-          <value class="SampleSaveConfiguration">
-            <time>true</time>
-            <latency>true</latency>
-            <timestamp>true</timestamp>
-            <success>true</success>
-            <label>true</label>
-            <code>true</code>
-            <message>true</message>
-            <threadName>true</threadName>
-            <dataType>false</dataType>
-            <encoding>false</encoding>
-            <assertions>true</assertions>
-            <subresults>false</subresults>
-            <responseData>false</responseData>
-            <samplerData>false</samplerData>
-            <xml>false</xml>
-            <fieldNames>true</fieldNames>
-            <responseHeaders>false</responseHeaders>
-            <requestHeaders>false</requestHeaders>
-            <responseDataOnError>true</responseDataOnError>
-            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-            <assertionsResultsToSave>0</assertionsResultsToSave>
-            <bytes>true</bytes>
-            <hostname>true</hostname>
-            <threadCounts>true</threadCounts>
-            <sampleCount>true</sampleCount>
-          </value>
-        </objProp>
-        <stringProp name="filename"></stringProp>
-      </ResultCollector>
-      <hashTree/>
-      <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
-        <boolProp name="ResultCollector.error_logging">false</boolProp>
-        <objProp>
-          <name>saveConfig</name>
-          <value class="SampleSaveConfiguration">
-            <time>true</time>
-            <latency>true</latency>
-            <timestamp>true</timestamp>
-            <success>true</success>
-            <label>true</label>
-            <code>true</code>
-            <message>true</message>
-            <threadName>true</threadName>
-            <dataType>true</dataType>
-            <encoding>false</encoding>
-            <assertions>true</assertions>
-            <subresults>true</subresults>
-            <responseData>false</responseData>
-            <samplerData>false</samplerData>
-            <xml>false</xml>
-            <fieldNames>true</fieldNames>
-            <responseHeaders>false</responseHeaders>
-            <requestHeaders>false</requestHeaders>
-            <responseDataOnError>false</responseDataOnError>
-            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-            <assertionsResultsToSave>0</assertionsResultsToSave>
-            <bytes>true</bytes>
-            <threadCounts>true</threadCounts>
-            <idleTime>true</idleTime>
-          </value>
-        </objProp>
-        <stringProp name="filename"></stringProp>
-      </ResultCollector>
-      <hashTree/>
-      <ResultCollector guiclass="RespTimeGraphVisualizer" testclass="ResultCollector" testname="Response Time Graph" enabled="true">
-        <boolProp name="ResultCollector.error_logging">false</boolProp>
-        <objProp>
-          <name>saveConfig</name>
-          <value class="SampleSaveConfiguration">
-            <time>true</time>
-            <latency>true</latency>
-            <timestamp>true</timestamp>
-            <success>true</success>
-            <label>true</label>
-            <code>true</code>
-            <message>true</message>
-            <threadName>true</threadName>
-            <dataType>true</dataType>
-            <encoding>false</encoding>
-            <assertions>true</assertions>
-            <subresults>true</subresults>
-            <responseData>false</responseData>
-            <samplerData>false</samplerData>
-            <xml>false</xml>
-            <fieldNames>true</fieldNames>
-            <responseHeaders>false</responseHeaders>
-            <requestHeaders>false</requestHeaders>
-            <responseDataOnError>false</responseDataOnError>
-            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-            <assertionsResultsToSave>0</assertionsResultsToSave>
-            <bytes>true</bytes>
-            <threadCounts>true</threadCounts>
-            <idleTime>true</idleTime>
-          </value>
-        </objProp>
-        <stringProp name="filename"></stringProp>
-        <stringProp name="RespTimeGraph.graphtitle">Response Time Graph</stringProp>
-      </ResultCollector>
-      <hashTree/>
-      <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results" enabled="true">
-        <boolProp name="ResultCollector.error_logging">false</boolProp>
-        <objProp>
-          <name>saveConfig</name>
-          <value class="SampleSaveConfiguration">
-            <time>true</time>
-            <latency>true</latency>
-            <timestamp>true</timestamp>
-            <success>true</success>
-            <label>true</label>
-            <code>true</code>
-            <message>true</message>
-            <threadName>true</threadName>
-            <dataType>true</dataType>
-            <encoding>false</encoding>
-            <assertions>true</assertions>
-            <subresults>true</subresults>
-            <responseData>false</responseData>
-            <samplerData>false</samplerData>
-            <xml>false</xml>
-            <fieldNames>true</fieldNames>
-            <responseHeaders>false</responseHeaders>
-            <requestHeaders>false</requestHeaders>
-            <responseDataOnError>false</responseDataOnError>
-            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-            <assertionsResultsToSave>0</assertionsResultsToSave>
-            <bytes>true</bytes>
-            <threadCounts>true</threadCounts>
-            <idleTime>true</idleTime>
-          </value>
-        </objProp>
-        <stringProp name="filename"></stringProp>
-      </ResultCollector>
-      <hashTree/>
     </hashTree>
-  </hashTree>
 </jmeterTestPlan>
