@@ -17,9 +17,11 @@
  */
 package com.rollsoftware.br.accountmanager.db.service;
 
-import com.rollsoftware.br.accountmanager.db.EntityManagerContextListener;
 import com.rollsoftware.br.accountmanager.db.entity.ObjectData;
+import java.sql.SQLException;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -39,11 +41,13 @@ import javax.ws.rs.core.MediaType;
  * @param <T>
  */
 //@javax.ejb.Stateless
+@RequestScoped
 @Path("/db/object")
-public class ObjectDataService extends AbstractServiceFacade<ObjectData> {
+public class ObjectDataService
+        extends AbstractServiceFacade<ObjectData> {
 
     //@PersistenceContext(unitName = "AccountManagerPU")
-    //@Inject
+    @Inject
     private EntityManager em;
 
     public ObjectDataService() {
@@ -58,34 +62,40 @@ public class ObjectDataService extends AbstractServiceFacade<ObjectData> {
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(ObjectData entity) {
+    public void create(ObjectData entity)
+            throws SQLException {
+        entity.generateHash();
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, ObjectData entity) {
+    public void edit(@PathParam("id") String id, ObjectData entity)
+            throws SQLException {
         super.edit(entity);
     }
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
+    public void remove(@PathParam("id") String id)
+            throws SQLException {
         super.remove(super.find(id));
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public ObjectData find(@PathParam("id") Integer id) {
+    public ObjectData find(@PathParam("id") String id)
+            throws SQLException {
         return super.find(id);
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<ObjectData> findAll() {
+    public List<ObjectData> findAll()
+            throws SQLException {
         return super.findAll();
     }
 
@@ -93,14 +103,16 @@ public class ObjectDataService extends AbstractServiceFacade<ObjectData> {
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<ObjectData> findRange(
-            @PathParam("from") Integer from, @PathParam("to") Integer to) {
+            @PathParam("from") Integer from, @PathParam("to") Integer to)
+            throws SQLException {
         return super.findRange(from, to);
     }
 
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
-    public String countToString() {
+    public String countToString()
+            throws SQLException {
         return String.valueOf(super.count());
     }
 
@@ -110,7 +122,7 @@ public class ObjectDataService extends AbstractServiceFacade<ObjectData> {
             //warning, this using with non EJB implemented server!
             em = EntityManagerContextListener.getEntityManager();
             System.out.println(
-                    "Warning: this using with non EJB implemented server!");
+                    "Warning: this using with non EJB or CDI implemented server!");
         }
 
         return em;

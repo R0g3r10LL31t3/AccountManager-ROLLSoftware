@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -29,6 +30,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -46,7 +48,7 @@ import javax.xml.bind.annotation.XmlType;
 @PrimaryKeyJoinColumn(name = "TIHASHFK", referencedColumnName = "ODHASHPK")
 @XmlRootElement(name = "token")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = {
+@XmlType(name = "token", propOrder = {
     "accessToken", "userIP",
     "dateCreated", "dateAccessed", "dateExpires",
     "successCount", "refusedCount", "errorCount",
@@ -55,6 +57,13 @@ import javax.xml.bind.annotation.XmlType;
 public class TokenInfo extends ObjectData implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @Version
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "TIVERSION", nullable = false)
+    @XmlTransient
+    private Integer tiVersion;
 
     @Basic(optional = false)
     @NotNull
@@ -129,6 +138,18 @@ public class TokenInfo extends ObjectData implements Serializable {
             Integer successCount, Integer refusedCount, Integer errorCount,
             Date dateCreated, Date dateAccessed, Date dateExpires,
             LoginInfo loginInfo) {
+        this(id, type, hash,
+                accessToken, userIP,
+                successCount, refusedCount, errorCount,
+                dateCreated, dateAccessed, dateExpires,
+                loginInfo, 0);
+    }
+
+    public TokenInfo(Integer id, String type, String hash,
+            String accessToken, String userIP,
+            Integer successCount, Integer refusedCount, Integer errorCount,
+            Date dateCreated, Date dateAccessed, Date dateExpires,
+            LoginInfo loginInfo, Integer tiVersion) {
         super(id, type, hash);
         this.accessToken = accessToken;
         this.userIP = userIP;
@@ -139,6 +160,7 @@ public class TokenInfo extends ObjectData implements Serializable {
         this.dateAccessed = dateAccessed;
         this.dateExpires = dateExpires;
         this.loginInfo = loginInfo;
+        this.tiVersion = tiVersion;
     }
 
     @Override

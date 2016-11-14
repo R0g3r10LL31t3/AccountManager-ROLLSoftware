@@ -17,6 +17,7 @@
  */
 package com.rollsoftware.br.accountmanager.db.service;
 
+import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -37,30 +38,30 @@ public abstract class AbstractServiceFacade<T> {
 
     protected abstract EntityManager getEntityManager();
 
-    public void create(T entity) {
+    public void create(T entity) throws SQLException {
         getEntityManager().persist(entity);
     }
 
-    public void edit(T entity) {
+    public void edit(T entity) throws SQLException {
         getEntityManager().merge(entity);
     }
 
-    public void remove(T entity) {
+    public void remove(T entity) throws SQLException {
         getEntityManager().remove(getEntityManager().merge(entity));
     }
 
-    public T find(Object id) {
+    public T find(Object id) throws SQLException {
         return getEntityManager().find(entityClass, id);
     }
 
-    public List<T> findAll() {
+    public List<T> findAll() throws SQLException {
         javax.persistence.criteria.CriteriaQuery cq
                 = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
         return getEntityManager().createQuery(cq).getResultList();
     }
 
-    public List<T> findRange(int from, int to) {
+    public List<T> findRange(int from, int to) throws SQLException {
         javax.persistence.criteria.CriteriaQuery cq
                 = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
@@ -70,7 +71,7 @@ public abstract class AbstractServiceFacade<T> {
         return q.getResultList();
     }
 
-    public int count() {
+    public int count() throws SQLException {
         javax.persistence.criteria.CriteriaQuery cq
                 = getEntityManager().getCriteriaBuilder().createQuery();
         javax.persistence.criteria.Root<T> rt = cq.from(entityClass);

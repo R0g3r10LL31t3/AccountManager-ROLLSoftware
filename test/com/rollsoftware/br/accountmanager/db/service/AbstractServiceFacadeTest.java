@@ -17,8 +17,10 @@
  */
 package com.rollsoftware.br.accountmanager.db.service;
 
+import com.rollsoftware.br.accountmanager.db.entity.ObjectData;
 import com.rollsoftware.br.accountmanager.properties.Resource;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 import javax.persistence.EntityManager;
@@ -51,9 +53,13 @@ public abstract class AbstractServiceFacadeTest {
 
     public abstract AbstractServiceFacade getInstance();
 
-    public abstract Object getObjectDataPK();
+    public abstract Object getEntityPK();
 
-    public abstract Object getEntity();
+    public abstract Object getEntityPK_NotFound();
+
+    public abstract <T extends ObjectData> T getEntity();
+
+    public abstract <T extends ObjectData> T createEntity();
 
     @BeforeClass
     public static void setUpClass() {
@@ -92,12 +98,12 @@ public abstract class AbstractServiceFacadeTest {
     /**
      * Test of create method, of class AbstractFacade.
      *
-     * @throws java.lang.Exception
+     * @throws java.sql.SQLException
      */
     @Test
-    public void testCreate() throws Exception {
+    public void testCreate() throws SQLException {
         System.out.println("create");
-        Object entity = getEntity();
+        ObjectData entity = createEntity();
 
         AbstractServiceFacade instance = getInstance();
 
@@ -108,11 +114,13 @@ public abstract class AbstractServiceFacadeTest {
 
     /**
      * Test of edit method, of class AbstractFacade.
+     *
+     * @throws java.sql.SQLException
      */
     @Test
-    public void testEdit() {
+    public void testEdit() throws SQLException {
         System.out.println("edit");
-        Object entity = getEntity();
+        ObjectData entity = getEntity();
         AbstractServiceFacade instance = getInstance();
 
         instance.edit(entity);
@@ -122,11 +130,13 @@ public abstract class AbstractServiceFacadeTest {
 
     /**
      * Test of remove method, of class AbstractFacade.
+     *
+     * @throws java.sql.SQLException
      */
     @Test
-    public void testRemove() {
+    public void testRemove() throws SQLException {
         System.out.println("remove");
-        Object entity = getEntity();
+        ObjectData entity = getEntity();
         AbstractServiceFacade instance = getInstance();
 
         instance.remove(entity);
@@ -135,12 +145,48 @@ public abstract class AbstractServiceFacadeTest {
     }
 
     /**
-     * Test of find method, of class AbstractFacade.
+     * Test of remove method, of class AbstractFacade.
+     *
+     * @throws java.sql.SQLException
      */
     @Test
-    public void testFind() {
+    public void testRemoveID() throws SQLException {
+        System.out.println("removeID");
+        Object id = getEntityPK();
+        AbstractServiceFacade instance = getInstance();
+
+        instance.remove(id);
+
+        System.out.println("Entity PK: " + id);
+    }
+
+    /**
+     * Test of remove method, of class AbstractFacade.
+     *
+     * @throws java.sql.SQLException
+     */
+    @Test(expected = NotFoundEntityException.class)
+    public void testRemoveID_NotFound() throws SQLException {
+        System.out.println("removeID_NotFound");
+        Object id = getEntityPK_NotFound();
+        AbstractServiceFacade instance = getInstance();
+
+        instance.remove(id);
+
+        fail("Expected exception.");
+
+        System.out.println("Entity PK: " + id);
+    }
+
+    /**
+     * Test of find method, of class AbstractFacade.
+     *
+     * @throws java.sql.SQLException
+     */
+    @Test
+    public void testFind() throws SQLException {
         System.out.println("find");
-        Object id = getObjectDataPK();
+        Object id = getEntityPK();
         AbstractServiceFacade instance = getInstance();
 
         Object result = instance.find(id);
@@ -151,12 +197,30 @@ public abstract class AbstractServiceFacadeTest {
     }
 
     /**
+     * Test of find method, of class AbstractFacade.
+     *
+     * @throws java.sql.SQLException
+     */
+    @Test(expected = NotFoundEntityException.class)
+    public void testFind_NofFound() throws SQLException {
+        System.out.println("find_NofFound");
+        Object id = getEntityPK_NotFound();
+        AbstractServiceFacade instance = getInstance();
+
+        Object result = instance.find(id);
+
+        fail("Expected expection");
+
+        System.out.println("Entity: " + result);
+    }
+
+    /**
      * Test of findAll method, of class AbstractFacade.
      *
-     * @throws java.lang.Exception
+     * @throws java.sql.SQLException
      */
     @Test
-    public void testFindAll() throws Exception {
+    public void testFindAll() throws SQLException {
         System.out.println("findAll");
         AbstractServiceFacade instance = getInstance();
 
@@ -169,9 +233,11 @@ public abstract class AbstractServiceFacadeTest {
 
     /**
      * Test of findRange method, of class AbstractFacade.
+     *
+     * @throws java.sql.SQLException
      */
     @Test
-    public void testFindRange() {
+    public void testFindRange() throws SQLException {
         System.out.println("findRange");
         int from = 0;
         int to = 1;
@@ -187,12 +253,31 @@ public abstract class AbstractServiceFacadeTest {
     }
 
     /**
+     * Test of findRange method, of class AbstractFacade.
+     *
+     * @throws java.sql.SQLException
+     */
+    @Test(expected = javax.persistence.PersistenceException.class)
+    public void testFindRange_from2to1() throws SQLException {
+        System.out.println("findRange");
+        int from = 2;
+        int to = 1;
+        AbstractServiceFacade instance = getInstance();
+
+        List result = instance.findRange(from, to);
+
+        fail("Expected exception.");
+
+        System.out.println("Entities: " + result.size());
+    }
+
+    /**
      * Test of count method, of class AbstractFacade.
      *
-     * @throws java.lang.Exception
+     * @throws java.sql.SQLException
      */
     @Test
-    public void testCount() throws Exception {
+    public void testCount() throws SQLException {
         System.out.println("count");
         AbstractServiceFacade instance = getInstance();
         int expResult = 0;

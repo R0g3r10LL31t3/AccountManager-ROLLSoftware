@@ -59,9 +59,10 @@ public class ObjectDataServiceTest extends AbstractServiceFacadeTest {
 
     protected ObjectData createObjectData() {
         ObjectData _objectData = new ObjectData();
+
         _objectData.setHash("unknown" + Math.random());
         _objectData.setType("unknown");
-        _objectData.generateHash();
+
         return _objectData;
     }
 
@@ -76,13 +77,23 @@ public class ObjectDataServiceTest extends AbstractServiceFacadeTest {
     }
 
     @Override
-    public Object getEntity() {
-        return objectData;
+    public <T extends ObjectData> T getEntity() {
+        return (T) objectData;
     }
 
     @Override
-    public Object getObjectDataPK() {
+    public <T extends ObjectData> T createEntity() {
+        return (T) createObjectData();
+    }
+
+    @Override
+    public Object getEntityPK() {
         return objectDataPK;
+    }
+
+    @Override
+    public Object getEntityPK_NotFound() {
+        return "";
     }
 
     @BeforeClass
@@ -98,17 +109,11 @@ public class ObjectDataServiceTest extends AbstractServiceFacadeTest {
     @Before
     @Override
     public void setUp() {
-        super.setUp();
         try {
-            EM.getTransaction().begin();
-
-            EM.createNativeQuery("set schema ACCOUNT_MANAGER_DB_APP");
-
+            super.setUp();
             objectData = createObjectData();
 
-            EM.persist(objectData);
-
-            EM.getTransaction().commit();
+            save(objectData);
 
             objectDataPK = objectData.getHash();
 
@@ -122,6 +127,12 @@ public class ObjectDataServiceTest extends AbstractServiceFacadeTest {
     @After
     @Override
     public void tearDown() {
-        super.tearDown();
+        try {
+            super.tearDown();
+        } finally {
+            if (EM.getTransaction().isActive()) {
+                EM.getTransaction().rollback();
+            }
+        }
     }
 }

@@ -49,18 +49,8 @@ public class TokenInfoServiceTest extends ObjectDataServiceTest {
         loginInfo.setPass("pass" + Math.random());
         loginInfo.setFirstName("firstName" + Math.random());
         loginInfo.setLastName("lastName" + Math.random());
-
-        loginInfo.generateHash();
-        loginInfo.encryptPass();
-
-        EM.getTransaction().begin();
-
-        EM.createNativeQuery("set schema ACCOUNT_MANAGER_DB_APP");
-
-        EM.persist(loginInfo);
-        EM.flush();
-
-        EM.getTransaction().commit();
+		
+		save(loginInfo);
 
         System.out.println("Save LoginInfo: " + loginInfo.getHash());
 
@@ -89,9 +79,6 @@ public class TokenInfoServiceTest extends ObjectDataServiceTest {
         tokenInfo.setDateExpires(instance.getTime());
 
         tokenInfo.setLoginInfo(loginInfo);
-
-        tokenInfo.generateHash();
-        tokenInfo.generateToken();
 
         return tokenInfo;
     }

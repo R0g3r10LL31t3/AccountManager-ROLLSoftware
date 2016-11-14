@@ -17,9 +17,11 @@
  */
 package com.rollsoftware.br.accountmanager.db.service;
 
-import com.rollsoftware.br.accountmanager.db.EntityManagerContextListener;
 import com.rollsoftware.br.accountmanager.db.entity.LoginInfo;
+import java.sql.SQLException;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -35,13 +37,17 @@ import javax.ws.rs.core.MediaType;
  *
  * @author Rogério
  * @date October, 2016
+ *
+ * @param <T>
  */
 //@javax.ejb.Stateless
+@RequestScoped
 @Path("/db/login")
-public class LoginInfoService extends AbstractServiceFacade<LoginInfo> {
+public class LoginInfoService
+        extends AbstractServiceFacade<LoginInfo> {
 
     //@PersistenceContext(unitName = "AccountManagerPU")
-    //@Inject
+    @Inject    
     private EntityManager em;
 
     public LoginInfoService() {
@@ -56,34 +62,40 @@ public class LoginInfoService extends AbstractServiceFacade<LoginInfo> {
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(LoginInfo entity) {
+    public void create(LoginInfo entity)
+            throws SQLException {
+        entity.generateHash();
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, LoginInfo entity) {
+    public void edit(@PathParam("id") String id, LoginInfo entity)
+            throws SQLException {
         super.edit(entity);
     }
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
+    public void remove(@PathParam("id") String id)
+            throws SQLException {
         super.remove(super.find(id));
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public LoginInfo find(@PathParam("id") Integer id) {
+    public LoginInfo find(@PathParam("id") String id)
+            throws SQLException {
         return super.find(id);
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<LoginInfo> findAll() {
+    public List<LoginInfo> findAll()
+            throws SQLException {
         return super.findAll();
     }
 
@@ -91,14 +103,16 @@ public class LoginInfoService extends AbstractServiceFacade<LoginInfo> {
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<LoginInfo> findRange(
-            @PathParam("from") Integer from, @PathParam("to") Integer to) {
+            @PathParam("from") Integer from, @PathParam("to") Integer to)
+            throws SQLException {
         return super.findRange(from, to);
     }
 
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
-    public String countToString() {
+    public String countToString()
+            throws SQLException {
         return String.valueOf(super.count());
     }
 
@@ -108,7 +122,7 @@ public class LoginInfoService extends AbstractServiceFacade<LoginInfo> {
             //warning, this using with non EJB implemented server!
             em = EntityManagerContextListener.getEntityManager();
             System.out.println(
-                    "Warning: this using with non EJB implemented server!");
+                    "Warning: this using with non EJB or CDI implemented server!");
         }
 
         return em;

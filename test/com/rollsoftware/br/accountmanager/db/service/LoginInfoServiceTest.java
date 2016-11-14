@@ -46,9 +46,6 @@ public class LoginInfoServiceTest extends ObjectDataServiceTest {
         loginInfo.setFirstName("firstName" + Math.random());
         loginInfo.setLastName("lastName" + Math.random());
 
-        loginInfo.generateHash();
-        loginInfo.encryptPass();
-
         return loginInfo;
     }
 
@@ -72,7 +69,6 @@ public class LoginInfoServiceTest extends ObjectDataServiceTest {
     @Override
     public void setUp() {
         super.setUp();
-
     }
 
     @After

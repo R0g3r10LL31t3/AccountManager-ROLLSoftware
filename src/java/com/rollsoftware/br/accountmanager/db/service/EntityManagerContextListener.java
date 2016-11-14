@@ -15,10 +15,14 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db;
+package com.rollsoftware.br.accountmanager.db.service;
 
 import com.rollsoftware.br.accountmanager.properties.Resource;
 import java.util.Properties;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Disposes;
+import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -32,6 +36,7 @@ import javax.servlet.annotation.WebListener;
  * @date October, 2016
  */
 @WebListener
+@ApplicationScoped
 public class EntityManagerContextListener implements ServletContextListener {
 
     private static final String PU
@@ -60,11 +65,11 @@ public class EntityManagerContextListener implements ServletContextListener {
             }
         } catch (Throwable ex) {
             throw ex;
+        } finally {
+            THREADLOCAL_EM.remove();
         }
     }
 
-    //@Produces
-    //@RequestScoped
     public static EntityManager getEntityManager() {
         if (EMF == null) {
             EMF = Persistence.createEntityManagerFactory(PU);
@@ -79,5 +84,31 @@ public class EntityManagerContextListener implements ServletContextListener {
         }
 
         return THREADLOCAL_EM.get();
+    }
+
+    @Produces
+    @RequestScoped
+    public EntityManager createEntityManager() {
+        if (EMF == null) {
+            EMF = Persistence.createEntityManagerFactory(PU);
+        }
+
+        EntityManager em = EMF.createEntityManager(DB_PROPS);
+
+        System.out.println("em.open " + em);
+
+        return em;
+    }
+
+    public void closeEntityManager(@Disposes EntityManager em) {
+        try {
+            if (em != null) {
+
+                System.out.println("em.close " + em);
+                em.close();
+            }
+        } catch (Throwable ex) {
+            throw ex;
+        }
     }
 }

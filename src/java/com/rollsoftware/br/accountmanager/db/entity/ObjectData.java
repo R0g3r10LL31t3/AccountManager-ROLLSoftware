@@ -19,13 +19,16 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -47,10 +50,17 @@ import javax.xml.bind.annotation.XmlType;
         discriminatorType = DiscriminatorType.STRING)
 @XmlRootElement(name = "object")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = {"id", "type", "hash"})
+@XmlType(name = "object", propOrder = {"id", "type", "hash"})
 public class ObjectData implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @Version
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ODVERSION", nullable = false)
+    @XmlTransient
+    private Integer odVersion;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -61,6 +71,7 @@ public class ObjectData implements Serializable {
     @NotNull
     @Size(min = 1, max = 64)
     @Column(name = "ODTYPE", nullable = false, length = 64)
+    @XmlElement(name = "odType")
     private String type;
 
     @Id
@@ -73,7 +84,7 @@ public class ObjectData implements Serializable {
     private String hash;
 
     public ObjectData() {
-        this(0, "", "");
+        this(0);
     }
 
     public ObjectData(Integer id) {
@@ -81,9 +92,15 @@ public class ObjectData implements Serializable {
     }
 
     public ObjectData(Integer id, String type, String hash) {
+        this(id, type, hash, 0);
+    }
+
+    private ObjectData(Integer id, String type, String hash,
+            Integer odVersion) {
         this.id = id;
         this.type = type;
         this.hash = hash;
+        this.odVersion = odVersion;
     }
 
     public Integer getId() {

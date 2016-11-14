@@ -25,6 +25,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -32,6 +33,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -50,7 +52,7 @@ import javax.xml.bind.annotation.XmlType;
 @PrimaryKeyJoinColumn(name = "LIHASHFK", referencedColumnName = "ODHASHPK")
 @XmlRootElement(name = "login")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = {
+@XmlType(name = "login", propOrder = {
     "user", "pass",
     "firstName", "lastName",
     "dateCreated", "dateAccessed", "dateActivated", "dateExpired",
@@ -61,6 +63,13 @@ import javax.xml.bind.annotation.XmlType;
 public class LoginInfo extends ObjectData implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @Version
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "LIVERSION", nullable = false)
+    @XmlTransient
+    private Integer liVersion;
 
     @Basic(optional = false)
     @NotNull
@@ -169,6 +178,22 @@ public class LoginInfo extends ObjectData implements Serializable {
             Date dateCreated, Date dateAccessed, Date dateActivated,
             Date dateExpired, Date dateBlocked,
             List<TokenInfo> tokenInfos) {
+        this(id, type, hash,
+                user, pass, firstName, lastName,
+                successCount, errorCount, blockedCount,
+                dateSoftban, datePermBan,
+                dateCreated, dateAccessed, dateActivated,
+                dateExpired, dateBlocked,
+                tokenInfos, 0);
+    }
+
+    public LoginInfo(Integer id, String type, String hash,
+            String user, String pass, String firstName, String lastName,
+            Integer successCount, Integer errorCount, Integer blockedCount,
+            Date dateSoftban, Date datePermBan,
+            Date dateCreated, Date dateAccessed, Date dateActivated,
+            Date dateExpired, Date dateBlocked,
+            List<TokenInfo> tokenInfos, Integer liVersion) {
         super(id, type, hash);
         this.user = user;
         this.pass = pass;
@@ -185,6 +210,7 @@ public class LoginInfo extends ObjectData implements Serializable {
         this.dateExpired = dateExpired;
         this.dateBlocked = dateBlocked;
         this.tokenInfos = tokenInfos;
+        this.liVersion = liVersion;
     }
 
     @Override

@@ -126,6 +126,9 @@ public class ObjectDataTest {
 
     @After
     public void tearDown() throws Exception {
+        if (EM.getTransaction().isActive()) {
+            EM.getTransaction().rollback();
+        }
     }
 
     @Test
