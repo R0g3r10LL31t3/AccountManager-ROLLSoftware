@@ -26,6 +26,7 @@
         <class>com.rollsoftware.br.accountmanager.db.entity.ObjectData</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
+            <!--connection-->
             <property name="javax.persistence.target-database" value="DERBY"/>
             <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
             <property name="javax.persistence.jdbc.url" value="${url.database.connect}"/>
@@ -36,6 +37,12 @@
             <property name="eclipselink.ddl-generation.output-mode" value="database" />
             -->
             <property name="eclipselink.canonicalmodel.subpackage" value="derby"/>
+            <!--lock-->
+            <property name="javax.persistence.lock.timeout" value="1000"/>
+            <!--log-->
+            <!--<property name="eclipselink.logging.level" value=""/>-->
+            <property name="eclipselink.logging.parameters" value="true"/>
+            <property name="eclipselink.logging.level.sql" value="FINEST"/>
         </properties>
     </persistence-unit>
     <persistence-unit name="AccountManagerPU_MYSQL" transaction-type="RESOURCE_LOCAL">
@@ -45,6 +52,7 @@
         <class>com.rollsoftware.br.accountmanager.db.entity.ObjectData</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
+            <!--connection-->
             <property name="javax.persistence.target-database" value="MYSQL"/>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url" value="${url.database.connect}"/>
@@ -55,6 +63,12 @@
             <property name="eclipselink.ddl-generation.output-mode" value="database" />
             -->
             <property name="eclipselink.canonicalmodel.subpackage" value="mysql"/>
+            <!--lock-->
+            <property name="javax.persistence.lock.timeout" value="1000"/>
+            <!--log-->
+            <!--<property name="eclipselink.logging.level" value=""/>-->
+            <property name="eclipselink.logging.parameters" value="true"/>
+            <property name="eclipselink.logging.level.sql" value="FINEST"/>
         </properties>
     </persistence-unit>
 </persistence>

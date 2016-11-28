@@ -19,6 +19,7 @@ package com.rollsoftware.br.util;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  *
@@ -172,5 +173,10 @@ public final class CypherUtils {
 
     public static String generateHash(List values) {
         return generateHash0(values);
+    }
+
+    public static String generateUUID() {
+        String uuid = UUID.randomUUID().toString();
+        return generateHash(uuid);
     }
 }

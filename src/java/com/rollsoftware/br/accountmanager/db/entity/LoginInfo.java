@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -49,7 +50,7 @@ import javax.xml.bind.annotation.XmlType;
         }
 )
 @DiscriminatorValue("LoginInfo")
-@PrimaryKeyJoinColumn(name = "LIHASHFK", referencedColumnName = "ODHASHPK")
+@PrimaryKeyJoinColumn(name = "LIUUIDFK", referencedColumnName = "ODUUIDPK")
 @XmlRootElement(name = "login")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "login", propOrder = {
@@ -142,7 +143,7 @@ public class LoginInfo extends ObjectData implements Serializable {
             fetch = FetchType.EAGER,
             cascade = {CascadeType.ALL}
     )
-    @JoinColumn(name = "TIHASHPK", referencedColumnName = "ODHASHPK")
+    @JoinColumn(name = "TIUUIDPK", referencedColumnName = "ODUUIDPK")
     @OrderBy("dateCreated ASC")
     @XmlElement(name = "token")
     @XmlIDREF
@@ -152,17 +153,17 @@ public class LoginInfo extends ObjectData implements Serializable {
         this("");
     }
 
-    public LoginInfo(String hash) {
-        this(0, "LoginInfo", hash,
+    public LoginInfo(String uuid) {
+        this(0, "LoginInfo", uuid,
                 "", "", "", "",
                 Calendar.getInstance().getTime(),
                 Calendar.getInstance().getTime());
     }
 
-    public LoginInfo(Integer id, String type, String hash,
+    public LoginInfo(Integer id, String type, String uuid,
             String user, String pass, String firstName, String lastName,
             Date dateCreated, Date dateAccessed) {
-        this(id, type, hash,
+        this(id, type, uuid,
                 user, pass, firstName, lastName,
                 0, 0, 0,
                 null, null,
@@ -171,14 +172,14 @@ public class LoginInfo extends ObjectData implements Serializable {
                 new ArrayList());
     }
 
-    public LoginInfo(Integer id, String type, String hash,
+    public LoginInfo(Integer id, String type, String uuid,
             String user, String pass, String firstName, String lastName,
             Integer successCount, Integer errorCount, Integer blockedCount,
             Date dateSoftban, Date datePermBan,
             Date dateCreated, Date dateAccessed, Date dateActivated,
             Date dateExpired, Date dateBlocked,
             List<TokenInfo> tokenInfos) {
-        this(id, type, hash,
+        this(id, type, uuid,
                 user, pass, firstName, lastName,
                 successCount, errorCount, blockedCount,
                 dateSoftban, datePermBan,
@@ -187,14 +188,14 @@ public class LoginInfo extends ObjectData implements Serializable {
                 tokenInfos, 0);
     }
 
-    public LoginInfo(Integer id, String type, String hash,
+    public LoginInfo(Integer id, String type, String uuid,
             String user, String pass, String firstName, String lastName,
             Integer successCount, Integer errorCount, Integer blockedCount,
             Date dateSoftban, Date datePermBan,
             Date dateCreated, Date dateAccessed, Date dateActivated,
             Date dateExpired, Date dateBlocked,
             List<TokenInfo> tokenInfos, Integer liVersion) {
-        super(id, type, hash);
+        super(id, type, uuid);
         this.user = user;
         this.pass = pass;
         this.firstName = firstName;
@@ -214,11 +215,9 @@ public class LoginInfo extends ObjectData implements Serializable {
     }
 
     @Override
-    public void generateHash() {
-        String _hash = CypherUtils.generateHash(
-                user, firstName, lastName
-        );
-        setHash(_hash);
+    public void generateUUID() {
+        super.generateUUID();
+        encryptPass();
     }
 
     public String getUser() {
@@ -238,13 +237,15 @@ public class LoginInfo extends ObjectData implements Serializable {
     }
 
     public void encryptPass() {
+        Objects.requireNonNull(getUUID());
         pass = CypherUtils.encrypt(
-                getHash(), getHash(), pass);
+                getUUID(), getUUID(), pass);
     }
 
     public void decryptPass() {
+        Objects.requireNonNull(getUUID());
         pass = CypherUtils.decrypt(
-                getHash(), getHash(), pass);
+                getUUID(), getUUID(), pass);
     }
 
     public String getFirstName() {
@@ -353,7 +354,11 @@ public class LoginInfo extends ObjectData implements Serializable {
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        int _hash = super.hashCode();
+        _hash += (user != null ? user.hashCode() : 0);
+        _hash += (firstName != null ? firstName.hashCode() : 0);
+        _hash += (lastName != null ? lastName.hashCode() : 0);
+        return _hash;
     }
 
     @Override
@@ -375,7 +380,7 @@ public class LoginInfo extends ObjectData implements Serializable {
     @Override
     public String toString() {
         return "LoginInfo[id=" + getId()
-                + ", hash=" + getHash()
+                + ", uuid=" + getUUID()
                 + ", user=" + getUser() + "]";
     }
 }

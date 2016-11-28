@@ -37,17 +37,15 @@ import javax.ws.rs.core.MediaType;
  *
  * @author Rogério
  * @date October, 2016
- *
- * @param <T>
  */
 //@javax.ejb.Stateless
 @RequestScoped
 @Path("/db/login")
 public class LoginInfoService
-        extends AbstractServiceFacade<LoginInfo> {
+        extends AbstractServiceFacade<LoginInfo, String> {
 
     //@PersistenceContext(unitName = "AccountManagerPU")
-    @Inject    
+    @Inject
     private EntityManager em;
 
     public LoginInfoService() {
@@ -62,32 +60,38 @@ public class LoginInfoService
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(LoginInfo entity)
-            throws SQLException {
-        entity.generateHash();
-        super.create(entity);
+    @Produces({MediaType.TEXT_PLAIN})
+    public String create(LoginInfo entity)
+            throws SQLException, Exception {
+        entity.generateUUID();
+        return super.create(entity);
     }
 
     @PUT
+    @Override
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") String id, LoginInfo entity)
-            throws SQLException {
-        super.edit(entity);
+    @Produces({MediaType.TEXT_PLAIN})
+    public String edit(@PathParam("id") String id, LoginInfo entity)
+            throws SQLException, Exception {
+        return super.edit(id, entity);
     }
 
     @DELETE
+    @Override
     @Path("{id}")
-    public void remove(@PathParam("id") String id)
-            throws SQLException {
-        super.remove(super.find(id));
+    @Produces({MediaType.TEXT_PLAIN})
+    public String remove(@PathParam("id") String id)
+            throws SQLException, Exception {
+        return super.remove(id);
     }
 
     @GET
+    @Override
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public LoginInfo find(@PathParam("id") String id)
-            throws SQLException {
+            throws SQLException, Exception {
         return super.find(id);
     }
 
@@ -95,16 +99,17 @@ public class LoginInfoService
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<LoginInfo> findAll()
-            throws SQLException {
+            throws SQLException, Exception {
         return super.findAll();
     }
 
     @GET
+    @Override
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<LoginInfo> findRange(
             @PathParam("from") Integer from, @PathParam("to") Integer to)
-            throws SQLException {
+            throws SQLException, Exception {
         return super.findRange(from, to);
     }
 
@@ -112,7 +117,7 @@ public class LoginInfoService
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countToString()
-            throws SQLException {
+            throws SQLException, Exception {
         return String.valueOf(super.count());
     }
 

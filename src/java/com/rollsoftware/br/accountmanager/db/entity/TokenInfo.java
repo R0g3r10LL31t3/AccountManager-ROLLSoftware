@@ -9,6 +9,7 @@ import com.rollsoftware.br.util.CypherUtils;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -45,7 +46,7 @@ import javax.xml.bind.annotation.XmlType;
         }
 )
 @DiscriminatorValue("TokenInfo")
-@PrimaryKeyJoinColumn(name = "TIHASHFK", referencedColumnName = "ODHASHPK")
+@PrimaryKeyJoinColumn(name = "TIUUIDFK", referencedColumnName = "ODUUIDPK")
 @XmlRootElement(name = "token")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "token", propOrder = {
@@ -112,8 +113,8 @@ public class TokenInfo extends ObjectData implements Serializable {
             cascade = {CascadeType.ALL}
     )
     @JoinColumn(
-            name = "TI_LOGININFO_HASHFK",
-            referencedColumnName = "LIHASHFK",
+            name = "TI_LOGININFO_UUIDFK",
+            referencedColumnName = "LIUUIDFK",
             nullable = false
     )
     @XmlIDREF
@@ -124,8 +125,8 @@ public class TokenInfo extends ObjectData implements Serializable {
         this("");
     }
 
-    public TokenInfo(String hash) {
-        this(0, "TokenInfo", hash,
+    public TokenInfo(String uuid) {
+        this(0, "TokenInfo", uuid,
                 "", "",
                 0, 0, 0,
                 Calendar.getInstance().getTime(),
@@ -133,24 +134,24 @@ public class TokenInfo extends ObjectData implements Serializable {
                 null, null);
     }
 
-    public TokenInfo(Integer id, String type, String hash,
+    public TokenInfo(Integer id, String type, String uuid,
             String accessToken, String userIP,
             Integer successCount, Integer refusedCount, Integer errorCount,
             Date dateCreated, Date dateAccessed, Date dateExpires,
             LoginInfo loginInfo) {
-        this(id, type, hash,
+        this(id, type, uuid,
                 accessToken, userIP,
                 successCount, refusedCount, errorCount,
                 dateCreated, dateAccessed, dateExpires,
                 loginInfo, 0);
     }
 
-    public TokenInfo(Integer id, String type, String hash,
+    public TokenInfo(Integer id, String type, String uuid,
             String accessToken, String userIP,
             Integer successCount, Integer refusedCount, Integer errorCount,
             Date dateCreated, Date dateAccessed, Date dateExpires,
             LoginInfo loginInfo, Integer tiVersion) {
-        super(id, type, hash);
+        super(id, type, uuid);
         this.accessToken = accessToken;
         this.userIP = userIP;
         this.successCount = successCount;
@@ -164,18 +165,19 @@ public class TokenInfo extends ObjectData implements Serializable {
     }
 
     @Override
-    public void generateHash() {
-        String _hash = CypherUtils.generateHash(
-                loginInfo.getHash(), accessToken, userIP
-        );
-        setHash(_hash);
+    public void generateUUID() {
+        super.generateUUID();
+        generateToken();
     }
 
     public void generateToken() {
-        String _hash = CypherUtils.generateHash(
-                loginInfo.getHash(), accessToken, userIP
+        Objects.requireNonNull(loginInfo.getUUID());
+        Objects.requireNonNull(this.getUUID());
+        Objects.requireNonNull(userIP);
+        String _token = CypherUtils.generateHash(
+                loginInfo.getUUID(), this.getUUID(), userIP
         );
-        setAccessToken(_hash);
+        setAccessToken(_token);
     }
 
     public String getAccessToken() {
@@ -252,7 +254,9 @@ public class TokenInfo extends ObjectData implements Serializable {
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        int _uuid = super.hashCode();
+        _uuid += (accessToken != null ? accessToken.hashCode() : 0);
+        return _uuid;
     }
 
     @Override
@@ -274,7 +278,7 @@ public class TokenInfo extends ObjectData implements Serializable {
     @Override
     public String toString() {
         return "TokenInfo[id=" + getId()
-                + ", hash=" + getHash()
+                + ", uuid=" + getUUID()
                 + ", token=" + getAccessToken() + "]";
     }
 }

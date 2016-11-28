@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.XmlType;
         schema = "ACCOUNT_MANAGER_DB_APP",
         uniqueConstraints = {
             @UniqueConstraint(columnNames = {"ODID"})
-            ,@UniqueConstraint(columnNames = {"ODTYPE", "ODHASHPK"})
+            ,@UniqueConstraint(columnNames = {"ODTYPE", "ODUUIDPK"})
         }
 )
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -50,7 +50,7 @@ import javax.xml.bind.annotation.XmlType;
         discriminatorType = DiscriminatorType.STRING)
 @XmlRootElement(name = "object")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "object", propOrder = {"id", "type", "hash"})
+@XmlType(name = "object", propOrder = {"id", "type", "uuid"})
 public class ObjectData implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -78,10 +78,10 @@ public class ObjectData implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 128)
-    @Column(name = "ODHASHPK", nullable = false, length = 128)
+    @Column(name = "ODUUIDPK", nullable = false, length = 128)
     @XmlAttribute
     @XmlID
-    private String hash;
+    private String uuid;
 
     public ObjectData() {
         this(0);
@@ -91,15 +91,15 @@ public class ObjectData implements Serializable {
         this(id, "", "");
     }
 
-    public ObjectData(Integer id, String type, String hash) {
-        this(id, type, hash, 0);
+    public ObjectData(Integer id, String type, String uuid) {
+        this(id, type, uuid, 0);
     }
 
-    private ObjectData(Integer id, String type, String hash,
+    private ObjectData(Integer id, String type, String uuid,
             Integer odVersion) {
         this.id = id;
         this.type = type;
-        this.hash = hash;
+        this.uuid = uuid;
         this.odVersion = odVersion;
     }
 
@@ -119,23 +119,24 @@ public class ObjectData implements Serializable {
         this.type = type;
     }
 
-    public String getHash() {
-        return hash;
+    public String getUUID() {
+        return uuid;
     }
 
-    public void setHash(String hash) {
-        this.hash = hash;
+    public void setUUID(String uuid) {
+        this.uuid = uuid;
     }
 
-    public void generateHash() {
-        String _hash = CypherUtils.generateHash(hash);
-        setHash(_hash);
+    public void generateUUID() {
+        String _uuid = CypherUtils.generateUUID();
+        setUUID(_uuid);
     }
 
     @Override
     public int hashCode() {
         int _hash = 0;
         _hash += (id != null ? id.hashCode() : 0);
+        _hash += (uuid != null ? uuid.hashCode() : 0);
         _hash += (type != null ? type.hashCode() : 0);
         return _hash;
     }
@@ -158,7 +159,7 @@ public class ObjectData implements Serializable {
     @Override
     public String toString() {
         return "ObjectData[id=" + getId()
-                + ", hash=" + getHash()
+                + ", uuid=" + getUUID()
                 + ", type=" + getType() + "]";
     }
 }

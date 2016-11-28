@@ -20,7 +20,10 @@ package com.rollsoftware.br.accountmanager.db.service;
 import com.rollsoftware.br.accountmanager.db.entity.LoginInfo;
 import com.rollsoftware.br.accountmanager.db.entity.ObjectData;
 import com.rollsoftware.br.accountmanager.db.entity.TokenInfo;
+import com.rollsoftware.br.test.util.EntityManagerInterface;
+import java.sql.SQLException;
 import java.util.Calendar;
+import javax.persistence.EntityManager;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -35,36 +38,49 @@ public class TokenInfoServiceTest extends ObjectDataServiceTest {
 
     private Object loginInfoPKSaved;
 
-    public TokenInfoServiceTest() {
+    public TokenInfoServiceTest(EntityManagerInterface emInterface) {
+        super(emInterface);
+    }
+
+    @Override
+    public <T extends ObjectData> T load(Object id) {
+        return (T) load(TokenInfo.class, id);
+    }
+
+    @Override
+    public <T extends ObjectData> T load(EntityManager em, Object id) {
+        return (T) load(em, TokenInfo.class, id);
     }
 
     private Object saveLoginInfo() {
 
         LoginInfo loginInfo = new LoginInfo();
 
-        loginInfo.setHash("hash" + Math.random());
+        loginInfo.setUUID("uuid" + Math.random());
         loginInfo.setType("type");
 
         loginInfo.setUser("user" + Math.random());
         loginInfo.setPass("pass" + Math.random());
         loginInfo.setFirstName("firstName" + Math.random());
         loginInfo.setLastName("lastName" + Math.random());
-		
-		save(loginInfo);
 
-        System.out.println("Save LoginInfo: " + loginInfo.getHash());
+        save(loginInfo);
 
-        return loginInfo.getHash();
+        System.out.println("Save LoginInfo: " + loginInfo.getUUID());
+
+        return loginInfo.getUUID();
     }
 
     @Override
     protected ObjectData createObjectData() {
 
+        loginInfoPKSaved = saveLoginInfo();
+
         LoginInfo loginInfo = load(LoginInfo.class, loginInfoPKSaved);
 
         TokenInfo tokenInfo = new TokenInfo();
 
-        tokenInfo.setHash("hash" + Math.random());
+        tokenInfo.setUUID("uuid" + Math.random());
         tokenInfo.setType("type");
 
         tokenInfo.setAccessToken("accessToken" + Math.random());
@@ -85,8 +101,8 @@ public class TokenInfoServiceTest extends ObjectDataServiceTest {
 
     @Override
     protected <T extends AbstractServiceFacade>
-            T createServiceFacade() {
-        return (T) new TokenInfoService(EM);
+            T createServiceFacade(EntityManager em) {
+        return (T) new TokenInfoService(em);
     }
 
     @BeforeClass
@@ -101,14 +117,13 @@ public class TokenInfoServiceTest extends ObjectDataServiceTest {
 
     @Before
     @Override
-    public void setUp() {
-        loginInfoPKSaved = saveLoginInfo();
+    public void setUp() throws SQLException {
         super.setUp();
     }
 
     @After
     @Override
-    public void tearDown() {
+    public void tearDown() throws SQLException {
         super.tearDown();
     }
 }

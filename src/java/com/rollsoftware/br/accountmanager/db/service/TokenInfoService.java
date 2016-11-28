@@ -39,14 +39,12 @@ import javax.ws.rs.core.UriInfo;
  *
  * @author Rogério
  * @date October, 2016
- *
- * @param <T>
  */
 //@javax.ejb.Stateless
 @RequestScoped
 @Path("/db/token")
 public class TokenInfoService
-        extends AbstractServiceFacade<TokenInfo> {
+        extends AbstractServiceFacade<TokenInfo, String> {
 
     //@PersistenceContext(unitName = "AccountManagerPU")
     @Inject
@@ -67,32 +65,38 @@ public class TokenInfoService
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(TokenInfo entity)
-            throws SQLException {
-        entity.generateHash();
-        super.create(entity);
+    @Produces({MediaType.TEXT_PLAIN})
+    public String create(TokenInfo entity)
+            throws SQLException, Exception {
+        entity.generateUUID();
+        return super.create(entity);
     }
 
     @PUT
+    @Override
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") String id, TokenInfo entity)
-            throws SQLException {
-        super.edit(entity);
+    @Produces({MediaType.TEXT_PLAIN})
+    public String edit(@PathParam("id") String id, TokenInfo entity)
+            throws SQLException, Exception {
+        return super.edit(id, entity);
     }
 
     @DELETE
+    @Override
     @Path("{id}")
-    public void remove(@PathParam("id") String id)
-            throws SQLException {
-        super.remove(super.find(id));
+    @Produces({MediaType.TEXT_PLAIN})
+    public String remove(@PathParam("id") String id)
+            throws SQLException, Exception {
+        return super.remove(id);
     }
 
     @GET
+    @Override
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public TokenInfo find(@PathParam("id") String id)
-            throws SQLException {
+            throws SQLException, Exception {
         return super.find(id);
     }
 
@@ -100,16 +104,17 @@ public class TokenInfoService
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<TokenInfo> findAll()
-            throws SQLException {
+            throws SQLException, Exception {
         return super.findAll();
     }
 
     @GET
+    @Override
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<TokenInfo> findRange(
             @PathParam("from") Integer from, @PathParam("to") Integer to)
-            throws SQLException {
+            throws SQLException, Exception {
         return super.findRange(from, to);
     }
 
@@ -117,7 +122,7 @@ public class TokenInfoService
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countToString()
-            throws SQLException {
+            throws SQLException, Exception {
         return String.valueOf(super.count());
     }
 

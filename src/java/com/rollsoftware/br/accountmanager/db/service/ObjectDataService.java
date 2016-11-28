@@ -37,14 +37,12 @@ import javax.ws.rs.core.MediaType;
  *
  * @author Rogério
  * @date October, 2016
- *
- * @param <T>
  */
 //@javax.ejb.Stateless
 @RequestScoped
 @Path("/db/object")
-public class ObjectDataService
-        extends AbstractServiceFacade<ObjectData> {
+class ObjectDataService
+        extends AbstractServiceFacade<ObjectData, String> {
 
     //@PersistenceContext(unitName = "AccountManagerPU")
     @Inject
@@ -62,32 +60,38 @@ public class ObjectDataService
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(ObjectData entity)
-            throws SQLException {
-        entity.generateHash();
-        super.create(entity);
+    @Produces({MediaType.TEXT_PLAIN})
+    public String create(ObjectData entity)
+            throws SQLException, Exception {
+        entity.generateUUID();
+        return super.create(entity);
     }
 
     @PUT
+    @Override
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") String id, ObjectData entity)
-            throws SQLException {
-        super.edit(entity);
+    @Produces({MediaType.TEXT_PLAIN})
+    public String edit(@PathParam("id") String id, ObjectData entity)
+            throws SQLException, Exception {
+        return super.edit(id, entity);
     }
 
     @DELETE
+    @Override
     @Path("{id}")
-    public void remove(@PathParam("id") String id)
-            throws SQLException {
-        super.remove(super.find(id));
+    @Produces({MediaType.TEXT_PLAIN})
+    public String remove(@PathParam("id") String id)
+            throws SQLException, Exception {
+        return super.remove(id);
     }
 
     @GET
+    @Override
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public ObjectData find(@PathParam("id") String id)
-            throws SQLException {
+            throws SQLException, Exception {
         return super.find(id);
     }
 
@@ -95,16 +99,17 @@ public class ObjectDataService
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<ObjectData> findAll()
-            throws SQLException {
+            throws SQLException, Exception {
         return super.findAll();
     }
 
     @GET
+    @Override
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<ObjectData> findRange(
             @PathParam("from") Integer from, @PathParam("to") Integer to)
-            throws SQLException {
+            throws SQLException, Exception {
         return super.findRange(from, to);
     }
 
@@ -112,7 +117,7 @@ public class ObjectDataService
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countToString()
-            throws SQLException {
+            throws SQLException, Exception {
         return String.valueOf(super.count());
     }
 

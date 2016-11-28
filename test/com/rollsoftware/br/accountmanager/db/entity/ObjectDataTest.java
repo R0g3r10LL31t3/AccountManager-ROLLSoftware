@@ -29,6 +29,7 @@ import javax.xml.bind.Marshaller;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -64,13 +65,14 @@ public class ObjectDataTest {
 
     protected ObjectData createObjectData() {
         ObjectData objectData = new ObjectData();
-        objectData.setHash("unknown" + Math.random());
-        objectData.setType("unknown");
-        objectData.generateHash();
+        objectData.setUUID("uuid" + Math.random());
+        objectData.setType("type");
+        objectData.generateUUID();
         return objectData;
     }
 
-    public void save(ObjectData objectData) {
+    public <T extends ObjectData>
+            void save(T objectData) {
         EM.getTransaction().begin();
 
         EM.createNativeQuery("set schema ACCOUNT_MANAGER_DB_APP");
@@ -117,7 +119,7 @@ public class ObjectDataTest {
 
             save(objectData);
 
-            objectDataPK = objectData.getHash();
+            objectDataPK = objectData.getUUID();
         } catch (Throwable ex) {
             ex.printStackTrace(System.out);
             throw ex;
@@ -138,6 +140,9 @@ public class ObjectDataTest {
         ObjectData objectData = load();
 
         System.out.println("Object Data: " + objectData);
+        System.out.println("Object Data UUID: " + objectData.getUUID());
+
+        assertEquals(getObjectDataPK(), objectData.getUUID());
     }
 
     @Test

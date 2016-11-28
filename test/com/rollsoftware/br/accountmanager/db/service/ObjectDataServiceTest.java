@@ -18,6 +18,9 @@
 package com.rollsoftware.br.accountmanager.db.service;
 
 import com.rollsoftware.br.accountmanager.db.entity.ObjectData;
+import com.rollsoftware.br.test.util.EntityManagerInterface;
+import java.sql.SQLException;
+import javax.persistence.EntityManager;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -35,45 +38,47 @@ public class ObjectDataServiceTest extends AbstractServiceFacadeTest {
     private Object objectDataPK;
     private ObjectData objectData;
 
-    public ObjectDataServiceTest() {
+    public ObjectDataServiceTest(EntityManagerInterface emInterface) {
+        super(emInterface);
     }
 
-    public void save(ObjectData objectData) {
-        EM.getTransaction().begin();
-
-        EM.createNativeQuery("set schema ACCOUNT_MANAGER_DB_APP");
-
-        EM.persist(objectData);
-        EM.flush();
-
-        EM.getTransaction().commit();
+    @Override
+    public <T extends ObjectData> T load(Object id) {
+        return (T) load(ObjectData.class, id);
     }
 
-    public <T extends ObjectData>
-            T load(Class<T> clazz, Object id) {
-        ObjectData _objectData
-                = EM.find(clazz, id);
-        EM.refresh(_objectData);
-        return (T) _objectData;
+    @Override
+    public <T extends ObjectData> T load(EntityManager em, Object id) {
+        return (T) load(em, ObjectData.class, id);
     }
 
     protected ObjectData createObjectData() {
         ObjectData _objectData = new ObjectData();
 
-        _objectData.setHash("unknown" + Math.random());
-        _objectData.setType("unknown");
+        _objectData.setUUID("uuid" + Math.random());
+        _objectData.setType("type");
 
         return _objectData;
     }
 
-    protected <T extends AbstractServiceFacade>
+    private <T extends AbstractServiceFacade>
             T createServiceFacade() {
-        return (T) new ObjectDataService(EM);
+        return createServiceFacade(getEntityManager());
+    }
+
+    protected <T extends AbstractServiceFacade>
+            T createServiceFacade(EntityManager em) {
+        return (T) new ObjectDataService(em);
     }
 
     @Override
     public AbstractServiceFacade getInstance() {
         return rest;
+    }
+
+    @Override
+    public AbstractServiceFacade getNewInstance(EntityManager em) {
+        return createServiceFacade(em);
     }
 
     @Override
@@ -108,14 +113,14 @@ public class ObjectDataServiceTest extends AbstractServiceFacadeTest {
 
     @Before
     @Override
-    public void setUp() {
+    public void setUp() throws SQLException {
         try {
             super.setUp();
             objectData = createObjectData();
 
             save(objectData);
 
-            objectDataPK = objectData.getHash();
+            objectDataPK = objectData.getUUID();
 
             rest = createServiceFacade();
         } catch (Throwable ex) {
@@ -126,13 +131,7 @@ public class ObjectDataServiceTest extends AbstractServiceFacadeTest {
 
     @After
     @Override
-    public void tearDown() {
-        try {
-            super.tearDown();
-        } finally {
-            if (EM.getTransaction().isActive()) {
-                EM.getTransaction().rollback();
-            }
-        }
+    public void tearDown() throws SQLException {
+        super.tearDown();
     }
 }

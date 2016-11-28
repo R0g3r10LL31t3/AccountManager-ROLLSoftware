@@ -19,6 +19,9 @@ package com.rollsoftware.br.accountmanager.db.service;
 
 import com.rollsoftware.br.accountmanager.db.entity.LoginInfo;
 import com.rollsoftware.br.accountmanager.db.entity.ObjectData;
+import com.rollsoftware.br.test.util.EntityManagerInterface;
+import java.sql.SQLException;
+import javax.persistence.EntityManager;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -31,14 +34,25 @@ import org.junit.BeforeClass;
  */
 public class LoginInfoServiceTest extends ObjectDataServiceTest {
 
-    public LoginInfoServiceTest() {
+    public LoginInfoServiceTest(EntityManagerInterface emInterface) {
+        super(emInterface);
+    }
+
+    @Override
+    public <T extends ObjectData> T load(Object id) {
+        return (T) load(LoginInfo.class, id);
+    }
+
+    @Override
+    public <T extends ObjectData> T load(EntityManager em, Object id) {
+        return (T) load(em, LoginInfo.class, id);
     }
 
     @Override
     protected ObjectData createObjectData() {
         LoginInfo loginInfo = new LoginInfo();
 
-        loginInfo.setHash("hash" + Math.random());
+        loginInfo.setUUID("uuid" + Math.random());
         loginInfo.setType("type");
 
         loginInfo.setUser("user" + Math.random());
@@ -51,8 +65,8 @@ public class LoginInfoServiceTest extends ObjectDataServiceTest {
 
     @Override
     protected <T extends AbstractServiceFacade>
-            T createServiceFacade() {
-        return (T) new LoginInfoService(EM);
+            T createServiceFacade(EntityManager em) {
+        return (T) new LoginInfoService(em);
     }
 
     @BeforeClass
@@ -67,13 +81,13 @@ public class LoginInfoServiceTest extends ObjectDataServiceTest {
 
     @Before
     @Override
-    public void setUp() {
+    public void setUp() throws SQLException {
         super.setUp();
     }
 
     @After
     @Override
-    public void tearDown() {
+    public void tearDown() throws SQLException {
         super.tearDown();
     }
 }

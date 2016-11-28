@@ -24,6 +24,7 @@ import javax.xml.bind.Marshaller;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -42,7 +43,7 @@ public class LoginInfoTest extends ObjectDataTest {
 
         TokenInfo tokeInfo = new TokenInfo();
 
-        tokeInfo.setHash("hash" + Math.random());
+        tokeInfo.setUUID("uuid" + Math.random());
         tokeInfo.setType("type");
 
         tokeInfo.setAccessToken("accessToken" + Math.random());
@@ -58,15 +59,15 @@ public class LoginInfoTest extends ObjectDataTest {
 
         tokeInfo.setLoginInfo(load());
 
-        tokeInfo.generateHash();
+        tokeInfo.generateUUID();
         tokeInfo.generateToken();
 
         save(tokeInfo);
 
         System.out.println("Save TokenInfo: " + tokeInfo.getId());
         System.out.println("Save TokenInfo: "
-                + tokeInfo.getHash() + " with LoginInfo: "
-                + tokeInfo.getLoginInfo().getHash());
+                + tokeInfo.getUUID() + " with LoginInfo: "
+                + tokeInfo.getLoginInfo().getUUID());
 
         return tokeInfo.getId();
     }
@@ -81,7 +82,7 @@ public class LoginInfoTest extends ObjectDataTest {
     protected ObjectData createObjectData() {
         LoginInfo loginInfo = new LoginInfo();
 
-        loginInfo.setHash("hash" + Math.random());
+        loginInfo.setUUID("uuid" + Math.random());
         loginInfo.setType("type");
 
         loginInfo.setUser("user" + Math.random());
@@ -89,7 +90,7 @@ public class LoginInfoTest extends ObjectDataTest {
         loginInfo.setFirstName("firstName" + Math.random());
         loginInfo.setLastName("lastName" + Math.random());
 
-        loginInfo.generateHash();
+        loginInfo.generateUUID();
         loginInfo.encryptPass();
 
         return loginInfo;
@@ -126,11 +127,16 @@ public class LoginInfoTest extends ObjectDataTest {
         LoginInfo loginInfo = load();
 
         System.out.println("Login Info: " + loginInfo);
-        System.out.println("Tokens Info Count: " + loginInfo.getTokenInfos().size());
+        System.out.println("Login Info UUID: " + loginInfo.getUUID());
 
+        System.out.println("Tokens Info Count: " + loginInfo.getTokenInfos().size());
         for (TokenInfo tokenInfo : loginInfo.getTokenInfos()) {
             System.out.println("Tokens Info: " + tokenInfo);
+            System.out.println("Tokens Info UUID: " + tokenInfo.getUUID());
         }
+
+        assertEquals(getObjectDataPK(), loginInfo.getUUID());
+        assertTrue(loginInfo.getPass().length() > 0);
     }
 
     @Test
