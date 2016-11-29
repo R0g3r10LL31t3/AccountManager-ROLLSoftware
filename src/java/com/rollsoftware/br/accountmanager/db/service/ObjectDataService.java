@@ -17,6 +17,7 @@
  */
 package com.rollsoftware.br.accountmanager.db.service;
 
+import com.rollsoftware.br.accountmanager.db.app.EntityManagerContextListener;
 import com.rollsoftware.br.accountmanager.db.entity.ObjectData;
 import java.sql.SQLException;
 import java.util.List;
@@ -42,7 +43,7 @@ import javax.ws.rs.core.MediaType;
 @RequestScoped
 @Path("/db/object")
 class ObjectDataService
-        extends AbstractServiceFacade<ObjectData, String> {
+        extends AbstractServiceFacadeAsync<ObjectData, String> {
 
     //@PersistenceContext(unitName = "AccountManagerPU")
     @Inject
@@ -114,11 +115,12 @@ class ObjectDataService
     }
 
     @GET
+    @Override
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countToString()
             throws SQLException, Exception {
-        return String.valueOf(super.count());
+        return super.countToString();
     }
 
     @Override

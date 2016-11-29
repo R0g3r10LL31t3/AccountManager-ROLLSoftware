@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.rollsoftware.br.accountmanager.db.service;
+package com.rollsoftware.br.accountmanager.db.app;
 
 import java.sql.SQLException;
 

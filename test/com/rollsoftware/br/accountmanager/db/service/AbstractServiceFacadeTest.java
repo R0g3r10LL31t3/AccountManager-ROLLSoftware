@@ -17,6 +17,7 @@
  */
 package com.rollsoftware.br.accountmanager.db.service;
 
+import com.rollsoftware.br.accountmanager.db.app.NotFoundEntityException;
 import com.rollsoftware.br.accountmanager.db.entity.ObjectData;
 import com.rollsoftware.br.test.util.EntityManagerInterface;
 import com.rollsoftware.br.test.util.EntityManagerShared;

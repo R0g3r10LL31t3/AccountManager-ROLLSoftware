@@ -17,6 +17,7 @@
  */
 package com.rollsoftware.br.accountmanager.db.service;
 
+import com.rollsoftware.br.accountmanager.db.app.EntityManagerContextListener;
 import com.rollsoftware.br.accountmanager.db.entity.TokenInfo;
 import java.sql.SQLException;
 import java.util.List;
@@ -44,7 +45,7 @@ import javax.ws.rs.core.UriInfo;
 @RequestScoped
 @Path("/db/token")
 public class TokenInfoService
-        extends AbstractServiceFacade<TokenInfo, String> {
+        extends AbstractServiceFacadeAsync<TokenInfo, String> {
 
     //@PersistenceContext(unitName = "AccountManagerPU")
     @Inject
@@ -119,11 +120,12 @@ public class TokenInfoService
     }
 
     @GET
+    @Override
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countToString()
             throws SQLException, Exception {
-        return String.valueOf(super.count());
+        return super.countToString();
     }
 
     @Override

@@ -17,6 +17,7 @@
  */
 package com.rollsoftware.br.accountmanager.db.service;
 
+import com.rollsoftware.br.accountmanager.db.app.EntityManagerContextListener;
 import com.rollsoftware.br.accountmanager.db.entity.LoginInfo;
 import java.sql.SQLException;
 import java.util.List;
@@ -42,7 +43,7 @@ import javax.ws.rs.core.MediaType;
 @RequestScoped
 @Path("/db/login")
 public class LoginInfoService
-        extends AbstractServiceFacade<LoginInfo, String> {
+        extends AbstractServiceFacadeAsync<LoginInfo, String> {
 
     //@PersistenceContext(unitName = "AccountManagerPU")
     @Inject
@@ -92,7 +93,11 @@ public class LoginInfoService
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public LoginInfo find(@PathParam("id") String id)
             throws SQLException, Exception {
-        return super.find(id);
+        LoginInfo loginInfo = super.find(id);
+        if (loginInfo != null) {
+            loginInfo.setPass(null);
+        }
+        return loginInfo;
     }
 
     @GET
@@ -100,7 +105,15 @@ public class LoginInfoService
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<LoginInfo> findAll()
             throws SQLException, Exception {
-        return super.findAll();
+        List<LoginInfo> loginInfoList = super.findAll();
+
+        for (LoginInfo loginInfo : loginInfoList) {
+            if (loginInfo != null) {
+                loginInfo.setPass(null);
+            }
+        }
+
+        return loginInfoList;
     }
 
     @GET
@@ -110,15 +123,24 @@ public class LoginInfoService
     public List<LoginInfo> findRange(
             @PathParam("from") Integer from, @PathParam("to") Integer to)
             throws SQLException, Exception {
-        return super.findRange(from, to);
+        List<LoginInfo> loginInfoList = super.findRange(from, to);
+
+        for (LoginInfo loginInfo : loginInfoList) {
+            if (loginInfo != null) {
+                loginInfo.setPass(null);
+            }
+        }
+
+        return loginInfoList;
     }
 
     @GET
+    @Override
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countToString()
             throws SQLException, Exception {
-        return String.valueOf(super.count());
+        return super.countToString();
     }
 
     @Override

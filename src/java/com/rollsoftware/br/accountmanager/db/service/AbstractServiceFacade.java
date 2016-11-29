@@ -17,6 +17,8 @@
  */
 package com.rollsoftware.br.accountmanager.db.service;
 
+import com.rollsoftware.br.accountmanager.db.app.NotFoundEntityException;
+import com.rollsoftware.br.accountmanager.db.app.ServiceFacade;
 import com.rollsoftware.br.accountmanager.db.entity.ObjectData;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -36,7 +38,8 @@ import org.eclipse.persistence.config.QueryHints;
  * @param <T>
  * @param <ID>
  */
-public abstract class AbstractServiceFacade<T extends ObjectData, ID> {
+public abstract class AbstractServiceFacade<T extends ObjectData, ID>
+        implements ServiceFacade<T, ID> {
 
     private final Class<T> entityClass;
 
@@ -46,6 +49,7 @@ public abstract class AbstractServiceFacade<T extends ObjectData, ID> {
 
     protected abstract EntityManager getEntityManager();
 
+    @Override
     public String create(T entity) throws SQLException, Exception {
         Callable callable = () -> {
             getEntityManager().persist(entity);
@@ -55,6 +59,7 @@ public abstract class AbstractServiceFacade<T extends ObjectData, ID> {
         return "Created(entity): " + transaction(callable);
     }
 
+    @Override
     public String edit(ID id, T entity) throws SQLException, Exception {
         if (!id.equals(entity.getUUID())) {
             throw new IllegalArgumentException(
@@ -74,6 +79,7 @@ public abstract class AbstractServiceFacade<T extends ObjectData, ID> {
         return "Edited(entity): " + transaction(callable);
     }
 
+    @Override
     public String remove(ID id) throws SQLException, Exception {
         T entity = find(id);
         remove(entity);
@@ -93,6 +99,7 @@ public abstract class AbstractServiceFacade<T extends ObjectData, ID> {
         return "Removed(entity): " + entity;
     }
 
+    @Override
     public T find(ID id) throws SQLException, Exception {
         Callable<T> callable = () -> {
             T t = getEntityManager().find(entityClass, id);
@@ -106,6 +113,7 @@ public abstract class AbstractServiceFacade<T extends ObjectData, ID> {
         return transaction(callable);
     }
 
+    @Override
     public List<T> findAll() throws SQLException, Exception {
         javax.persistence.criteria.CriteriaQuery cq
                 = getEntityManager().getCriteriaBuilder().createQuery();
@@ -113,6 +121,7 @@ public abstract class AbstractServiceFacade<T extends ObjectData, ID> {
         return getEntityManager().createQuery(cq).getResultList();
     }
 
+    @Override
     public List<T> findRange(Integer from, Integer to)
             throws SQLException, Exception {
         javax.persistence.criteria.CriteriaQuery cq
@@ -124,6 +133,7 @@ public abstract class AbstractServiceFacade<T extends ObjectData, ID> {
         return q.getResultList();
     }
 
+    @Override
     public Integer count() throws SQLException, Exception {
         javax.persistence.criteria.CriteriaQuery cq
                 = getEntityManager().getCriteriaBuilder().createQuery();
@@ -131,6 +141,11 @@ public abstract class AbstractServiceFacade<T extends ObjectData, ID> {
         cq.select(getEntityManager().getCriteriaBuilder().count(rt));
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
+    }
+
+    @Override
+    public String countToString() throws SQLException, Exception {
+        return String.valueOf(count());
     }
 
     private void tryLockEntity(T entity) throws SQLException, Exception {
@@ -149,10 +164,10 @@ public abstract class AbstractServiceFacade<T extends ObjectData, ID> {
 
     private <R extends Object> R transaction(Callable<R> statement)
             throws SQLException, Exception {
-        R r = null;
+        R result = null;
         try {
             getEntityManager().getTransaction().begin();
-            r = statement.call();
+            result = statement.call();
             getEntityManager().getTransaction().commit();
         } catch (Throwable ex) {
             if (getEntityManager().getTransaction().isActive()) {
@@ -161,6 +176,6 @@ public abstract class AbstractServiceFacade<T extends ObjectData, ID> {
             throw ex;
         }
 
-        return r;
+        return result;
     }
 }
