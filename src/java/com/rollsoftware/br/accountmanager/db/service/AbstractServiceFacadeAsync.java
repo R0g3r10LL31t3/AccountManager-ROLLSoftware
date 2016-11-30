@@ -17,9 +17,9 @@
  */
 package com.rollsoftware.br.accountmanager.db.service;
 
-import com.rollsoftware.br.accountmanager.db.app.ServiceFacadeAsync;
 import com.rollsoftware.br.accountmanager.db.app.DatabaseServiceThreadPool;
-import com.rollsoftware.br.accountmanager.db.entity.ObjectData;
+import com.rollsoftware.br.accountmanager.db.app.ServiceFacadeAsync;
+import com.rollsoftware.br.accountmanager.db.entity.ObjectInterface;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -40,7 +40,7 @@ import javax.ws.rs.core.MediaType;
  * @param <T>
  * @param <ID>
  */
-public abstract class AbstractServiceFacadeAsync<T extends ObjectData, ID>
+public abstract class AbstractServiceFacadeAsync<T extends ObjectInterface, ID>
         extends AbstractServiceFacade<T, ID>
         implements ServiceFacadeAsync<T, ID> {
 

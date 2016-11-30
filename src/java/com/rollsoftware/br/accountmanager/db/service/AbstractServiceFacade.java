@@ -19,7 +19,7 @@ package com.rollsoftware.br.accountmanager.db.service;
 
 import com.rollsoftware.br.accountmanager.db.app.NotFoundEntityException;
 import com.rollsoftware.br.accountmanager.db.app.ServiceFacade;
-import com.rollsoftware.br.accountmanager.db.entity.ObjectData;
+import com.rollsoftware.br.accountmanager.db.entity.ObjectInterface;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +38,7 @@ import org.eclipse.persistence.config.QueryHints;
  * @param <T>
  * @param <ID>
  */
-public abstract class AbstractServiceFacade<T extends ObjectData, ID>
+public abstract class AbstractServiceFacade<T extends ObjectInterface, ID>
         implements ServiceFacade<T, ID> {
 
     private final Class<T> entityClass;

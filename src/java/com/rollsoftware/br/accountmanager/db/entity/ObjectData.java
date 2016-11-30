@@ -1,7 +1,19 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *          Copyright 2016-2026 Rogério Lecarião Leite
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
 package com.rollsoftware.br.accountmanager.db.entity;
 
@@ -34,6 +46,7 @@ import javax.xml.bind.annotation.XmlType;
 /**
  *
  * @author Rogério
+ * @date October, 2016
  */
 //@MappedSuperclass
 @Entity
@@ -51,7 +64,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "object")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "object", propOrder = {"id", "type", "uuid"})
-public class ObjectData implements Serializable {
+public class ObjectData
+        implements Serializable, ObjectInterface {
 
     private static final long serialVersionUID = 1L;
 
@@ -119,6 +133,7 @@ public class ObjectData implements Serializable {
         this.type = type;
     }
 
+    @Override
     public String getUUID() {
         return uuid;
     }
@@ -127,6 +142,7 @@ public class ObjectData implements Serializable {
         this.uuid = uuid;
     }
 
+    @Override
     public void generateUUID() {
         String _uuid = CypherUtils.generateUUID();
         setUUID(_uuid);

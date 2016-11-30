@@ -18,7 +18,7 @@
 package com.rollsoftware.br.accountmanager.db.service;
 
 import com.rollsoftware.br.accountmanager.db.app.NotFoundEntityException;
-import com.rollsoftware.br.accountmanager.db.entity.ObjectData;
+import com.rollsoftware.br.accountmanager.db.entity.ObjectInterface;
 import com.rollsoftware.br.test.util.EntityManagerInterface;
 import com.rollsoftware.br.test.util.EntityManagerShared;
 import com.rollsoftware.br.test.util.EntityManagerSingle;
@@ -77,38 +77,38 @@ public abstract class AbstractServiceFacadeTest {
 
     public abstract Object getEntityPK_NotFound();
 
-    public abstract <T extends ObjectData> T getEntity();
+    public abstract <T extends ObjectInterface> T getEntity();
 
-    public abstract <T extends ObjectData> T createEntity();
+    public abstract <T extends ObjectInterface> T createEntity();
 
-    public <T extends ObjectData>
-            void save(T objectData) {
+    public <T extends ObjectInterface>
+            void save(T objectInterface) {
         em.getTransaction().begin();
 
         em.createNativeQuery("set schema ACCOUNT_MANAGER_DB_APP");
 
-        em.persist(objectData);
+        em.persist(objectInterface);
         em.flush();
 
         em.getTransaction().commit();
     }
 
-    public <T extends ObjectData>
+    public <T extends ObjectInterface>
             T load(EntityManager em, Class<T> clazz, Object id) {
-        ObjectData _objectData
+        ObjectInterface _objectInterface
                 = em.find(clazz, id);
-        em.refresh(_objectData);
-        return (T) _objectData;
+        em.refresh(_objectInterface);
+        return (T) _objectInterface;
     }
 
-    public <T extends ObjectData>
+    public <T extends ObjectInterface>
             T load(Class<T> clazz, Object id) {
         return (T) load(em, clazz, id);
     }
 
-    public abstract <T extends ObjectData> T load(Object id);
+    public abstract <T extends ObjectInterface> T load(Object id);
 
-    public abstract <T extends ObjectData> T load(EntityManager em, Object id);
+    public abstract <T extends ObjectInterface> T load(EntityManager em, Object id);
 
     @BeforeClass
     public static void setUpClass() {
@@ -157,7 +157,7 @@ public abstract class AbstractServiceFacadeTest {
     @Test
     public void testCreate() throws SQLException, Exception {
         System.out.println("create");
-        ObjectData entity = createEntity();
+        ObjectInterface entity = createEntity();
 
         AbstractServiceFacade instance = getInstance();
 
@@ -175,7 +175,7 @@ public abstract class AbstractServiceFacadeTest {
     @Test
     public void testEdit() throws SQLException, Exception {
         System.out.println("edit");
-        ObjectData entity = getEntity();
+        ObjectInterface entity = getEntity();
         AbstractServiceFacade instance = getInstance();
 
         instance.edit(entity);
@@ -192,7 +192,7 @@ public abstract class AbstractServiceFacadeTest {
     @Test
     public void testRemove() throws SQLException, Exception {
         System.out.println("remove");
-        ObjectData entity = getEntity();
+        ObjectInterface entity = getEntity();
         AbstractServiceFacade instance = getInstance();
 
         instance.remove(entity);
@@ -209,7 +209,7 @@ public abstract class AbstractServiceFacadeTest {
     @Test(expected = OptimisticLockException.class)
     public void testRemove_2x() throws SQLException, Exception {
         System.out.println("remove_2x");
-        ObjectData entity = getEntity();
+        ObjectInterface entity = getEntity();
         AbstractServiceFacade instance = getInstance();
 
         instance.remove(entity);
@@ -395,8 +395,8 @@ public abstract class AbstractServiceFacadeTest {
 
         for (int i = 0; i < nThreads; i++) {
             try {
-                ObjectData objectData = instances.get(i).find(getEntityPK());
-                instances.get(i).remove(objectData);
+                ObjectInterface objectInterface = instances.get(i).find(getEntityPK());
+                instances.get(i).remove(objectInterface);
             } catch (SQLException | PersistenceException ex) {
                 sqlExceptions.add(ex);
             } catch (Throwable ex) {
@@ -456,7 +456,7 @@ public abstract class AbstractServiceFacadeTest {
                 try {
                     instance = getNewInstance(emInterface.getEntityManager());
 
-                    ObjectData objectData = instance.find(getEntityPK());
+                    ObjectInterface objectInterface = instance.find(getEntityPK());
 
                     cdl.countDown();
 
@@ -465,7 +465,7 @@ public abstract class AbstractServiceFacadeTest {
 
                     System.out.println("Then try remove: "
                             + Thread.currentThread().getName());
-                    instance.remove(objectData);
+                    instance.remove(objectInterface);
                     System.out.println("Removed: "
                             + Thread.currentThread().getName());
                 } catch (SQLException | PersistenceException ex) {

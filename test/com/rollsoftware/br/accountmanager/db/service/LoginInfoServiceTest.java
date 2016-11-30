@@ -18,7 +18,7 @@
 package com.rollsoftware.br.accountmanager.db.service;
 
 import com.rollsoftware.br.accountmanager.db.entity.LoginInfo;
-import com.rollsoftware.br.accountmanager.db.entity.ObjectData;
+import com.rollsoftware.br.accountmanager.db.entity.ObjectInterface;
 import com.rollsoftware.br.test.util.EntityManagerInterface;
 import java.sql.SQLException;
 import javax.persistence.EntityManager;
@@ -39,17 +39,17 @@ public class LoginInfoServiceTest extends ObjectDataServiceTest {
     }
 
     @Override
-    public <T extends ObjectData> T load(Object id) {
+    public <T extends ObjectInterface> T load(Object id) {
         return (T) load(LoginInfo.class, id);
     }
 
     @Override
-    public <T extends ObjectData> T load(EntityManager em, Object id) {
+    public <T extends ObjectInterface> T load(EntityManager em, Object id) {
         return (T) load(em, LoginInfo.class, id);
     }
 
     @Override
-    protected ObjectData createObjectData() {
+    protected ObjectInterface createObjectInterface() {
         LoginInfo loginInfo = new LoginInfo();
 
         loginInfo.setUUID("uuid" + Math.random());

@@ -18,6 +18,7 @@
 package com.rollsoftware.br.accountmanager.db.service;
 
 import com.rollsoftware.br.accountmanager.db.entity.ObjectData;
+import com.rollsoftware.br.accountmanager.db.entity.ObjectInterface;
 import com.rollsoftware.br.test.util.EntityManagerInterface;
 import java.sql.SQLException;
 import javax.persistence.EntityManager;
@@ -36,23 +37,23 @@ public class ObjectDataServiceTest extends AbstractServiceFacadeTest {
     private AbstractServiceFacade rest;
 
     private Object objectDataPK;
-    private ObjectData objectData;
+    private ObjectInterface objectData;
 
     public ObjectDataServiceTest(EntityManagerInterface emInterface) {
         super(emInterface);
     }
 
     @Override
-    public <T extends ObjectData> T load(Object id) {
-        return (T) load(ObjectData.class, id);
+    public <T extends ObjectInterface> T load(Object id) {
+        return (T) load(ObjectInterface.class, id);
     }
 
     @Override
-    public <T extends ObjectData> T load(EntityManager em, Object id) {
-        return (T) load(em, ObjectData.class, id);
+    public <T extends ObjectInterface> T load(EntityManager em, Object id) {
+        return (T) load(em, ObjectInterface.class, id);
     }
 
-    protected ObjectData createObjectData() {
+    protected ObjectInterface createObjectInterface() {
         ObjectData _objectData = new ObjectData();
 
         _objectData.setUUID("uuid" + Math.random());
@@ -82,13 +83,13 @@ public class ObjectDataServiceTest extends AbstractServiceFacadeTest {
     }
 
     @Override
-    public <T extends ObjectData> T getEntity() {
+    public <T extends ObjectInterface> T getEntity() {
         return (T) objectData;
     }
 
     @Override
-    public <T extends ObjectData> T createEntity() {
-        return (T) createObjectData();
+    public <T extends ObjectInterface> T createEntity() {
+        return (T) createObjectInterface();
     }
 
     @Override
@@ -116,7 +117,7 @@ public class ObjectDataServiceTest extends AbstractServiceFacadeTest {
     public void setUp() throws SQLException {
         try {
             super.setUp();
-            objectData = createObjectData();
+            objectData = createObjectInterface();
 
             save(objectData);
 
