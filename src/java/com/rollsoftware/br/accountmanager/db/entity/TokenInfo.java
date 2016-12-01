@@ -187,10 +187,14 @@ public class TokenInfo extends ObjectData implements Serializable {
         Objects.requireNonNull(loginInfo.getUUID());
         Objects.requireNonNull(this.getUUID());
         Objects.requireNonNull(userIP);
-        String _token = CypherUtils.generateHash(
-                loginInfo.getUUID(), this.getUUID(), userIP
-        );
-        setAccessToken(_token);
+
+        String _token = getAccessToken();
+        if (_token == null || "".equals(_token) || _token.length() != 32) {
+            _token = CypherUtils.generateHash(
+                    loginInfo.getUUID(), this.getUUID(), userIP
+            );
+            setAccessToken(_token);
+        }
     }
 
     public String getAccessToken() {

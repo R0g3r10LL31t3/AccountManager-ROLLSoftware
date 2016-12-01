@@ -251,14 +251,27 @@ public class LoginInfo extends ObjectData implements Serializable {
 
     public void encryptPass() {
         Objects.requireNonNull(getUUID());
-        pass = CypherUtils.encrypt(
-                getUUID(), getUUID(), pass);
+
+        String _pass = getPass();
+
+        if (_pass == null || "".equals(_pass) || !_pass.endsWith(":encoded")) {
+            _pass = CypherUtils.encrypt(
+                    getUUID(), getUUID(), getPass());
+            setPass(_pass + ":encoded");
+        }
     }
 
     public void decryptPass() {
         Objects.requireNonNull(getUUID());
-        pass = CypherUtils.decrypt(
-                getUUID(), getUUID(), pass);
+
+        String _pass = getPass();
+        if (_pass != null && _pass.endsWith(":encoded")) {
+            _pass = CypherUtils.decrypt(
+                    getUUID(), getUUID(),
+                    getPass().substring(
+                            0, getPass().length() - ":encoded".length()));
+            setPass(_pass);
+        }
     }
 
     public String getFirstName() {

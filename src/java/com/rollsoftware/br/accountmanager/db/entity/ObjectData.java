@@ -144,8 +144,11 @@ public class ObjectData
 
     @Override
     public void generateUUID() {
-        String _uuid = CypherUtils.generateUUID();
-        setUUID(_uuid);
+        String _uuid = getUUID();
+        if (_uuid == null || "".equals(_uuid) || _uuid.length() != 32) {
+            _uuid = CypherUtils.generateUUID();
+            setUUID(_uuid);
+        }
     }
 
     @Override

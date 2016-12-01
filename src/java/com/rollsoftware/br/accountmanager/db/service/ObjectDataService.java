@@ -42,7 +42,7 @@ import javax.ws.rs.core.MediaType;
 //@javax.ejb.Stateless
 @RequestScoped
 @Path("/db/object")
-class ObjectDataService
+public class ObjectDataService
         extends AbstractServiceFacadeAsync<ObjectData, String> {
 
     //@PersistenceContext(unitName = "AccountManagerPU")
