@@ -17,7 +17,7 @@
  */
 package com.rollsoftware.br.accountmanager.db.service;
 
-import com.rollsoftware.br.accountmanager.db.app.EntityManagerContextListener;
+import com.rollsoftware.br.accountmanager.db.DBWebListener;
 import com.rollsoftware.br.accountmanager.db.entity.LoginInfo;
 import java.sql.SQLException;
 import java.util.List;
@@ -147,7 +147,7 @@ public class LoginInfoService
     protected EntityManager getEntityManager() {
         if (em == null) {
             //warning, this using with non EJB implemented server!
-            em = EntityManagerContextListener.getEntityManager();
+            em = DBWebListener.getEntityManager();
             System.out.println(
                     "Warning: this using with non EJB or CDI implemented server!");
         }

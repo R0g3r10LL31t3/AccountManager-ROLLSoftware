@@ -15,14 +15,12 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db.app;
+package com.rollsoftware.br.accountmanager.db;
 
 import com.rollsoftware.br.accountmanager.properties.Resource;
+import java.util.Map;
 import java.util.Properties;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Disposes;
-import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -33,20 +31,21 @@ import javax.servlet.annotation.WebListener;
 /**
  *
  * @author Rogério
- * @date October, 2016
+ * @date December, 2016
  */
 @WebListener
 @ApplicationScoped
-public class EntityManagerContextListener implements ServletContextListener {
+public class DBWebListener implements ServletContextListener {
 
-    private static final String PU
-            = Resource.getProperty("roll.software.br.application.database.PU");
-    private static final Properties DB_PROPS = Resource.getDatabaseProperties();
+    private static final String PU;
+    private static final Properties DB_PROPS;
 
+    private static ThreadLocal<EntityManager> THREADLOCAL_EM;
     private static EntityManagerFactory EMF;
-    private static final ThreadLocal<EntityManager> THREADLOCAL_EM;
 
     static {
+        PU = Resource.getProperty("roll.software.br.application.database.PU");
+        DB_PROPS = Resource.getDatabaseProperties();
         THREADLOCAL_EM = new ThreadLocal();
     }
 
@@ -57,10 +56,10 @@ public class EntityManagerContextListener implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent event) {
         try {
-            if (THREADLOCAL_EM.get() != null) {
+            if (THREADLOCAL_EM.get() != null && THREADLOCAL_EM.get().isOpen()) {
                 THREADLOCAL_EM.get().close();
             }
-            if (EMF != null) {
+            if (EMF != null && EMF.isOpen()) {
                 EMF.close();
             }
         } catch (Throwable ex) {
@@ -70,45 +69,33 @@ public class EntityManagerContextListener implements ServletContextListener {
         }
     }
 
-    public static EntityManager getEntityManager() {
+    public static EntityManagerFactory getEntityManagerFactory() {
         if (EMF == null) {
             EMF = Persistence.createEntityManagerFactory(PU);
         }
 
-        if (THREADLOCAL_EM.get() == null) {
-            THREADLOCAL_EM.set(EMF.createEntityManager(DB_PROPS));
+        if (EMF == null) {
+            throw new IllegalStateException("Context is not initialized yet.");
         }
 
-        if (EMF == null || THREADLOCAL_EM.get() == null) {
+        return EMF;
+    }
+
+    public static EntityManager getEntityManager() {
+        EntityManagerFactory emf = getEntityManagerFactory();
+
+        if (THREADLOCAL_EM.get() == null) {
+            THREADLOCAL_EM.set(emf.createEntityManager(DB_PROPS));
+        }
+
+        if (THREADLOCAL_EM.get() == null) {
             throw new IllegalStateException("Context is not initialized yet.");
         }
 
         return THREADLOCAL_EM.get();
     }
 
-    @Produces
-    @RequestScoped
-    public EntityManager createEntityManager() {
-        if (EMF == null) {
-            EMF = Persistence.createEntityManagerFactory(PU);
-        }
-
-        EntityManager em = EMF.createEntityManager(DB_PROPS);
-
-        System.out.println("em.open " + em);
-
-        return em;
-    }
-
-    public void closeEntityManager(@Disposes EntityManager em) {
-        try {
-            if (em != null) {
-
-                System.out.println("em.close " + em);
-                em.close();
-            }
-        } catch (Throwable ex) {
-            throw ex;
-        }
+    public static Map getDatabaseProperties() {
+        return DB_PROPS;
     }
 }
