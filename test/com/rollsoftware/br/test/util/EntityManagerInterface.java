@@ -15,22 +15,25 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db.em;
+package com.rollsoftware.br.test.util;
 
-import java.util.Map;
+import java.sql.SQLException;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 /**
  *
  * @author Rogério
- * @date December, 2016
+ * @date November, 2016
  */
-public interface EMFProducer {
+public interface EntityManagerInterface {
 
-    public EntityManagerFactory getEntityManagerFactory();
+    public void setUp() throws SQLException;
 
-    public EntityManager getEntityManager();
+    public void tearDown() throws SQLException;
 
-    public Map getDatabaseProperties();
+    public EntityManager getEntityManager() throws SQLException;
+
+    public EntityManager createEntityManager() throws SQLException;
+
+    public String getDescription();
 }

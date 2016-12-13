@@ -15,22 +15,32 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db.em;
+package com.rollsoftware.br.accountmanager.concurrent;
 
-import java.util.Map;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 /**
  *
  * @author Rogério
  * @date December, 2016
  */
-public interface EMFProducer {
+public class DefaultThreadFactory implements ThreadFactory {
 
-    public EntityManagerFactory getEntityManagerFactory();
+    private final ThreadFactory defaultFactory;
+    private final String name;
 
-    public EntityManager getEntityManager();
+    public DefaultThreadFactory(String name) {
+        this.name = name;
+        this.defaultFactory = Executors.defaultThreadFactory();
+    }
 
-    public Map getDatabaseProperties();
+    @Override
+    public Thread newThread(final Runnable runnable) {
+        String className = name;
+        Thread thread = defaultFactory.newThread(runnable);
+        thread.setName(className + ":" + thread.getId());
+        thread.setDaemon(true);
+        return thread;
+    }
 }

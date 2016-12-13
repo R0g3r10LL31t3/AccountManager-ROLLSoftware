@@ -17,6 +17,7 @@
  */
 package com.rollsoftware.br.accountmanager.db.em;
 
+import com.rollsoftware.br.accountmanager.db.em.Synchronization.SyncType;
 import java.util.Map;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Observes;
@@ -42,7 +43,7 @@ public class EMProducerAsync implements EMProducer {
 
     @Override
     @Produces
-    @Synchronization("async")
+    @Synchronization(SyncType.ASYNC)
     public EntityManager createEntityManager() {
 
         EntityManager em = emf.createEntityManager(dBProperties);
@@ -54,7 +55,7 @@ public class EMProducerAsync implements EMProducer {
 
     @Override
     public void closeEntityManager(
-            @Observes @Synchronization("async") EntityManager em) {
+            @Observes @Synchronization(SyncType.ASYNC) EntityManager em) {
         try {
             if (em != null) {
 

@@ -64,7 +64,7 @@ public abstract class EMProducerTest extends CDITest {
     }
 
     /**
-     * Test of class EntityManagerProducerAsync.
+     * Test of class EMProducer.
      */
     @Test
     public void testEMProducer_notNull() {
@@ -73,5 +73,17 @@ public abstract class EMProducerTest extends CDITest {
         EMProducer instance = getManagedBean(getEMProducerClass());
 
         assertNotNull(instance);
+    }
+
+    /**
+     * Test of class EMProducer.
+     */
+    @Test
+    public void testEMProducer_emNotNull() {
+        System.out.println("EMFProducer_emNotNull");
+
+        EMProducer instance = getManagedBean(getEMProducerClass());
+
+        assertNotNull(instance.createEntityManager());
     }
 }

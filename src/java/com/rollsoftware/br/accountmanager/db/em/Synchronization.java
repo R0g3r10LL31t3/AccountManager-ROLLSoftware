@@ -36,5 +36,25 @@ import javax.inject.Qualifier;
 @Retention(RUNTIME)
 public @interface Synchronization {
 
-    public String value() default "";
+    public SyncType value() default SyncType.DEFAULT;
+
+    public static enum SyncType {
+        SYNC("synchronized"),
+        ASYNC("asynchronized"),
+        DEFAULT(SYNC);
+
+        private final String value;
+
+        private SyncType(String value) {
+            this.value = value;
+        }
+
+        private SyncType(SyncType type) {
+            this.value = type.value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
 }

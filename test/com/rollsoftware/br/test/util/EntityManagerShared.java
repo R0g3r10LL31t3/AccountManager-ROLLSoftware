@@ -15,43 +15,38 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db.em;
+package com.rollsoftware.br.test.util;
 
-import com.rollsoftware.br.accountmanager.db.DBWebListener;
-import java.util.Map;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Default;
-import javax.enterprise.inject.Produces;
+import java.sql.SQLException;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 /**
  *
  * @author Rogério
- * @date December, 2016
+ * @date November, 2016
  */
-@ApplicationScoped
-public class EMFProducerDefault implements EMFProducer {
+public class EntityManagerShared extends EntityManagerSingle {
+
+    private EntityManager emShared;
 
     @Override
-    @Produces
-    @Default
-    public EntityManagerFactory getEntityManagerFactory() {
-        return DBWebListener.getEntityManagerFactory();
+    public void setUp() throws SQLException {
+        super.setUp();
+        emShared = createEntityManager();
     }
 
     @Override
-    @Produces
-    @Default
-    public EntityManager getEntityManager() {
-        return DBWebListener.getEntityManager();
+    public void tearDown() throws SQLException {
+        super.tearDown();
     }
 
     @Override
-    @Produces
-    @Default
-    @DatabaseInjection    
-    public Map getDatabaseProperties() {
-        return DBWebListener.getDatabaseProperties();
+    public EntityManager getEntityManager() throws SQLException {
+        return emShared;
+    }
+
+    @Override
+    public String getDescription() {
+        return "Using: " + getClass().getSimpleName();
     }
 }

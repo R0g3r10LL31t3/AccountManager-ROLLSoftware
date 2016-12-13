@@ -74,4 +74,28 @@ public abstract class EMFProducerTest extends CDITest {
 
         assertNotNull(instance);
     }
+
+    /**
+     * Test of class EMFProducer.
+     */
+    @Test
+    public void testEMFProducer_emfNotNull() {
+        System.out.println("EMFProducer_emfNotNull");
+
+        EMFProducer instance = getManagedBean(getEMFProducerClass());
+
+        assertNotNull(instance.getEntityManagerFactory());
+    }
+
+    /**
+     * Test of class EMFProducer.
+     */
+    @Test
+    public void testEMFProducer_databasePropertiesNotNull() {
+        System.out.println("EMFProducer_databasePropertiesNotNull");
+
+        EMFProducer instance = getManagedBean(getEMFProducerClass());
+
+        assertNotNull(instance.getDatabaseProperties());
+    }
 }

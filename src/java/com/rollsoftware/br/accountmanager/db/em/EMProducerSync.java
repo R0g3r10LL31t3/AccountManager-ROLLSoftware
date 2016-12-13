@@ -17,6 +17,7 @@
  */
 package com.rollsoftware.br.accountmanager.db.em;
 
+import com.rollsoftware.br.accountmanager.db.em.Synchronization.SyncType;
 import java.util.Map;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Disposes;
@@ -42,7 +43,7 @@ public class EMProducerSync implements EMProducer {
 
     @Override
     @Produces
-    @Synchronization("sync")
+    @Synchronization(SyncType.SYNC)
     public EntityManager createEntityManager() {
 
         EntityManager em = emf.createEntityManager(dBProperties);
@@ -54,7 +55,7 @@ public class EMProducerSync implements EMProducer {
 
     @Override
     public void closeEntityManager(
-            @Disposes @Synchronization("sync") EntityManager em) {
+            @Disposes @Synchronization(SyncType.SYNC) EntityManager em) {
         try {
             if (em != null) {
 
