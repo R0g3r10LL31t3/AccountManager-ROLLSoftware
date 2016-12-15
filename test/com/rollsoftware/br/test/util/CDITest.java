@@ -17,6 +17,9 @@
  */
 package com.rollsoftware.br.test.util;
 
+import org.jboss.weld.context.RequestContext;
+import org.jboss.weld.context.SessionContext;
+import org.jboss.weld.context.unbound.UnboundLiteral;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 import org.junit.After;
@@ -32,7 +35,7 @@ import org.junit.BeforeClass;
 public class CDITest {
 
     protected static Weld WELD;
-    private WeldContainer weldContainer;
+    protected WeldContainer weldContainer;
 
     public CDITest() {
     }
@@ -51,7 +54,9 @@ public class CDITest {
 
     @Before
     public void setUp() {
-        weldContainer = WELD.containerId(getClass().getSimpleName()).initialize();
+        weldContainer = WELD
+                .containerId(getClass().getSimpleName())
+                .initialize();
     }
 
     @After
@@ -59,9 +64,35 @@ public class CDITest {
         weldContainer.close();
     }
 
-    public <T> T getManagedBean(Class<T> type) {
+    public final <T> T getManagedBean(Class<T> type) {
         return this.weldContainer.instance()
                 .select(type)
                 .get();
+    }
+
+    public final void runAtRequestScoped(final Runnable runnable) {
+        RequestContext context = weldContainer
+                .instance()
+                .select(RequestContext.class, UnboundLiteral.INSTANCE)
+                .get();
+        try {
+            context.activate();
+            runnable.run();
+        } finally {
+            context.deactivate();
+        }
+    }
+
+    public final void runAtSessionScoped(final Runnable runnable) {
+        SessionContext context = weldContainer
+                .instance()
+                .select(SessionContext.class, UnboundLiteral.INSTANCE)
+                .get();
+        try {
+            context.activate();
+            runnable.run();
+        } finally {
+            context.deactivate();
+        }
     }
 }

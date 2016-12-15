@@ -15,32 +15,23 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.concurrent;
+package com.rollsoftware.br.api.db.em;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
+import java.lang.annotation.Retention;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import java.lang.annotation.Target;
+import javax.interceptor.InterceptorBinding;
 
 /**
  *
  * @author Rogério
  * @date December, 2016
  */
-public class DefaultThreadFactory implements ThreadFactory {
-
-    private final ThreadFactory defaultFactory;
-    private final String name;
-
-    public DefaultThreadFactory(String name) {
-        this.name = name;
-        this.defaultFactory = Executors.defaultThreadFactory();
-    }
-
-    @Override
-    public Thread newThread(final Runnable runnable) {
-        String className = name;
-        Thread thread = defaultFactory.newThread(runnable);
-        thread.setName(className + ":" + thread.getId());
-        thread.setDaemon(true);
-        return thread;
-    }
+//@Inherited
+@InterceptorBinding
+@Target({METHOD, TYPE})
+@Retention(RUNTIME)
+public @interface Asynchronized {
 }

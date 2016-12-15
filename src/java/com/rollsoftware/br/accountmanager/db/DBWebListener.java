@@ -19,7 +19,6 @@ package com.rollsoftware.br.accountmanager.db;
 
 import com.rollsoftware.br.accountmanager.properties.Resource;
 import java.util.Map;
-import java.util.Properties;
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -37,15 +36,16 @@ import javax.servlet.annotation.WebListener;
 @ApplicationScoped
 public class DBWebListener implements ServletContextListener {
 
-    private static final String PU;
-    private static final Properties DB_PROPS;
+    private static final String PERSISTENT_UNIT;
+    private static final Map DATABASE_PROPS;
 
     private static ThreadLocal<EntityManager> THREADLOCAL_EM;
     private static EntityManagerFactory EMF;
 
     static {
-        PU = Resource.getProperty("roll.software.br.application.database.PU");
-        DB_PROPS = Resource.getDatabaseProperties();
+        PERSISTENT_UNIT = Resource.getProperty(
+                "roll.software.br.application.database.PU");
+        DATABASE_PROPS = Resource.getDatabaseProperties();
         THREADLOCAL_EM = new ThreadLocal();
     }
 
@@ -58,9 +58,11 @@ public class DBWebListener implements ServletContextListener {
         try {
             if (THREADLOCAL_EM.get() != null && THREADLOCAL_EM.get().isOpen()) {
                 THREADLOCAL_EM.get().close();
+                THREADLOCAL_EM.set(null);
             }
             if (EMF != null && EMF.isOpen()) {
                 EMF.close();
+                EMF = null;
             }
         } catch (Throwable ex) {
             throw ex;
@@ -71,7 +73,7 @@ public class DBWebListener implements ServletContextListener {
 
     public static EntityManagerFactory getEntityManagerFactory() {
         if (EMF == null) {
-            EMF = Persistence.createEntityManagerFactory(PU);
+            EMF = Persistence.createEntityManagerFactory(PERSISTENT_UNIT);
         }
 
         if (EMF == null) {
@@ -85,7 +87,7 @@ public class DBWebListener implements ServletContextListener {
         EntityManagerFactory emf = getEntityManagerFactory();
 
         if (THREADLOCAL_EM.get() == null) {
-            THREADLOCAL_EM.set(emf.createEntityManager(DB_PROPS));
+            THREADLOCAL_EM.set(emf.createEntityManager(DATABASE_PROPS));
         }
 
         if (THREADLOCAL_EM.get() == null) {
@@ -96,6 +98,6 @@ public class DBWebListener implements ServletContextListener {
     }
 
     public static Map getDatabaseProperties() {
-        return DB_PROPS;
+        return DATABASE_PROPS;
     }
 }
