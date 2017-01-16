@@ -17,9 +17,14 @@
  */
 package com.rollsoftware.br.accountmanager.db.service;
 
-import com.rollsoftware.br.accountmanager.db.app.DatabaseServiceThreadPool;
-import com.rollsoftware.br.accountmanager.db.app.ServiceFacadeAsync;
-import com.rollsoftware.br.accountmanager.db.entity.ObjectInterface;
+import com.rollsoftware.br.accountmanager.db.ServiceThreadPool;
+import com.rollsoftware.br.accountmanager.db.em.Synchronization;
+import com.rollsoftware.br.accountmanager.db.em.Synchronization.SyncType;
+import com.rollsoftware.br.accountmanager.db.repo.Repository;
+import com.rollsoftware.br.common.db.entity.ObjectInterface;
+import javax.enterprise.event.Event;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -41,41 +46,56 @@ import javax.ws.rs.core.MediaType;
  * @param <ID>
  */
 public abstract class AbstractServiceFacadeAsync<T extends ObjectInterface, ID>
-        extends AbstractServiceFacade<T, ID>
-        implements ServiceFacadeAsync<T, ID> {
+        implements ServiceFacadeAsync<T, ID, String> {
 
-    public AbstractServiceFacadeAsync(Class<T> entityClass) {
-        super(entityClass);
+    @Inject
+    @Synchronization(SyncType.ASYNC)
+    private Event<EntityManager> emEvent;
+
+    @Inject
+    private ServiceThreadPool serviceThreadPool;
+
+    public AbstractServiceFacadeAsync() {
     }
 
-    @POST
+    protected abstract Repository<T, ID, String> getRepository();
+
+    protected abstract EntityManager getEntityManager();
+
     @Override
-    @Path("async")
+    @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.TEXT_PLAIN})
     public void create(
             @Suspended final AsyncResponse asyncResponse,
             T entity) {
-        DatabaseServiceThreadPool.invokeLater(() -> {
+        serviceThreadPool.invokeLater(() -> {
             try {
-                asyncResponse.resume(this.create(entity));
+                Repository<T, ID, String> repo = getRepository();
+                EntityManager em = getEntityManager();
+                asyncResponse.resume(repo.create(em, entity));
             } catch (Exception ex) {
                 asyncResponse.resume(ex);
+            } finally {
+                emEvent.fire(getEntityManager());
             }
         });
     }
 
-    @PUT
     @Override
-    @Path("async/{id}")
+    @PUT
+    @Path("{id}")
     @Consumes(value = {MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces(value = {MediaType.TEXT_PLAIN})
     public void edit(
             @Suspended final AsyncResponse asyncResponse,
             @PathParam(value = "id") ID id, T entity) {
-        DatabaseServiceThreadPool.invokeLater(() -> {
+        serviceThreadPool.invokeLater(() -> {
             try {
-                asyncResponse.resume(this.edit(id, entity));
+                Repository<T, ID, String> repo = getRepository();
+                EntityManager em = getEntityManager();
+
+                asyncResponse.resume(repo.edit(em, id, entity));
             } catch (Exception ex) {
                 asyncResponse.resume(ex);
             }
@@ -89,71 +109,93 @@ public abstract class AbstractServiceFacadeAsync<T extends ObjectInterface, ID>
     public void remove(
             @Suspended final AsyncResponse asyncResponse,
             @PathParam(value = "id") ID id) {
-        DatabaseServiceThreadPool.invokeLater(() -> {
+        serviceThreadPool.invokeLater(() -> {
             try {
-                asyncResponse.resume(this.remove(id));
+                Repository<T, ID, String> repo = getRepository();
+                EntityManager em = getEntityManager();
+                asyncResponse.resume(repo.remove(em, id));
             } catch (Exception ex) {
                 asyncResponse.resume(ex);
             }
         });
     }
 
-    @GET
     @Override
-    @Path("async/{id}")
+    @GET
+    @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void find(
             @Suspended final AsyncResponse asyncResponse,
             @PathParam(value = "id") ID id) {
-        DatabaseServiceThreadPool.invokeLater(() -> {
+        serviceThreadPool.invokeLater(() -> {
             try {
-                asyncResponse.resume(this.find(id));
+                Repository<T, ID, String> repo = getRepository();
+                EntityManager em = getEntityManager();
+                asyncResponse.resume(repo.find(em, id));
             } catch (Exception ex) {
                 asyncResponse.resume(ex);
             }
         });
     }
 
-    @GET
     @Override
-    @Path("async")
+    @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void findAll(
             @Suspended final AsyncResponse asyncResponse) {
-        DatabaseServiceThreadPool.invokeLater(() -> {
+        serviceThreadPool.invokeLater(() -> {
             try {
-                asyncResponse.resume(this.findAll());
+                Repository<T, ID, String> repo = getRepository();
+                EntityManager em = getEntityManager();
+                asyncResponse.resume(repo.findAll(em));
             } catch (Exception ex) {
                 asyncResponse.resume(ex);
             }
         });
     }
 
-    @GET
     @Override
-    @Path("async/{from}/{to}")
+    @GET
+    @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void findRange(
             @Suspended final AsyncResponse asyncResponse,
             @PathParam("from") Integer from, @PathParam("to") Integer to) {
-        DatabaseServiceThreadPool.invokeLater(() -> {
+        serviceThreadPool.invokeLater(() -> {
             try {
-                asyncResponse.resume(this.findRange(from, to));
+                Repository<T, ID, String> repo = getRepository();
+                EntityManager em = getEntityManager();
+                asyncResponse.resume(repo.findRange(em, from, to));
             } catch (Exception ex) {
                 asyncResponse.resume(ex);
             }
         });
     }
 
-    @GET
     @Override
-    @Path("async/count")
+    public void count(@Suspended final AsyncResponse asyncResponse) {
+        serviceThreadPool.invokeLater(() -> {
+            try {
+                Repository<T, ID, String> repo = getRepository();
+                EntityManager em = getEntityManager();
+                asyncResponse.resume(repo.count(em));
+            } catch (Exception ex) {
+                asyncResponse.resume(ex);
+            }
+        });
+    }
+
+    @Override
+    @GET
+    @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public void countToString(
             @Suspended final AsyncResponse asyncResponse) {
-        DatabaseServiceThreadPool.invokeLater(() -> {
+        serviceThreadPool.invokeLater(() -> {
             try {
-                asyncResponse.resume(this.countToString());
+                Repository<T, ID, String> repo = getRepository();
+                EntityManager em = getEntityManager();
+                asyncResponse.resume(repo.countToString(em));
             } catch (Exception ex) {
                 asyncResponse.resume(ex);
             }

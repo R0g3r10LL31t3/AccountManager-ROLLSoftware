@@ -15,19 +15,22 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db.entity;
+package com.rollsoftware.br.accountmanager.db.impl.entity;
 
-import com.rollsoftware.br.util.CypherUtils;
+import com.rollsoftware.br.common.db.entity.ObjectData;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -40,7 +43,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -54,7 +56,6 @@ import javax.xml.bind.annotation.XmlType;
  * @author Rogério
  * @date October, 2016
  */
-//@MappedSuperclass
 @Entity
 @Table(name = "LOGIN_INFO",
         schema = "ACCOUNT_MANAGER_DB_APP",
@@ -67,8 +68,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "login")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "login", propOrder = {
-    "user", "pass",
-    "firstName", "lastName",
+    "credentialInfo", "userInfo",
     "dateCreated", "dateAccessed", "dateActivated", "dateExpired",
     "successCount", "blockedCount", "errorCount",
     "dateBlocked", "dateSoftban", "datePermBan",
@@ -85,30 +85,29 @@ public class LoginInfo extends ObjectData implements Serializable {
     @XmlTransient
     private Integer liVersion;
 
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 128)
-    @Column(name = "LIUSER",
-            unique = true, nullable = false, length = 128)
-    private String user;
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "user",
+                column = @Column(
+                        name = "LIUSER", nullable = false, length = 256))
+        ,@AttributeOverride(name = "pass",
+                column = @Column(
+                        name = "LIPASS", nullable = false, length = 256))
+    })
+    @XmlElement(name = "credential")
+    private CredentialInfo credentialInfo;
 
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 128)
-    @Column(name = "LIPASS", nullable = false, length = 128)
-    private String pass;
-
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 64)
-    @Column(name = "LIFIRSTNAME", nullable = false, length = 64)
-    private String firstName;
-
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 256)
-    @Column(name = "LILASTNAME", nullable = false, length = 256)
-    private String lastName;
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "firstName",
+                column = @Column(
+                        name = "LIFIRSTNAME", nullable = false, length = 256))
+        ,@AttributeOverride(name = "lastName",
+                column = @Column(
+                        name = "LILASTNAME", nullable = false, length = 256))
+    })
+    @XmlElement(name = "userData")
+    private UserInfo userInfo;
 
     @Column(name = "LISUCCESSCOUNT")
     private Integer successCount;
@@ -168,16 +167,16 @@ public class LoginInfo extends ObjectData implements Serializable {
 
     public LoginInfo(String uuid) {
         this(0, "LoginInfo", uuid,
-                "", "", "", "",
+                new CredentialInfo(), new UserInfo(),
                 Calendar.getInstance().getTime(),
                 Calendar.getInstance().getTime());
     }
 
     public LoginInfo(Integer id, String type, String uuid,
-            String user, String pass, String firstName, String lastName,
+            CredentialInfo credentialInfo, UserInfo userInfo,
             Date dateCreated, Date dateAccessed) {
         this(id, type, uuid,
-                user, pass, firstName, lastName,
+                credentialInfo, userInfo,
                 0, 0, 0,
                 null, null,
                 dateCreated, dateAccessed,
@@ -186,14 +185,14 @@ public class LoginInfo extends ObjectData implements Serializable {
     }
 
     public LoginInfo(Integer id, String type, String uuid,
-            String user, String pass, String firstName, String lastName,
+            CredentialInfo credentialInfo, UserInfo userInfo,
             Integer successCount, Integer errorCount, Integer blockedCount,
             Date dateSoftban, Date datePermBan,
             Date dateCreated, Date dateAccessed, Date dateActivated,
             Date dateExpired, Date dateBlocked,
             List<TokenInfo> tokenInfos) {
         this(id, type, uuid,
-                user, pass, firstName, lastName,
+                credentialInfo, userInfo,
                 successCount, errorCount, blockedCount,
                 dateSoftban, datePermBan,
                 dateCreated, dateAccessed, dateActivated,
@@ -202,17 +201,17 @@ public class LoginInfo extends ObjectData implements Serializable {
     }
 
     public LoginInfo(Integer id, String type, String uuid,
-            String user, String pass, String firstName, String lastName,
+            CredentialInfo credentialInfo, UserInfo userInfo,
             Integer successCount, Integer errorCount, Integer blockedCount,
             Date dateSoftban, Date datePermBan,
             Date dateCreated, Date dateAccessed, Date dateActivated,
             Date dateExpired, Date dateBlocked,
-            List<TokenInfo> tokenInfos, Integer liVersion) {
+            List<TokenInfo> tokenInfos,
+            Integer liVersion) {
         super(id, type, uuid);
-        this.user = user;
-        this.pass = pass;
-        this.firstName = firstName;
-        this.lastName = lastName;
+
+        this.credentialInfo = credentialInfo;
+        this.userInfo = userInfo;
         this.successCount = successCount;
         this.errorCount = errorCount;
         this.blockedCount = blockedCount;
@@ -225,6 +224,39 @@ public class LoginInfo extends ObjectData implements Serializable {
         this.dateBlocked = dateBlocked;
         this.tokenInfos = tokenInfos;
         this.liVersion = liVersion;
+
+        init();
+    }
+
+    private void init() {
+        credentialInfo.setLoginInfo(this);
+        userInfo.setLoginInfo(this);
+    }
+
+    public CredentialInfo getCredentialInfo() {
+        return credentialInfo;
+    }
+
+    public void setCredentialInfo(CredentialInfo credentialInfo) {
+        Objects.requireNonNull(credentialInfo);
+
+        this.credentialInfo = credentialInfo;
+        if (credentialInfo.getLoginInfo() != this) {
+            credentialInfo.setLoginInfo(this);
+        }
+    }
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        Objects.requireNonNull(userInfo);
+
+        this.userInfo = userInfo;
+        if (userInfo.getLoginInfo() != this) {
+            userInfo.setLoginInfo(this);
+        }
     }
 
     @Override
@@ -234,60 +266,43 @@ public class LoginInfo extends ObjectData implements Serializable {
     }
 
     public String getUser() {
-        return user;
+        return credentialInfo.getUser();
     }
 
     public void setUser(String user) {
-        this.user = user;
+        credentialInfo.setUser(user);
     }
 
     public String getPass() {
-        return pass;
+        return credentialInfo.getPass();
     }
 
     public void setPass(String pass) {
-        this.pass = pass;
+        credentialInfo.setPass(pass);
     }
 
     public void encryptPass() {
-        Objects.requireNonNull(getUUID());
-
-        String _pass = getPass();
-
-        if (_pass == null || "".equals(_pass) || !_pass.endsWith(":encoded")) {
-            _pass = CypherUtils.encrypt(
-                    getUUID(), getUUID(), getPass());
-            setPass(_pass + ":encoded");
-        }
+        credentialInfo.encryptPass();
     }
 
     public void decryptPass() {
-        Objects.requireNonNull(getUUID());
-
-        String _pass = getPass();
-        if (_pass != null && _pass.endsWith(":encoded")) {
-            _pass = CypherUtils.decrypt(
-                    getUUID(), getUUID(),
-                    getPass().substring(
-                            0, getPass().length() - ":encoded".length()));
-            setPass(_pass);
-        }
+        credentialInfo.decryptPass();
     }
 
     public String getFirstName() {
-        return firstName;
+        return userInfo.getFirstName();
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        userInfo.setFirstName(firstName);
     }
 
     public String getLastName() {
-        return lastName;
+        return userInfo.getLastName();
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        userInfo.setLastName(lastName);
     }
 
     public Integer getSuccessCount() {
@@ -381,9 +396,8 @@ public class LoginInfo extends ObjectData implements Serializable {
     @Override
     public int hashCode() {
         int _hash = super.hashCode();
-        _hash += (user != null ? user.hashCode() : 0);
-        _hash += (firstName != null ? firstName.hashCode() : 0);
-        _hash += (lastName != null ? lastName.hashCode() : 0);
+        _hash += (credentialInfo != null ? credentialInfo.hashCode() : 0);
+        _hash += (userInfo != null ? userInfo.hashCode() : 0);
         return _hash;
     }
 
@@ -407,6 +421,7 @@ public class LoginInfo extends ObjectData implements Serializable {
     public String toString() {
         return "LoginInfo[id=" + getId()
                 + ", uuid=" + getUUID()
-                + ", user=" + getUser() + "]";
+                + ",\ncredential={\n\t" + getCredentialInfo() + "\n}"
+                + ",\nuser={\n\t" + getUserInfo() + "\n}]";
     }
 }

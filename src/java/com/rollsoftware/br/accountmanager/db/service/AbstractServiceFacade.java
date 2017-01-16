@@ -17,18 +17,19 @@
  */
 package com.rollsoftware.br.accountmanager.db.service;
 
-import com.rollsoftware.br.accountmanager.db.app.NotFoundEntityException;
-import com.rollsoftware.br.accountmanager.db.app.ServiceFacade;
-import com.rollsoftware.br.accountmanager.db.entity.ObjectInterface;
+import com.rollsoftware.br.accountmanager.db.repo.Repository;
+import com.rollsoftware.br.common.db.entity.ObjectInterface;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Callable;
 import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
-import javax.persistence.PessimisticLockScope;
-import org.eclipse.persistence.config.QueryHints;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 /**
  *
@@ -39,143 +40,94 @@ import org.eclipse.persistence.config.QueryHints;
  * @param <ID>
  */
 public abstract class AbstractServiceFacade<T extends ObjectInterface, ID>
-        implements ServiceFacade<T, ID> {
+        implements ServiceFacade<T, ID, String> {
 
-    private final Class<T> entityClass;
-
-    public AbstractServiceFacade(Class<T> entityClass) {
-        this.entityClass = entityClass;
+    public AbstractServiceFacade() {
     }
+
+    protected abstract Repository<T, ID, String> getRepository();
 
     protected abstract EntityManager getEntityManager();
 
     @Override
-    public String create(T entity) throws SQLException, Exception {
-        Callable callable = () -> {
-            getEntityManager().persist(entity);
-            return entity;
-        };
-
-        return "Created(entity): " + transaction(callable);
-    }
-
-    @Override
-    public String edit(ID id, T entity) throws SQLException, Exception {
-        if (!id.equals(entity.getUUID())) {
-            throw new IllegalArgumentException(
-                    "ID " + id + " is not equals "
-                    + "to Entity.ID " + entity.getUUID());
-        }
-        edit(entity);
-        return "Edited(id,entity): " + entity;
-    }
-
-    public String edit(T entity) throws SQLException, Exception {
-        Callable callable = () -> {
-            getEntityManager().merge(entity);
-            return entity;
-        };
-
-        return "Edited(entity): " + transaction(callable);
-    }
-
-    @Override
-    public String remove(ID id) throws SQLException, Exception {
-        T entity = find(id);
-        remove(entity);
-        return "Removed(id): " + entity;
-    }
-
-    public String remove(T entity) throws SQLException, Exception {
-
-        Callable callable = () -> {
-            T _entity = getEntityManager().merge(entity);
-            tryLockEntity(_entity);
-            getEntityManager().remove(_entity);
-            return _entity;
-        };
-
-        transaction(callable);
-        return "Removed(entity): " + entity;
-    }
-
-    @Override
-    public T find(ID id) throws SQLException, Exception {
-        Callable<T> callable = () -> {
-            T t = getEntityManager().find(entityClass, id);
-            if (t == null) {
-                throw new NotFoundEntityException("Not find " + id + ".");
-            }
-            getEntityManager().refresh(t);
-            return t;
-        };
-
-        return transaction(callable);
-    }
-
-    @Override
-    public List<T> findAll() throws SQLException, Exception {
-        javax.persistence.criteria.CriteriaQuery cq
-                = getEntityManager().getCriteriaBuilder().createQuery();
-        cq.select(cq.from(entityClass));
-        return getEntityManager().createQuery(cq).getResultList();
-    }
-
-    @Override
-    public List<T> findRange(Integer from, Integer to)
+    @POST
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.TEXT_PLAIN})
+    public String create(T entity)
             throws SQLException, Exception {
-        javax.persistence.criteria.CriteriaQuery cq
-                = getEntityManager().getCriteriaBuilder().createQuery();
-        cq.select(cq.from(entityClass));
-        javax.persistence.Query q = getEntityManager().createQuery(cq);
-        q.setMaxResults(to - from + 1);
-        q.setFirstResult(from);
-        return q.getResultList();
+        Repository<T, ID, String> repo = getRepository();
+        EntityManager em = getEntityManager();
+        return repo.create(em, entity);
     }
 
     @Override
-    public Integer count() throws SQLException, Exception {
-        javax.persistence.criteria.CriteriaQuery cq
-                = getEntityManager().getCriteriaBuilder().createQuery();
-        javax.persistence.criteria.Root<T> rt = cq.from(entityClass);
-        cq.select(getEntityManager().getCriteriaBuilder().count(rt));
-        javax.persistence.Query q = getEntityManager().createQuery(cq);
-        return ((Long) q.getSingleResult()).intValue();
-    }
-
-    @Override
-    public String countToString() throws SQLException, Exception {
-        return String.valueOf(count());
-    }
-
-    private void tryLockEntity(T entity) throws SQLException, Exception {
-        Map<String, Object> props = new HashMap();
-
-        //props.put(QueryHints.PESSIMISTIC_LOCK_TIMEOUT, 10);
-        props.put(QueryHints.PESSIMISTIC_LOCK_SCOPE,
-                PessimisticLockScope.EXTENDED);
-
-        if (!getEntityManager().getLockMode(entity)
-                .equals(LockModeType.OPTIMISTIC_FORCE_INCREMENT)) {
-            getEntityManager().lock(entity,
-                    LockModeType.OPTIMISTIC_FORCE_INCREMENT, props);
-        }
-    }
-
-    private <R extends Object> R transaction(Callable<R> statement)
+    @PUT
+    @Path("{id}")
+    @Consumes(value = {MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces(value = {MediaType.TEXT_PLAIN})
+    public String edit(@PathParam(value = "id") ID id, T entity)
             throws SQLException, Exception {
-        R result = null;
-        try {
-            getEntityManager().getTransaction().begin();
-            result = statement.call();
-            getEntityManager().getTransaction().commit();
-        } catch (Throwable ex) {
-            if (getEntityManager().getTransaction().isActive()) {
-                getEntityManager().getTransaction().rollback();
-            }
-            throw ex;
-        }
+        Repository<T, ID, String> repo = getRepository();
+        EntityManager em = getEntityManager();
+        return repo.edit(em, id, entity);
+    }
 
-        return result;
+    @Override
+    public String remove(@PathParam(value = "id") ID id)
+            throws SQLException, Exception {
+        Repository<T, ID, String> repo = getRepository();
+        EntityManager em = getEntityManager();
+        return repo.remove(em, id);
+    }
+
+    @Override
+    @GET
+    @Path("{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public T find(@PathParam(value = "id") ID id)
+            throws SQLException, Exception {
+        Repository<T, ID, String> repo = getRepository();
+        EntityManager em = getEntityManager();
+        return repo.find(em, id);
+    }
+
+    @Override
+    @GET
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<T> findAll()
+            throws SQLException, Exception {
+        Repository<T, ID, String> repo = getRepository();
+        EntityManager em = getEntityManager();
+        return repo.findAll(em);
+    }
+
+    @Override
+    @GET
+    @Path("{from}/{to}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<T> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to)
+            throws SQLException, Exception {
+        Repository<T, ID, String> repo = getRepository();
+        EntityManager em = getEntityManager();
+        return repo.findRange(em, from, to);
+    }
+
+    @Override
+    public Integer count()
+            throws SQLException, Exception {
+        Repository<T, ID, String> repo = getRepository();
+        EntityManager em = getEntityManager();
+        return repo.count(em);
+    }
+
+    @Override
+    @GET
+    @Path("count")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String countToString()
+            throws SQLException, Exception {
+        Repository<T, ID, String> repo = getRepository();
+        EntityManager em = getEntityManager();
+        return repo.countToString(em);
     }
 }

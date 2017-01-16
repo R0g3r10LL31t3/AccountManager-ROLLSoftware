@@ -15,9 +15,8 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db.em;
+package com.rollsoftware.br.api.db.em;
 
-import com.rollsoftware.br.test.util.CDITest;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
@@ -26,30 +25,30 @@ import org.junit.BeforeClass;
  * @author Rogério
  * @date December, 2016
  */
-public class EMProducerAsyncTest extends EMProducerTest {
+public class EMFProducerDefaultTest extends EMFProducerTest {
 
-    public EMProducerAsyncTest() {
+    public EMFProducerDefaultTest() {
     }
 
     @Override
     protected void addContextCDI() {
-        WELD.addBeanClass(EMFProducerDefault.class)
-                .addBeanClass(getEMProducerClass());
+        super.addContextCDI();
+        WELD.addBeanClass(getEMFProducerClass());
     }
 
     @Override
-    protected <T extends EMProducer>
-            Class<T> getEMProducerClass() {
-        return (Class<T>) EMProducerAsync.class;
+    protected <T extends EMFProducer>
+            Class<T> getEMFProducerClass() {
+        return (Class<T>) EMFProducerDefault.class;
     }
 
     @BeforeClass
     public static void setUpClass() {
-        CDITest.setUpClass();
+        EMFProducerTest.setUpClass();
     }
 
     @AfterClass
     public static void tearDownClass() {
-        CDITest.tearDownClass();
+        EMFProducerTest.tearDownClass();
     }
 }

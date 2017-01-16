@@ -15,9 +15,12 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db.em;
+package com.rollsoftware.br.api.db.em;
 
+import com.rollsoftware.br.accountmanager.properties.Resource;
 import com.rollsoftware.br.test.util.CDITest;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -30,15 +33,17 @@ import org.junit.Test;
  * @author Rogério
  * @date December, 2016
  */
-public abstract class EMProducerTest extends CDITest {
+public abstract class EMFProducerTest extends CDITest {
 
-    public EMProducerTest() {
+    public EMFProducerTest() {
     }
 
-    protected abstract void addContextCDI();
+    protected void addContextCDI() {
+        WELD.addBeanClass(BeanResourceTest.class);
+    }
 
-    protected abstract <T extends EMProducer>
-            Class<T> getEMProducerClass();
+    protected abstract <T extends EMFProducer>
+            Class<T> getEMFProducerClass();
 
     @BeforeClass
     public static void setUpClass() {
@@ -64,26 +69,37 @@ public abstract class EMProducerTest extends CDITest {
     }
 
     /**
-     * Test of class EMProducer.
+     * Test of class EMFProducer.
      */
     @Test
-    public void testEMProducer_notNull() {
-        System.out.println("EMProducer_notNull");
+    public void testEMFProducer_notNull() {
+        System.out.println("EMFProducer_notNull");
 
-        EMProducer instance = getManagedBean(getEMProducerClass());
+        EMFProducer instance = getManagedBean(getEMFProducerClass());
 
         assertNotNull(instance);
     }
 
     /**
-     * Test of class EMProducer.
+     * Test of class EMFProducer.
      */
     @Test
-    public void testEMProducer_emNotNull() {
-        System.out.println("EMFProducer_emNotNull");
+    public void testEMFProducer_emfNotNull() {
+        System.out.println("EMFProducer_emfNotNull");
 
-        EMProducer instance = getManagedBean(getEMProducerClass());
+        EMFProducer instance = getManagedBean(getEMFProducerClass());
 
-        assertNotNull(instance.createEntityManager());
+        assertNotNull(instance.getEntityManagerFactory());
+    }
+
+    @ApplicationScoped
+    public static class BeanResourceTest {
+
+        @Produces
+        @DatabaseInjection
+        public String getPersistentUnit() {
+            return Resource.getProperty(
+                    "roll.software.br.application.database.PU");
+        }
     }
 }

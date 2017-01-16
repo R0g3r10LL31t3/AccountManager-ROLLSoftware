@@ -21,9 +21,11 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
     <persistence-unit name="AccountManagerPU_DERBY" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-        <class>com.rollsoftware.br.accountmanager.db.entity.TokenInfo</class>
-        <class>com.rollsoftware.br.accountmanager.db.entity.LoginInfo</class>
-        <class>com.rollsoftware.br.accountmanager.db.entity.ObjectData</class>
+        <class>com.rollsoftware.br.accountmanager.db.impl.entity.TokenInfo</class>
+        <class>com.rollsoftware.br.accountmanager.db.impl.entity.UserInfo</class>
+        <class>com.rollsoftware.br.accountmanager.db.impl.entity.LoginInfo</class>
+        <class>com.rollsoftware.br.accountmanager.db.impl.entity.CredentialInfo</class>
+        <class>com.rollsoftware.br.common.db.entity.ObjectData</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <!--connection-->
@@ -47,9 +49,11 @@
     </persistence-unit>
     <persistence-unit name="AccountManagerPU_MYSQL" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-        <class>com.rollsoftware.br.accountmanager.db.entity.TokenInfo</class>
-        <class>com.rollsoftware.br.accountmanager.db.entity.LoginInfo</class>
-        <class>com.rollsoftware.br.accountmanager.db.entity.ObjectData</class>
+        <class>com.rollsoftware.br.accountmanager.db.impl.entity.TokenInfo</class>
+        <class>com.rollsoftware.br.accountmanager.db.impl.entity.UserInfo</class>
+        <class>com.rollsoftware.br.accountmanager.db.impl.entity.LoginInfo</class>
+        <class>com.rollsoftware.br.accountmanager.db.impl.entity.CredentialInfo</class>
+        <class>com.rollsoftware.br.common.db.entity.ObjectData</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <!--connection-->

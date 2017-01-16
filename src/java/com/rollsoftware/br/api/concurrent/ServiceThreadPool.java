@@ -17,6 +17,7 @@
  */
 package com.rollsoftware.br.api.concurrent;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
 /**
@@ -26,7 +27,9 @@ import java.util.concurrent.Future;
  */
 public interface ServiceThreadPool {
 
-    public Future invokeLater(Runnable runnable);
+    public Future invokeLater(Callable callable);
+
+    public void invokeLater(Runnable runnable);
 
     public void startup();
 

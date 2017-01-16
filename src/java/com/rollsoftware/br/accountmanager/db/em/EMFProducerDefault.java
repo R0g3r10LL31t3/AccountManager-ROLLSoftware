@@ -17,7 +17,7 @@
  */
 package com.rollsoftware.br.accountmanager.db.em;
 
-import com.rollsoftware.br.accountmanager.db.DBWebListener;
+import com.rollsoftware.br.accountmanager.db.DBResourceWebListener;
 import java.util.Map;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
@@ -37,21 +37,21 @@ public class EMFProducerDefault implements EMFProducer {
     @Produces
     @Default
     public EntityManagerFactory getEntityManagerFactory() {
-        return DBWebListener.getEntityManagerFactory();
+        return DBResourceWebListener.getEntityManagerFactory();
     }
 
     @Override
     @Produces
     @Default
     public EntityManager getEntityManager() {
-        return DBWebListener.getEntityManager();
+        return DBResourceWebListener.getEntityManager();
     }
 
     @Override
     @Produces
     @Default
-    @DatabaseInjection    
+    @DatabaseInjection
     public Map getDatabaseProperties() {
-        return DBWebListener.getDatabaseProperties();
+        return DBResourceWebListener.getDatabaseProperties();
     }
 }

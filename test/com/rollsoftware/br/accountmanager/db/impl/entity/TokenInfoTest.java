@@ -15,8 +15,10 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db.entity;
+package com.rollsoftware.br.accountmanager.db.impl.entity;
 
+import com.rollsoftware.br.common.db.entity.ObjectData;
+import com.rollsoftware.br.common.db.entity.ObjectDataTest;
 import java.util.Calendar;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -70,7 +72,8 @@ public class TokenInfoTest extends ObjectDataTest {
     }
 
     @Override
-    protected ObjectData createObjectData() {
+    protected <T extends ObjectData>
+            T createObjectData() {
 
         LoginInfo loginInfo = load(LoginInfo.class, loginInfoPKSaved);
 
@@ -94,7 +97,7 @@ public class TokenInfoTest extends ObjectDataTest {
         tokeInfo.generateUUID();
         tokeInfo.generateToken();
 
-        return tokeInfo;
+        return (T) tokeInfo;
     }
 
     @BeforeClass
@@ -141,9 +144,9 @@ public class TokenInfoTest extends ObjectDataTest {
 
         System.out.println("testTokenInfoToXML");
 
-        JAXBContext jc = JAXBContext.newInstance(TokenInfo.class);
+        JAXBContext jc = JAXBContext.newInstance(getObjectDataClass());
 
-        TokenInfo tokenInfo = load();
+        TokenInfo tokenInfo = createObjectData();
 
         Marshaller marshaller = jc.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -158,9 +161,10 @@ public class TokenInfoTest extends ObjectDataTest {
 
         System.out.println("testTokenInfoToJSON");
 
-        JAXBContext jc = JAXBContext.newInstance(LoginInfo.class);
+        //JAXBContext jc = JAXBContext.newInstance(getObjectDataClass());
+        JAXBContext jc = JAXBContext.newInstance(TokenInfo.class);
 
-        TokenInfo tokenInfo = load();
+        TokenInfo tokenInfo = createObjectData();
 
         Marshaller marshaller = jc.createMarshaller();
 

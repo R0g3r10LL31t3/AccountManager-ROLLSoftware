@@ -15,7 +15,7 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db.em;
+package com.rollsoftware.br.api.db.em;
 
 import com.rollsoftware.br.test.util.CDITest;
 import org.junit.AfterClass;
@@ -33,8 +33,9 @@ public class EMProducerSyncTest extends EMProducerTest {
 
     @Override
     protected void addContextCDI() {
-        WELD.addBeanClass(EMFProducerDefault.class)
-                .addBeanClass(getEMProducerClass());
+        super.addContextCDI();
+        WELD.addBeanClass(EMFProducerDefault.class);
+        WELD.addBeanClass(getEMProducerClass());
     }
 
     @Override

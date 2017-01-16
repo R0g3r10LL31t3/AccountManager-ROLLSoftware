@@ -17,8 +17,8 @@
  */
 package com.rollsoftware.br.accountmanager.db.service;
 
-import com.rollsoftware.br.accountmanager.db.DBWebListener;
-import com.rollsoftware.br.accountmanager.db.entity.ObjectData;
+import com.rollsoftware.br.accountmanager.db.DBResourceWebListener;
+import com.rollsoftware.br.common.db.entity.ObjectData;
 import java.sql.SQLException;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
@@ -127,7 +127,7 @@ public class ObjectDataService
     protected EntityManager getEntityManager() {
         if (em == null) {
             //warning, this using with non EJB implemented server!
-            em = DBWebListener.getEntityManager();
+            em = DBResourceWebListener.getEntityManager();
             System.out.println(
                     "Warning: this using with non EJB or CDI implemented server!");
         }

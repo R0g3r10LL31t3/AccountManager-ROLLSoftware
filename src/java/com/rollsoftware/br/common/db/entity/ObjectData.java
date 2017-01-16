@@ -15,7 +15,7 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db.entity;
+package com.rollsoftware.br.common.db.entity;
 
 import com.rollsoftware.br.util.CypherUtils;
 import java.io.Serializable;
@@ -48,7 +48,6 @@ import javax.xml.bind.annotation.XmlType;
  * @author Rogério
  * @date October, 2016
  */
-//@MappedSuperclass
 @Entity
 @Table(name = "OBJECT_DATA",
         schema = "ACCOUNT_MANAGER_DB_APP",
@@ -117,6 +116,7 @@ public class ObjectData
         this.odVersion = odVersion;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }

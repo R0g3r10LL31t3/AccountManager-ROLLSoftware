@@ -18,8 +18,10 @@
 package com.rollsoftware.br.accountmanager.db;
 
 import com.rollsoftware.br.accountmanager.properties.Resource;
+import com.rollsoftware.br.api.db.em.DatabaseInjection;
 import java.util.Map;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -34,7 +36,7 @@ import javax.servlet.annotation.WebListener;
  */
 @WebListener
 @ApplicationScoped
-public class DBWebListener implements ServletContextListener {
+public class DBResourceWebListener implements ServletContextListener {
 
     private static final String PERSISTENT_UNIT;
     private static final Map DATABASE_PROPS;
@@ -97,7 +99,15 @@ public class DBWebListener implements ServletContextListener {
         return THREADLOCAL_EM.get();
     }
 
+    @Produces
+    @DatabaseInjection
     public static Map getDatabaseProperties() {
         return DATABASE_PROPS;
+    }
+
+    @Produces
+    @DatabaseInjection
+    public static String getPersistentUnit() {
+        return PERSISTENT_UNIT;
     }
 }

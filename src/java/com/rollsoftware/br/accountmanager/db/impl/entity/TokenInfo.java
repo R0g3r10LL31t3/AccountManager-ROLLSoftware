@@ -15,8 +15,9 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db.entity;
+package com.rollsoftware.br.accountmanager.db.impl.entity;
 
+import com.rollsoftware.br.common.db.entity.ObjectData;
 import com.rollsoftware.br.util.CypherUtils;
 import java.io.Serializable;
 import java.util.Calendar;
@@ -40,7 +41,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -51,7 +52,6 @@ import javax.xml.bind.annotation.XmlType;
  * @author Rogério
  * @date October, 2016
  */
-//@MappedSuperclass
 @Entity
 @Table(name = "TOKEN_INFO", schema = "ACCOUNT_MANAGER_DB_APP",
         uniqueConstraints = {
@@ -131,7 +131,7 @@ public class TokenInfo extends ObjectData implements Serializable {
             nullable = false
     )
     @XmlIDREF
-    @XmlElement(name = "login")
+    @XmlAttribute(name = "login")
     private LoginInfo loginInfo;
 
     public TokenInfo() {

@@ -17,9 +17,10 @@
  */
 package com.rollsoftware.br.api.concurrent;
 
+import com.rollsoftware.br.accountmanager.properties.Resource;
 import com.rollsoftware.br.api.concurrent.PriorityThreadPoolExecutor.Priority;
 import com.rollsoftware.br.api.concurrent.PriorityThreadPoolExecutor.PriorityWorker;
-import com.rollsoftware.br.accountmanager.properties.Resource;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -65,9 +66,26 @@ public class ServiceThreadPoolDefault implements ServiceThreadPool {
         return future;
     }
 
+    private Future submit(Callable callable) {
+        Future future;
+
+        try {
+            future = executorService.submit(
+                    new PriorityWorker(Priority.LOWEST.getValue(), callable));
+        } finally {
+        }
+
+        return future;
+    }
+
     @Override
-    public Future invokeLater(Runnable runnable) {
-        return submit(runnable);
+    public void invokeLater(Runnable runnable) {
+        submit(runnable);
+    }
+
+    @Override
+    public Future invokeLater(Callable callable) {
+        return submit(callable);
     }
 
     @Override

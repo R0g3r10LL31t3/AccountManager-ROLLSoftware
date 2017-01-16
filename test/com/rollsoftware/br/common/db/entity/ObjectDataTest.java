@@ -15,7 +15,7 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db.entity;
+package com.rollsoftware.br.common.db.entity;
 
 import com.rollsoftware.br.accountmanager.properties.Resource;
 import java.sql.DriverManager;
@@ -63,12 +63,13 @@ public class ObjectDataTest {
         return (Class<T>) ObjectData.class;
     }
 
-    protected ObjectData createObjectData() {
+    protected <T extends ObjectData>
+            T createObjectData() {
         ObjectData objectData = new ObjectData();
         objectData.setUUID("uuid" + Math.random());
         objectData.setType("type");
         objectData.generateUUID();
-        return objectData;
+        return (T) objectData;
     }
 
     public <T extends ObjectData>
@@ -150,9 +151,10 @@ public class ObjectDataTest {
 
         System.out.println("testObjectDataToXML");
 
-        JAXBContext jc = JAXBContext.newInstance(ObjectData.class);
+        JAXBContext jc = JAXBContext.newInstance(
+                ObjectDataTest.this.getObjectDataClass());
 
-        ObjectData objectData = load();
+        ObjectData objectData = createObjectData();
 
         Marshaller marshaller = jc.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -167,9 +169,10 @@ public class ObjectDataTest {
 
         System.out.println("testObjectDataToJSON");
 
-        JAXBContext jc = JAXBContext.newInstance(ObjectData.class);
+        JAXBContext jc = JAXBContext.newInstance(
+                ObjectDataTest.this.getObjectDataClass());
 
-        ObjectData objectData = load();
+        ObjectData objectData = createObjectData();
 
         Marshaller marshaller = jc.createMarshaller();
 

@@ -15,39 +15,19 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db.em;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+package com.rollsoftware.br.common.db.entity;
 
 /**
  *
  * @author Rogério
- * @date December, 2016
+ * @date November, 2016
+ *
  */
-public class EMFProducerDefaultTest extends EMFProducerTest {
+public interface ObjectInterface {
 
-    public EMFProducerDefaultTest() {
-    }
+    public void generateUUID();
 
-    @Override
-    protected void addContextCDI() {
-        WELD.addBeanClass(getEMFProducerClass());
-    }
+    public String getUUID();
 
-    @Override
-    protected <T extends EMFProducer>
-            Class<T> getEMFProducerClass() {
-        return (Class<T>) EMFProducerDefault.class;
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-        EMFProducerTest.setUpClass();
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-        EMFProducerTest.tearDownClass();
-    }
+    public Integer getId();
 }

@@ -15,8 +15,10 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db.entity;
+package com.rollsoftware.br.accountmanager.db.impl.entity;
 
+import com.rollsoftware.br.common.db.entity.ObjectData;
+import com.rollsoftware.br.common.db.entity.ObjectDataTest;
 import java.util.Calendar;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -79,7 +81,8 @@ public class LoginInfoTest extends ObjectDataTest {
     }
 
     @Override
-    protected ObjectData createObjectData() {
+    protected <T extends ObjectData>
+            T createObjectData() {
         LoginInfo loginInfo = new LoginInfo();
 
         loginInfo.setUUID("uuid" + Math.random());
@@ -93,7 +96,7 @@ public class LoginInfoTest extends ObjectDataTest {
         loginInfo.generateUUID();
         loginInfo.encryptPass();
 
-        return loginInfo;
+        return (T) loginInfo;
     }
 
     @BeforeClass
@@ -116,6 +119,25 @@ public class LoginInfoTest extends ObjectDataTest {
     @Override
     public void tearDown() throws Exception {
         super.tearDown();
+    }
+
+    @Test
+    public void testEncryptAndDecrypt() {
+
+        System.out.println("testEncryptAndDecrypt");
+
+        for (int i = 0; i < 10000; i++) {
+            String pass = "encryptAndDecrypt:" + Math.random();
+
+            LoginInfo loginInfo = new LoginInfo();
+
+            loginInfo.setPass(pass);
+            loginInfo.generateUUID();
+            loginInfo.encryptPass();
+            loginInfo.decryptPass();
+
+            assertEquals("Pass: " + pass, pass, loginInfo.getPass());
+        }
     }
 
     @Test
@@ -144,10 +166,9 @@ public class LoginInfoTest extends ObjectDataTest {
 
         System.out.println("testLoginInfoToXML");
 
-        JAXBContext jc = JAXBContext.newInstance(LoginInfo.class);
+        JAXBContext jc = JAXBContext.newInstance(getObjectDataClass());
 
-        saveTokenInfo();
-        LoginInfo loginInfo = load();
+        LoginInfo loginInfo = createObjectData();
 
         Marshaller marshaller = jc.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -162,9 +183,9 @@ public class LoginInfoTest extends ObjectDataTest {
 
         System.out.println("testLoginInfoToJSON");
 
-        JAXBContext jc = JAXBContext.newInstance(LoginInfo.class);
+        JAXBContext jc = JAXBContext.newInstance(getObjectDataClass());
 
-        LoginInfo loginInfo = load();
+        LoginInfo loginInfo = createObjectData();
 
         Marshaller marshaller = jc.createMarshaller();
 

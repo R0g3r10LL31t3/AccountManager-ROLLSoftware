@@ -17,7 +17,7 @@
  */
 package com.rollsoftware.br.accountmanager.db.em.diagnostic;
 
-import com.rollsoftware.br.accountmanager.db.DBWebListener;
+import com.rollsoftware.br.accountmanager.db.DBResourceWebListener;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.persistence.EntityManager;
@@ -38,7 +38,7 @@ public class EMNotInjectedServlet extends HttpServlet {
     private EntityManager em;
 
     public EMNotInjectedServlet() {
-        this(DBWebListener.getEntityManager());
+        this(DBResourceWebListener.getEntityManager());
     }
 
     public EMNotInjectedServlet(EntityManager em) {
