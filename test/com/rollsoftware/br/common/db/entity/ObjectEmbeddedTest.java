@@ -15,10 +15,8 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db.impl.entity;
+package com.rollsoftware.br.common.db.entity;
 
-import com.rollsoftware.br.common.db.entity.ObjectEmbeddedTest;
-import com.rollsoftware.br.common.db.entity.ObjectInterface;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -33,96 +31,71 @@ import org.junit.Test;
 /**
  *
  * @author Rogério
- * @date December, 2016
+ * @date March, 2017
  */
-public class UserInfoTest extends ObjectEmbeddedTest {
+public class ObjectEmbeddedTest {
 
-    public UserInfoTest() {
+    public ObjectEmbeddedTest() {
     }
 
-    protected <T extends ObjectInterface>
-            Class<T> getObjectInterfaceClass() {
-        return (Class<T>) UserInfo.class;
+    protected <T extends ObjectEmbedded>
+            Class<T> getObjectEmbeddedClass() {
+        return (Class<T>) ObjectEmbedded.class;
     }
 
-    @Override
-    protected UserInfo createObjectEmbedded() {
-        LoginInfo loginInfo = new LoginInfo();
-
-        loginInfo.setUUID("uuid" + Math.random());
-        loginInfo.setType("type");
-
-        UserInfo userInfo = new UserInfo();
-
-        userInfo.setLoginInfo(loginInfo);
-        loginInfo.setUserInfo(userInfo);
-
-        userInfo.setFirstName("firstName" + Math.random());
-        userInfo.setLastName("lastName" + Math.random());
-
-        userInfo.generateUUID();
-
-        return userInfo;
+    protected <T extends ObjectEmbedded>
+            T createObjectEmbedded() {
+        ObjectEmbedded objectEmbedded = new ObjectEmbedded() {
+            @Override
+            public ObjectInterface getParent() {
+                return null;
+            }
+        };
+        return (T) objectEmbedded;
     }
 
     @BeforeClass
     public static void setUpClass() {
-        ObjectEmbeddedTest.setUpClass();
     }
 
     @AfterClass
     public static void tearDownClass() {
-        ObjectEmbeddedTest.tearDownClass();
     }
 
     @Before
-    @Override
     public void setUp() throws Exception {
+
     }
 
     @After
-    @Override
     public void tearDown() throws Exception {
     }
 
     @Test
-    public void testBasicUserInfo() {
+    public void testObjectEmbeddedToXML() throws JAXBException {
 
-        System.out.println("testBasicUserInfo");
+        System.out.println("testObjectEmbeddedToXML");
 
-        UserInfo userInfo = createObjectEmbedded();
+        JAXBContext jc = JAXBContext.newInstance(ObjectEmbeddedTest.this.getObjectEmbeddedClass());
 
-        System.out.println("User Info: " + userInfo);
-        System.out.println("User Info UUID: " + userInfo.getUUID());
-
-        assertNotNull(userInfo);
-    }
-
-    @Test
-    public void testUserInfoToXML() throws JAXBException {
-
-        System.out.println("testUserInfoToXML");
-
-        JAXBContext jc = JAXBContext.newInstance(getObjectEmbeddedClass());
-
-        UserInfo userInfo = createObjectEmbedded();
+        ObjectEmbedded objectEmbedded = createObjectEmbedded();
 
         Marshaller marshaller = jc.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
         System.out.println("XML Output:");
-        marshaller.marshal(userInfo, System.out);
+        marshaller.marshal(objectEmbedded, System.out);
         System.out.println();
     }
 
     @Test
-    public void testUserInfoToJSON() throws JAXBException {
+    public void testObjectDataToJSON() throws JAXBException {
 
-        System.out.println("testUserInfoToJSON");
+        System.out.println("testObjectEmbeddedToJSON");
 
-        JAXBContext jc = JAXBContext.newInstance(getObjectEmbeddedClass());
+        JAXBContext jc = JAXBContext.newInstance(ObjectEmbeddedTest.this.getObjectEmbeddedClass());
 
-        UserInfo userInfo = createObjectEmbedded();
+        ObjectEmbedded objectEmbedded = createObjectEmbedded();
 
         Marshaller marshaller = jc.createMarshaller();
 
@@ -132,7 +105,22 @@ public class UserInfoTest extends ObjectEmbeddedTest {
         marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, false);
 
         System.out.println("JSON Output:");
-        marshaller.marshal(userInfo, System.out);
+        marshaller.marshal(objectEmbedded, System.out);
         System.out.println();
+    }
+
+    @Test
+    public void testEquals() {
+        ObjectEmbedded objectEmbedded = createObjectEmbedded();
+
+        assertEquals(objectEmbedded, objectEmbedded);
+    }
+
+    @Test
+    public void testNotEquals() {
+        ObjectEmbedded objectEmbedded1 = createObjectEmbedded();
+        ObjectEmbedded objectEmbedded2 = createObjectEmbedded();
+
+        assertNotEquals(objectEmbedded1, objectEmbedded2);
     }
 }

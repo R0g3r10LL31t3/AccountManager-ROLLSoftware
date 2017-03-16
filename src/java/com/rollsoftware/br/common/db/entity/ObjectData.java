@@ -154,9 +154,9 @@ public class ObjectData
     @Override
     public int hashCode() {
         int _hash = 0;
-        _hash += (id != null ? id.hashCode() : 0);
-        _hash += (uuid != null ? uuid.hashCode() : 0);
-        _hash += (type != null ? type.hashCode() : 0);
+        _hash += (getId() != null ? getId().hashCode() : 0);
+        _hash += (getUUID() != null ? getUUID().hashCode() : 0);
+        _hash += (getType() != null ? getType().hashCode() : 0);
         return _hash;
     }
 
@@ -168,8 +168,14 @@ public class ObjectData
             return false;
         }
         ObjectData other = (ObjectData) object;
-        if ((this.id == null && other.id != null)
-                || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.getId() == null && other.getId() != null)
+                || (this.getId() != null
+                && !this.getId().equals(other.getId()))) {
+            return false;
+        }
+        if ((this.getUUID() == null && other.getUUID() != null)
+                || (this.getUUID() != null
+                && !this.getUUID().equals(other.getUUID()))) {
             return false;
         }
         return true;

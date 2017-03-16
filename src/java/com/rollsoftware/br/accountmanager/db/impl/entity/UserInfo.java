@@ -17,6 +17,7 @@
  */
 package com.rollsoftware.br.accountmanager.db.impl.entity;
 
+import com.rollsoftware.br.common.db.entity.ObjectEmbedded;
 import com.rollsoftware.br.common.db.entity.ObjectInterface;
 import java.io.Serializable;
 import java.util.Objects;
@@ -28,7 +29,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -44,7 +44,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "user", propOrder = {
     "uuid", "firstName", "lastName"
 })
-public class UserInfo implements ObjectInterface, Serializable {
+public class UserInfo extends ObjectEmbedded implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -94,6 +94,11 @@ public class UserInfo implements ObjectInterface, Serializable {
         this.lastName = lastName;
     }
 
+    @Override
+    public ObjectInterface getParent() {
+        return getLoginInfo();
+    }
+
     public LoginInfo getLoginInfo() {
         return loginInfo;
     }
@@ -108,36 +113,10 @@ public class UserInfo implements ObjectInterface, Serializable {
     }
 
     @Override
-    public void generateUUID() {
-        if (loginInfo != null) {
-            loginInfo.generateUUID();
-        }
-    }
-
-    @Override
-    public Integer getId() {
-        if (loginInfo != null) {
-            return loginInfo.getId();
-        }
-
-        return null;
-    }
-
-    @Override
-    @XmlAttribute(name = "uuid")
-    public String getUUID() {
-        if (loginInfo != null) {
-            return loginInfo.getUUID();
-        }
-
-        return null;
-    }
-
-    @Override
     public int hashCode() {
         int _hash = super.hashCode();
-        _hash += (firstName != null ? firstName.hashCode() : 0);
-        _hash += (lastName != null ? lastName.hashCode() : 0);
+        _hash += (getFirstName() != null ? getFirstName().hashCode() : 0);
+        _hash += (getLastName() != null ? getLastName().hashCode() : 0);
         return _hash;
     }
 
@@ -145,13 +124,18 @@ public class UserInfo implements ObjectInterface, Serializable {
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in
         // the case the id fields are not set
-        if (!(object instanceof LoginInfo)) {
+        if (!(object instanceof UserInfo)) {
             return false;
         }
         UserInfo other = (UserInfo) object;
         if ((this.getId() == null && other.getId() != null)
                 || (this.getId() != null
                 && !this.getId().equals(other.getId()))) {
+            return false;
+        }
+        if ((this.getUUID() == null && other.getUUID() != null)
+                || (this.getUUID() != null
+                && !this.getUUID().equals(other.getUUID()))) {
             return false;
         }
         return true;

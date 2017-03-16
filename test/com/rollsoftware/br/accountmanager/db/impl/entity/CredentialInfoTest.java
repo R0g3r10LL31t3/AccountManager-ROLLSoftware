@@ -17,6 +17,7 @@
  */
 package com.rollsoftware.br.accountmanager.db.impl.entity;
 
+import com.rollsoftware.br.common.db.entity.ObjectEmbeddedTest;
 import com.rollsoftware.br.common.db.entity.ObjectInterface;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -34,7 +35,7 @@ import org.junit.Test;
  * @author Rogério
  * @date December, 2016
  */
-public class CredentialInfoTest {
+public class CredentialInfoTest extends ObjectEmbeddedTest {
 
     public CredentialInfoTest() {
     }
@@ -44,7 +45,8 @@ public class CredentialInfoTest {
         return (Class<T>) CredentialInfo.class;
     }
 
-    protected CredentialInfo createCredentialInfo() {
+    @Override
+    protected CredentialInfo createObjectEmbedded() {
         LoginInfo loginInfo = new LoginInfo();
 
         loginInfo.setUUID("uuid" + Math.random());
@@ -66,17 +68,21 @@ public class CredentialInfoTest {
 
     @BeforeClass
     public static void setUpClass() {
+        ObjectEmbeddedTest.setUpClass();
     }
 
     @AfterClass
     public static void tearDownClass() {
+        ObjectEmbeddedTest.tearDownClass();
     }
 
     @Before
+    @Override
     public void setUp() throws Exception {
     }
 
     @After
+    @Override
     public void tearDown() throws Exception {
     }
 
@@ -110,7 +116,7 @@ public class CredentialInfoTest {
 
         System.out.println("testBasicCredentialInfo");
 
-        CredentialInfo credentialInfo = createCredentialInfo();
+        CredentialInfo credentialInfo = createObjectEmbedded();
 
         System.out.println("Credential Info: " + credentialInfo);
         System.out.println("Credential Info UUID: " + credentialInfo.getUUID());
@@ -124,9 +130,9 @@ public class CredentialInfoTest {
 
         System.out.println("testCredentialInfoToXML");
 
-        JAXBContext jc = JAXBContext.newInstance(getObjectInterfaceClass());
+        JAXBContext jc = JAXBContext.newInstance(getObjectEmbeddedClass());
 
-        CredentialInfo credentialInfo = createCredentialInfo();
+        CredentialInfo credentialInfo = createObjectEmbedded();
 
         Marshaller marshaller = jc.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -141,9 +147,9 @@ public class CredentialInfoTest {
 
         System.out.println("testCredentialInfoToJSON");
 
-        JAXBContext jc = JAXBContext.newInstance(getObjectInterfaceClass());
+        JAXBContext jc = JAXBContext.newInstance(getObjectEmbeddedClass());
 
-        CredentialInfo credentialInfo = createCredentialInfo();
+        CredentialInfo credentialInfo = createObjectEmbedded();
 
         Marshaller marshaller = jc.createMarshaller();
 

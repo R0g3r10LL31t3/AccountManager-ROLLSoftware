@@ -272,7 +272,7 @@ public class TokenInfo extends ObjectData implements Serializable {
     @Override
     public int hashCode() {
         int _uuid = super.hashCode();
-        _uuid += (accessToken != null ? accessToken.hashCode() : 0);
+        _uuid += (getAccessToken() != null ? getAccessToken().hashCode() : 0);
         return _uuid;
     }
 
@@ -287,6 +287,11 @@ public class TokenInfo extends ObjectData implements Serializable {
         if ((this.getId() == null && other.getId() != null)
                 || (this.getId() != null
                 && !this.getId().equals(other.getId()))) {
+            return false;
+        }
+        if ((this.getUUID() == null && other.getUUID() != null)
+                || (this.getUUID() != null
+                && !this.getUUID().equals(other.getUUID()))) {
             return false;
         }
         return true;

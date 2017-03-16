@@ -185,4 +185,19 @@ public class ObjectDataTest {
         marshaller.marshal(objectData, System.out);
         System.out.println();
     }
+
+    @Test
+    public void testEquals() {
+        ObjectData objectData = createObjectData();
+
+        assertEquals(objectData, objectData);
+    }
+
+    @Test
+    public void testNotEquals() {
+        ObjectData objectData1 = createObjectData();
+        ObjectData objectData2 = createObjectData();
+
+        assertNotEquals(objectData1, objectData2);
+    }
 }

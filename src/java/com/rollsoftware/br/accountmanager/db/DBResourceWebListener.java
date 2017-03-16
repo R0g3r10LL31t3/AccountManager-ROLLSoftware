@@ -41,7 +41,7 @@ public class DBResourceWebListener implements ServletContextListener {
     private static final String PERSISTENT_UNIT;
     private static final Map DATABASE_PROPS;
 
-    private static ThreadLocal<EntityManager> THREADLOCAL_EM;
+    private static final ThreadLocal<EntityManager> THREADLOCAL_EM;
     private static EntityManagerFactory EMF;
 
     static {

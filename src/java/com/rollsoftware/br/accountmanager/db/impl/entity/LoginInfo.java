@@ -396,8 +396,8 @@ public class LoginInfo extends ObjectData implements Serializable {
     @Override
     public int hashCode() {
         int _hash = super.hashCode();
-        _hash += (credentialInfo != null ? credentialInfo.hashCode() : 0);
-        _hash += (userInfo != null ? userInfo.hashCode() : 0);
+        _hash += (getCredentialInfo() != null ? getCredentialInfo().hashCode() : 0);
+        _hash += (getUserInfo() != null ? getUserInfo().hashCode() : 0);
         return _hash;
     }
 
@@ -408,13 +408,7 @@ public class LoginInfo extends ObjectData implements Serializable {
         if (!(object instanceof LoginInfo)) {
             return false;
         }
-        LoginInfo other = (LoginInfo) object;
-        if ((this.getId() == null && other.getId() != null)
-                || (this.getId() != null
-                && !this.getId().equals(other.getId()))) {
-            return false;
-        }
-        return true;
+        return super.equals(object);
     }
 
     @Override

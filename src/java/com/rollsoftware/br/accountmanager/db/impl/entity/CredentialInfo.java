@@ -17,6 +17,7 @@
  */
 package com.rollsoftware.br.accountmanager.db.impl.entity;
 
+import com.rollsoftware.br.common.db.entity.ObjectEmbedded;
 import com.rollsoftware.br.common.db.entity.ObjectInterface;
 import com.rollsoftware.br.util.CypherUtils;
 import java.io.Serializable;
@@ -30,7 +31,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -47,7 +47,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "credential", propOrder = {
     "uuid", "user", "pass", "tokenInfos"
 })
-public class CredentialInfo implements ObjectInterface, Serializable {
+public class CredentialInfo extends ObjectEmbedded implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -123,6 +123,11 @@ public class CredentialInfo implements ObjectInterface, Serializable {
         }
     }
 
+    @Override
+    public ObjectInterface getParent() {
+        return getLoginInfo();
+    }
+
     public LoginInfo getLoginInfo() {
         return loginInfo;
     }
@@ -134,32 +139,6 @@ public class CredentialInfo implements ObjectInterface, Serializable {
         if (loginInfo != null) {
             loginInfo.setCredentialInfo(this);
         }
-    }
-
-    @Override
-    public void generateUUID() {
-        if (loginInfo != null) {
-            loginInfo.generateUUID();
-        }
-    }
-
-    @Override
-    public Integer getId() {
-        if (loginInfo != null) {
-            return loginInfo.getId();
-        }
-
-        return null;
-    }
-
-    @Override
-    @XmlAttribute(name = "uuid")
-    public String getUUID() {
-        if (loginInfo != null) {
-            return loginInfo.getUUID();
-        }
-
-        return null;
     }
 
     @XmlElement(name = "token")
@@ -174,7 +153,7 @@ public class CredentialInfo implements ObjectInterface, Serializable {
     @Override
     public int hashCode() {
         int _hash = super.hashCode();
-        _hash += (user != null ? user.hashCode() : 0);
+        _hash += (getUser() != null ? getUser().hashCode() : 0);
         return _hash;
     }
 
@@ -185,13 +164,7 @@ public class CredentialInfo implements ObjectInterface, Serializable {
         if (!(object instanceof CredentialInfo)) {
             return false;
         }
-        CredentialInfo other = (CredentialInfo) object;
-        if ((this.getId() == null && other.getId() != null)
-                || (this.getId() != null
-                && !this.getId().equals(other.getId()))) {
-            return false;
-        }
-        return true;
+        return super.equals(object);
     }
 
     @Override

@@ -15,18 +15,22 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.common.db.entity;
+package com.rollsoftware.br.accountmanager.db.impl.repo;
+
+import com.rollsoftware.br.accountmanager.db.impl.entity.TokenInfo;
+import com.rollsoftware.br.common.db.repo.AbstractRepository;
+import javax.enterprise.context.RequestScoped;
 
 /**
  *
  * @author Rogério
- * @date November, 2016
+ * @date December, 2016
  */
-public interface ObjectInterface {
+@RequestScoped
+public class TokenInfoRepository
+        extends AbstractRepository<TokenInfo, String> {
 
-    public void generateUUID();
-
-    public String getUUID();
-
-    public Integer getId();
+    public TokenInfoRepository() {
+        super(TokenInfo.class);
+    }
 }
