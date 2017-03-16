@@ -17,7 +17,7 @@
  */
 package com.rollsoftware.br.test.util;
 
-import com.rollsoftware.br.accountmanager.properties.Resource;
+import com.rollsoftware.br.common.properties.Resource;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
