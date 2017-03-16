@@ -17,8 +17,8 @@
  */
 package com.rollsoftware.br.accountmanager.db;
 
-import com.rollsoftware.br.accountmanager.properties.Resource;
 import com.rollsoftware.br.api.db.em.DatabaseInjection;
+import com.rollsoftware.br.common.properties.Resource;
 import java.util.Map;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;

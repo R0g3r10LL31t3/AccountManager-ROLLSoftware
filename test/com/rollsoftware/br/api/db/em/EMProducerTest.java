@@ -17,7 +17,7 @@
  */
 package com.rollsoftware.br.api.db.em;
 
-import com.rollsoftware.br.accountmanager.properties.Resource;
+import com.rollsoftware.br.common.properties.Resource;
 import com.rollsoftware.br.test.util.CDITest;
 import java.util.Map;
 import javax.enterprise.context.ApplicationScoped;

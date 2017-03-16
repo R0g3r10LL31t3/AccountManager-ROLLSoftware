@@ -15,32 +15,30 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db.app;
+package com.rollsoftware.br.accountmanager.service;
 
-import javax.ws.rs.container.AsyncResponse;
+import com.rollsoftware.br.accountmanager.properties.Resource;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  *
  * @author Rogério
- * @date November, 2016
- *
- * @param <T>
- * @param <ID>
+ * @date October, 2016
  */
-public interface ServiceFacadeAsync<T, ID> {
+@Path("welcome")
+public class WelcomeService {
 
-    public void create(final AsyncResponse asyncResponse, T entity);
-
-    public void edit(final AsyncResponse asyncResponse, ID id, T entity);
-
-    public void remove(final AsyncResponse asyncResponse, ID id);
-
-    public void find(final AsyncResponse asyncResponse, ID id);
-
-    public void findAll(final AsyncResponse asyncResponse);
-
-    public void findRange(final AsyncResponse asyncResponse,
-            Integer from, Integer to);
-
-    public void countToString(final AsyncResponse asyncResponse);
+    @GET
+    @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")
+    public Response get() {
+        String welcome = Resource
+                .getProperty("roll.software.br.application.welcome");
+        return Response
+                .ok(welcome)
+                .build();
+    }
 }

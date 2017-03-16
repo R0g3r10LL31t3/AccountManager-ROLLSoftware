@@ -17,9 +17,9 @@
  */
 package com.rollsoftware.br.api.concurrent;
 
-import com.rollsoftware.br.accountmanager.properties.Resource;
 import com.rollsoftware.br.api.concurrent.PriorityThreadPoolExecutor.Priority;
 import com.rollsoftware.br.api.concurrent.PriorityThreadPoolExecutor.PriorityWorker;
+import com.rollsoftware.br.common.properties.Resource;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;

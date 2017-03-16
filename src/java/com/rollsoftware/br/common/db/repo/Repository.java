@@ -15,42 +15,51 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db.app;
+package com.rollsoftware.br.common.db.repo;
 
+import com.rollsoftware.br.common.db.entity.ObjectInterface;
 import java.sql.SQLException;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
  * @author Rogério
- * @date November, 2016
+ * @date December, 2016
  *
- * @param <T>
- * @param <ID>
+ * @param <T> entity type
+ * @param <ID> uuid type
+ * @param <R> result type
  */
-public interface ServiceFacade<T, ID> {
+public interface Repository<T extends ObjectInterface, ID, R> {
 
-    public Object create(T entity)
+    public R create(EntityManager em, T entity)
             throws SQLException, Exception;
 
-    public Object edit(ID id, T entity)
+    public R edit(EntityManager em, T entity)
             throws SQLException, Exception;
 
-    public Object remove(ID id)
+    public R edit(EntityManager em, ID id, T entity)
             throws SQLException, Exception;
 
-    public T find(ID id)
+    public R remove(EntityManager em, ID id)
             throws SQLException, Exception;
 
-    public List<T> findAll()
+    public R remove(EntityManager em, ID id, T entity)
             throws SQLException, Exception;
 
-    public List<T> findRange(Integer from, Integer to)
+    public T find(EntityManager em, ID id)
             throws SQLException, Exception;
 
-    public Integer count()
+    public List<T> findAll(EntityManager em)
             throws SQLException, Exception;
 
-    public String countToString()
+    public List<T> findRange(EntityManager em, Integer from, Integer to)
+            throws SQLException, Exception;
+
+    public Integer count(EntityManager em)
+            throws SQLException, Exception;
+
+    public String countToString(EntityManager em)
             throws SQLException, Exception;
 }

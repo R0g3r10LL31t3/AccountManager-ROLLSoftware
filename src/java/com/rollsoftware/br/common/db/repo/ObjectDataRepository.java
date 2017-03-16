@@ -15,22 +15,21 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db.em;
+package com.rollsoftware.br.common.db.repo;
 
-import java.util.Map;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import com.rollsoftware.br.common.db.entity.ObjectData;
+import javax.enterprise.context.RequestScoped;
 
 /**
  *
  * @author Rogério
  * @date December, 2016
  */
-public interface EMFProducer {
+@RequestScoped
+public class ObjectDataRepository
+        extends AbstractRepository<ObjectData, String> {
 
-    public EntityManagerFactory getEntityManagerFactory();
-
-    public EntityManager getEntityManager();
-
-    public Map getDatabaseProperties();
+    public ObjectDataRepository() {
+        super(ObjectData.class);
+    }
 }

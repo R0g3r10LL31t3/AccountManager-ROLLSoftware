@@ -17,7 +17,7 @@
  */
 package com.rollsoftware.br.accountmanager.db.app;
 
-import com.rollsoftware.br.accountmanager.properties.Resource;
+import com.rollsoftware.br.common.properties.Resource;
 import com.rollsoftware.br.util.Utils;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
