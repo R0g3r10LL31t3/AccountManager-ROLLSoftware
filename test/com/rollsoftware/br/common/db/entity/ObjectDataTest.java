@@ -17,7 +17,7 @@
  */
 package com.rollsoftware.br.common.db.entity;
 
-import com.rollsoftware.br.accountmanager.properties.Resource;
+import com.rollsoftware.br.common.properties.Resource;
 import java.sql.DriverManager;
 import java.util.Properties;
 import javax.persistence.EntityManager;

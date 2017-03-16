@@ -15,8 +15,9 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.properties;
+package com.rollsoftware.br.common.db.internal.derby;
 
+import com.rollsoftware.br.accountmanager.db.internal.derby.DerbyProperties;
 import java.util.Properties;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -30,9 +31,9 @@ import org.junit.Test;
  * @author Rogério
  * @date October, 2016
  */
-public class ApplicationPropertiesTest {
+public class DerbyPropertiesTest {
 
-    public ApplicationPropertiesTest() {
+    public DerbyPropertiesTest() {
     }
 
     @BeforeClass
@@ -57,7 +58,7 @@ public class ApplicationPropertiesTest {
     @Test
     public void testGetProperties() {
         System.out.println("getProperties");
-        Properties properties = ApplicationProperties.getProperties();
+        Properties properties = DerbyProperties.getProperties();
         assertTrue("Properties not working!", !properties.isEmpty());
     }
 
@@ -77,7 +78,7 @@ public class ApplicationPropertiesTest {
     @Test
     public void testGetPropertiesPrint() {
         System.out.println("testGetPropertiesPrint");
-        Properties properties = ApplicationProperties.getProperties();
+        Properties properties = DerbyProperties.getProperties();
 
         properties.entrySet().forEach((entry) -> {
             System.out.println(entry.getKey() + "=" + entry.getValue());
