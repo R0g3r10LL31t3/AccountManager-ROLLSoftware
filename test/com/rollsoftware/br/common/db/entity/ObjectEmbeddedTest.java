@@ -89,6 +89,23 @@ public class ObjectEmbeddedTest {
     }
 
     @Test
+    public void testObjectEmbedded2ToXML() throws JAXBException {
+
+        System.out.println("testObjectEmbedded2ToXML");
+
+        JAXBContext jc = JAXBContext.newInstance(ObjectEmbedded.class);
+
+        ObjectEmbedded objectEmbedded = createObjectEmbedded();
+
+        Marshaller marshaller = jc.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+        System.out.println("XML Output:");
+        marshaller.marshal(objectEmbedded, System.out);
+        System.out.println();
+    }
+
+    @Test
     public void testObjectDataToJSON() throws JAXBException {
 
         System.out.println("testObjectEmbeddedToJSON");

@@ -165,6 +165,23 @@ public class ObjectDataTest {
     }
 
     @Test
+    public void testObjectData2ToXML() throws JAXBException {
+
+        System.out.println("testObjectData2ToXML");
+
+        JAXBContext jc = JAXBContext.newInstance(ObjectDataTest.class);
+
+        ObjectData objectData = createObjectData();
+
+        Marshaller marshaller = jc.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+        System.out.println("XML Output:");
+        marshaller.marshal(objectData, System.out);
+        System.out.println();
+    }
+
+    @Test
     public void testObjectDataToJSON() throws JAXBException {
 
         System.out.println("testObjectDataToJSON");

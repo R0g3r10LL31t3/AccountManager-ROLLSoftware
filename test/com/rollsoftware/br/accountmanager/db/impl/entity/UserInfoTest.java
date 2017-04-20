@@ -17,6 +17,7 @@
  */
 package com.rollsoftware.br.accountmanager.db.impl.entity;
 
+import com.rollsoftware.br.common.db.entity.ObjectEmbedded;
 import com.rollsoftware.br.common.db.entity.ObjectEmbeddedTest;
 import com.rollsoftware.br.common.db.entity.ObjectInterface;
 import javax.xml.bind.JAXBContext;
@@ -42,6 +43,12 @@ public class UserInfoTest extends ObjectEmbeddedTest {
 
     protected <T extends ObjectInterface>
             Class<T> getObjectInterfaceClass() {
+        return (Class<T>) UserInfo.class;
+    }
+
+    @Override
+    protected <T extends ObjectEmbedded>
+            Class<T> getObjectEmbeddedClass() {
         return (Class<T>) UserInfo.class;
     }
 

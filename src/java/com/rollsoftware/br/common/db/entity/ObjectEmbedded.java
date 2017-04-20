@@ -17,13 +17,22 @@
  */
 package com.rollsoftware.br.common.db.entity;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  *
  * @author Rogério
  * @date March, 2017
  */
+@XmlRootElement(name = "objectEmbedded")
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+@XmlType(name = "objectEmbedded")
 public abstract class ObjectEmbedded implements ObjectInterface {
 
     public abstract ObjectInterface getParent();
@@ -36,6 +45,7 @@ public abstract class ObjectEmbedded implements ObjectInterface {
     }
 
     @Override
+    @XmlElement(name = "id")
     public Integer getId() {
         if (getParent() != null) {
             return getParent().getId();
@@ -45,6 +55,7 @@ public abstract class ObjectEmbedded implements ObjectInterface {
     }
 
     @Override
+    @XmlID
     @XmlAttribute(name = "uuid")
     public String getUUID() {
         if (getParent() != null) {

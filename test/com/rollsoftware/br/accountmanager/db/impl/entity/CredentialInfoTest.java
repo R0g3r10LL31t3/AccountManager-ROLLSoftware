@@ -17,6 +17,7 @@
  */
 package com.rollsoftware.br.accountmanager.db.impl.entity;
 
+import com.rollsoftware.br.common.db.entity.ObjectEmbedded;
 import com.rollsoftware.br.common.db.entity.ObjectEmbeddedTest;
 import com.rollsoftware.br.common.db.entity.ObjectInterface;
 import javax.xml.bind.JAXBContext;
@@ -42,6 +43,12 @@ public class CredentialInfoTest extends ObjectEmbeddedTest {
 
     protected <T extends ObjectInterface>
             Class<T> getObjectInterfaceClass() {
+        return (Class<T>) CredentialInfo.class;
+    }
+
+    @Override
+    protected <T extends ObjectEmbedded>
+            Class<T> getObjectEmbeddedClass() {
         return (Class<T>) CredentialInfo.class;
     }
 
@@ -141,6 +148,8 @@ public class CredentialInfoTest extends ObjectEmbeddedTest {
         marshaller.marshal(credentialInfo, System.out);
         System.out.println();
     }
+
+    
 
     @Test
     public void testCredentialInfoToJSON() throws JAXBException {
