@@ -64,7 +64,6 @@ public class ObjectEmbeddedTest {
 
     @Before
     public void setUp() throws Exception {
-
     }
 
     @After

@@ -86,11 +86,13 @@ public class CredentialInfoTest extends ObjectEmbeddedTest {
     @Before
     @Override
     public void setUp() throws Exception {
+        super.setUp();
     }
 
     @After
     @Override
     public void tearDown() throws Exception {
+        super.tearDown();
     }
 
     @Test
@@ -148,8 +150,6 @@ public class CredentialInfoTest extends ObjectEmbeddedTest {
         marshaller.marshal(credentialInfo, System.out);
         System.out.println();
     }
-
-    
 
     @Test
     public void testCredentialInfoToJSON() throws JAXBException {
