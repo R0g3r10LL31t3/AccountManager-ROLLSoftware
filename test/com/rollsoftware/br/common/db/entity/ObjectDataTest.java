@@ -169,7 +169,7 @@ public class ObjectDataTest {
 
         System.out.println("testObjectData2ToXML");
 
-        JAXBContext jc = JAXBContext.newInstance(ObjectDataTest.class);
+        JAXBContext jc = JAXBContext.newInstance(ObjectData.class);
 
         ObjectData objectData = createObjectData();
 
