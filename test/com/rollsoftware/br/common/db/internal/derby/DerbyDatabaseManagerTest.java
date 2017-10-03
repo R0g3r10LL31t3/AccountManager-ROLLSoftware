@@ -17,8 +17,7 @@
  */
 package com.rollsoftware.br.common.db.internal.derby;
 
-import com.rollsoftware.br.accountmanager.db.internal.DatabaseManager;
-import com.rollsoftware.br.accountmanager.db.internal.derby.DerbyDatabaseManager;
+import com.rollsoftware.br.common.db.internal.DatabaseManager;
 import java.sql.DriverManager;
 import org.junit.After;
 import org.junit.AfterClass;

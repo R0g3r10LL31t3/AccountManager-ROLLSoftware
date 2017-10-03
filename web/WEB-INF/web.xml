@@ -39,6 +39,7 @@
             <param-value>com.rollsoftware.br.accountmanager.AccountManagerJAXRS</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
+        <async-supported>true</async-supported>
     </servlet>
     <servlet-mapping>
         <servlet-name>accountmanager.rest</servlet-name>

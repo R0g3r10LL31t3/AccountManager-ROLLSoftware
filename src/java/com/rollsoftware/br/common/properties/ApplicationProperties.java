@@ -67,7 +67,7 @@ public class ApplicationProperties {
                 Map<String, String> replacements = new HashMap();
 
                 java.io.InputStream inputStream = Utils.getResourceAsStream(
-                        "com/rollsoftware/br/accountmanager"
+                        "com/rollsoftware/br/common"
                         + "/properties/application.properties");
 
                 properties.load(inputStream);

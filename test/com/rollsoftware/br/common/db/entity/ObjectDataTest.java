@@ -19,6 +19,7 @@ package com.rollsoftware.br.common.db.entity;
 
 import com.rollsoftware.br.common.properties.Resource;
 import java.sql.DriverManager;
+import java.util.Objects;
 import java.util.Properties;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -216,5 +217,15 @@ public class ObjectDataTest {
         ObjectData objectData2 = createObjectData();
 
         assertNotEquals(objectData1, objectData2);
+    }
+
+    @Test
+    public void testType() {
+        ObjectData objectData = createObjectData();
+
+        String className = objectData.getClass().getSimpleName();
+        String type = objectData.getType();
+
+        assertTrue(Objects.equals(className, type));
     }
 }

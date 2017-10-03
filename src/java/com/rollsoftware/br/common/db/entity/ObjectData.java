@@ -19,6 +19,9 @@ package com.rollsoftware.br.common.db.entity;
 
 import com.rollsoftware.br.util.CypherUtils;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -29,7 +32,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
@@ -49,20 +56,42 @@ import javax.xml.bind.annotation.XmlType;
  * @date October, 2016
  */
 @Entity
-@Table(name = "OBJECT_DATA",
+@Table(name = "OBJ_OBJECT_DATA",
         schema = "ACCOUNT_MANAGER_DB_APP",
         uniqueConstraints = {
-            @UniqueConstraint(columnNames = {"ODID"})
-            ,@UniqueConstraint(columnNames = {"ODTYPE", "ODUUIDPK"})
+            @UniqueConstraint(columnNames = {"OBJ_ID_PK"})
+            ,@UniqueConstraint(columnNames = {"OBJ_TYPE", "OBJ_UUID_PK"})
         }
 )
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(
-        name = "ODTYPE",
+        name = "OBJ_TYPE",
         discriminatorType = DiscriminatorType.STRING)
+@NamedQueries({
+    @NamedQuery(name = "ObjectData.findAll",
+            query = "SELECT o FROM ObjectData o")
+    , @NamedQuery(name = "ObjectData.findById",
+            query = "SELECT o FROM ObjectData o"
+            + " WHERE o.id = :id")
+    , @NamedQuery(name = "ObjectData.findByUUID",
+            query = "SELECT o FROM ObjectData o"
+            + " WHERE o.uuid = :uuid")
+    , @NamedQuery(name = "ObjectData.findByType",
+            query = "SELECT o FROM ObjectData o"
+            + " WHERE o.type = :type")
+    , @NamedQuery(name = "ObjectData.findByDateCreated",
+            query = "SELECT o FROM ObjectData o"
+            + " WHERE o.dateCreated = :dateCreated")
+    , @NamedQuery(name = "ObjectData.findByDateAccessed",
+            query = "SELECT o FROM ObjectData o"
+            + " WHERE o.dateAccessed = :dateAccessed")
+})
 @XmlRootElement(name = "object")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "object", propOrder = {"id", "type", "uuid"})
+@XmlType(name = "object", propOrder = {
+    "id", "type", "uuid",
+    "dateCreated", "dateAccessed"
+})
 public class ObjectData
         implements Serializable, ObjectInterface {
 
@@ -71,30 +100,42 @@ public class ObjectData
     @Version
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ODVERSION", nullable = false)
+    @Column(name = "OBJ_VERSION", nullable = false)
     @XmlTransient
-    private Integer odVersion;
+    private Integer objVersion;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ODID", nullable = false)
+    @Column(name = "OBJ_ID_PK", nullable = false)
     private Integer id;
 
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 64)
-    @Column(name = "ODTYPE", nullable = false, length = 64)
-    @XmlElement(name = "odType")
+    @Column(name = "OBJ_TYPE", nullable = false, length = 64)
+    @XmlElement(name = "objType")
     private String type;
 
     @Id
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 128)
-    @Column(name = "ODUUIDPK", nullable = false, length = 128)
+    @Column(name = "OBJ_UUID_PK", nullable = false, length = 128)
     @XmlAttribute
     @XmlID
     private String uuid;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "OBJ_DATECREATED", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "OBJ_DATEACCESSED", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateAccessed;
 
     public ObjectData() {
         this(0);
@@ -105,15 +146,22 @@ public class ObjectData
     }
 
     public ObjectData(Integer id, String type, String uuid) {
-        this(id, type, uuid, 0);
+        this(id, type, uuid,
+                Calendar.getInstance().getTime(),
+                Calendar.getInstance().getTime(),
+                0);
     }
 
-    private ObjectData(Integer id, String type, String uuid,
-            Integer odVersion) {
+    private ObjectData(
+            Integer id, String type, String uuid,
+            Date dateCreated, Date dateAccessed,
+            Integer objVersion) {
         this.id = id;
         this.type = type;
         this.uuid = uuid;
-        this.odVersion = odVersion;
+        this.dateCreated = dateCreated;
+        this.dateAccessed = dateAccessed;
+        this.objVersion = objVersion;
     }
 
     @Override
@@ -142,6 +190,22 @@ public class ObjectData
         this.uuid = uuid;
     }
 
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Date getDateAccessed() {
+        return dateAccessed;
+    }
+
+    public void setDateAccessed(Date dateAccessed) {
+        this.dateAccessed = dateAccessed;
+    }
+
     @Override
     public void generateUUID() {
         String _uuid = getUUID();
@@ -153,10 +217,10 @@ public class ObjectData
 
     @Override
     public int hashCode() {
-        int _hash = 0;
-        _hash += (getId() != null ? getId().hashCode() : 0);
-        _hash += (getUUID() != null ? getUUID().hashCode() : 0);
-        _hash += (getType() != null ? getType().hashCode() : 0);
+        int _hash = super.hashCode();
+        _hash += Objects.hashCode(getId());
+        _hash += Objects.hashCode(getUUID());
+        _hash += Objects.hashCode(getType());
         return _hash;
     }
 
@@ -164,18 +228,23 @@ public class ObjectData
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work
         // in the case the id fields are not set
+        if (object == null) {
+            return false;
+        }
+        if (!super.equals(object)) {
+            return false;
+        }
         if (!(object instanceof ObjectData)) {
             return false;
         }
-        ObjectData other = (ObjectData) object;
-        if ((this.getId() == null && other.getId() != null)
-                || (this.getId() != null
-                && !this.getId().equals(other.getId()))) {
+        final ObjectData other = (ObjectData) object;
+        if (!Objects.equals(this.getId(), other.getId())) {
             return false;
         }
-        if ((this.getUUID() == null && other.getUUID() != null)
-                || (this.getUUID() != null
-                && !this.getUUID().equals(other.getUUID()))) {
+        if (!Objects.equals(this.getUUID(), other.getUUID())) {
+            return false;
+        }
+        if (!Objects.equals(this.getType(), other.getType())) {
             return false;
         }
         return true;

@@ -15,11 +15,10 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db.service;
+package com.rollsoftware.br.common.db.service;
 
-import com.rollsoftware.br.accountmanager.db.impl.entity.LoginInfo;
 import com.rollsoftware.br.common.db.DBResourceWebListener;
-import com.rollsoftware.br.common.db.service.AbstractServiceFacadeAsync;
+import com.rollsoftware.br.common.db.entity.ObjectData;
 import java.sql.SQLException;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
@@ -42,19 +41,19 @@ import javax.ws.rs.core.MediaType;
  */
 //@javax.ejb.Stateless
 @RequestScoped
-@Path("/db/login")
-public class LoginInfoService
-        extends AbstractServiceFacadeAsync<LoginInfo, String> {
+@Path("/db/object")
+public class ObjectDataService
+        extends AbstractServiceFacadeAsync<ObjectData, String> {
 
     //@PersistenceContext(unitName = "AccountManagerPU")
     @Inject
     private EntityManager em;
 
-    public LoginInfoService() {
-        super(LoginInfo.class);
+    public ObjectDataService() {
+        super(ObjectData.class);
     }
 
-    public LoginInfoService(EntityManager em) {
+    public ObjectDataService(EntityManager em) {
         this();
         this.em = em;
     }
@@ -63,7 +62,7 @@ public class LoginInfoService
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.TEXT_PLAIN})
-    public String create(LoginInfo entity)
+    public String create(ObjectData entity)
             throws SQLException, Exception {
         entity.generateUUID();
         return super.create(entity);
@@ -74,7 +73,7 @@ public class LoginInfoService
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.TEXT_PLAIN})
-    public String edit(@PathParam("id") String id, LoginInfo entity)
+    public String edit(@PathParam("id") String id, ObjectData entity)
             throws SQLException, Exception {
         return super.edit(id, entity);
     }
@@ -92,47 +91,27 @@ public class LoginInfoService
     @Override
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public LoginInfo find(@PathParam("id") String id)
+    public ObjectData find(@PathParam("id") String id)
             throws SQLException, Exception {
-        LoginInfo loginInfo = super.find(id);
-        if (loginInfo != null) {
-            loginInfo.setPass(null);
-        }
-        return loginInfo;
+        return super.find(id);
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<LoginInfo> findAll()
+    public List<ObjectData> findAll()
             throws SQLException, Exception {
-        List<LoginInfo> loginInfoList = super.findAll();
-
-        for (LoginInfo loginInfo : loginInfoList) {
-            if (loginInfo != null) {
-                loginInfo.setPass(null);
-            }
-        }
-
-        return loginInfoList;
+        return super.findAll();
     }
 
     @GET
     @Override
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<LoginInfo> findRange(
+    public List<ObjectData> findRange(
             @PathParam("from") Integer from, @PathParam("to") Integer to)
             throws SQLException, Exception {
-        List<LoginInfo> loginInfoList = super.findRange(from, to);
-
-        for (LoginInfo loginInfo : loginInfoList) {
-            if (loginInfo != null) {
-                loginInfo.setPass(null);
-            }
-        }
-
-        return loginInfoList;
+        return super.findRange(from, to);
     }
 
     @GET

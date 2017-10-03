@@ -15,7 +15,7 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db.internal.derby;
+package com.rollsoftware.br.common.db.internal.derby;
 
 import com.rollsoftware.br.util.Utils;
 import java.io.File;
@@ -104,7 +104,7 @@ public class DerbyProperties {
                 Map<String, String> replacements = new HashMap();
 
                 java.io.InputStream inputStream = Utils.getResourceAsStream(
-                        "com/rollsoftware/br/accountmanager"
+                        "com/rollsoftware/br/common"
                         + "/db/internal/derby/derby.properties");
                 properties.load(inputStream);
 

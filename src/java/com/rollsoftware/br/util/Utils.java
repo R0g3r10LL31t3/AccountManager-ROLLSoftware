@@ -24,6 +24,7 @@ import java.security.PrivilegedAction;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  *
@@ -75,6 +76,10 @@ public final class Utils {
 
     public static String formatToTimestamp(long value) {
         return TIMESTAMP.format(value);
+    }
+
+    public static TimeZone getDefaultTimeZone() {
+        return TimeZone.getTimeZone("GMT-3");
     }
 
     public static String replace(

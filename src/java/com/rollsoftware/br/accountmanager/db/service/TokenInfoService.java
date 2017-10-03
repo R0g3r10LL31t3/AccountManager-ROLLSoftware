@@ -17,7 +17,8 @@
  */
 package com.rollsoftware.br.accountmanager.db.service;
 
-import com.rollsoftware.br.accountmanager.db.DBResourceWebListener;
+import com.rollsoftware.br.common.db.service.AbstractServiceFacadeAsync;
+import com.rollsoftware.br.common.db.DBResourceWebListener;
 import com.rollsoftware.br.accountmanager.db.impl.entity.TokenInfo;
 import java.sql.SQLException;
 import java.util.List;

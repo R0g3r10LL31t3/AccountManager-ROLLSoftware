@@ -59,7 +59,7 @@ import javax.xml.bind.annotation.XmlType;
         }
 )
 @DiscriminatorValue("TokenInfo")
-@PrimaryKeyJoinColumn(name = "TIUUIDFK", referencedColumnName = "ODUUIDPK")
+@PrimaryKeyJoinColumn(name = "TIUUIDFK", referencedColumnName = "OBJ_UUID_PK")
 @XmlRootElement(name = "token")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "token", propOrder = {

@@ -64,7 +64,7 @@ import javax.xml.bind.annotation.XmlType;
         }
 )
 @DiscriminatorValue("LoginInfo")
-@PrimaryKeyJoinColumn(name = "LIUUIDFK", referencedColumnName = "ODUUIDPK")
+@PrimaryKeyJoinColumn(name = "LIUUIDFK", referencedColumnName = "OBJ_UUID_PK")
 @XmlRootElement(name = "login")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "login", propOrder = {
@@ -106,7 +106,7 @@ public class LoginInfo extends ObjectData implements Serializable {
                 column = @Column(
                         name = "LILASTNAME", nullable = false, length = 256))
     })
-    @XmlElement(name = "userData")
+    @XmlElement(name = "user")
     private UserInfo userInfo;
 
     @Column(name = "LISUCCESSCOUNT")
@@ -155,7 +155,7 @@ public class LoginInfo extends ObjectData implements Serializable {
             fetch = FetchType.EAGER,
             cascade = {CascadeType.ALL}
     )
-    @JoinColumn(name = "TIUUIDPK", referencedColumnName = "ODUUIDPK")
+    @JoinColumn(name = "TIUUIDPK", referencedColumnName = "OBJ_UUID_PK")
     @OrderBy("dateCreated ASC")
     @XmlElement(name = "token")
     @XmlIDREF

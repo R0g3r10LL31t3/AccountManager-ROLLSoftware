@@ -15,7 +15,7 @@
  *
  *  CEO 2016: Rogério Lecarião Leite; ROLL Software
  */
-package com.rollsoftware.br.accountmanager.db.internal.derby;
+package com.rollsoftware.br.common.db.internal.derby;
 
 import java.util.Properties;
 

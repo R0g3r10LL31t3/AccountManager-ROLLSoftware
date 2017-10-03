@@ -17,6 +17,8 @@
  */
 package com.rollsoftware.br.common.db.entity;
 
+import java.util.Objects;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -35,7 +37,25 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "objectEmbedded")
 public abstract class ObjectEmbedded implements ObjectInterface {
 
-    public abstract ObjectInterface getParent();
+    @Transient
+    private ObjectInterface objectInterface;
+
+    public ObjectEmbedded() {
+        this(null);
+    }
+
+    private ObjectEmbedded(ObjectInterface objectInterface) {
+        this.objectInterface = objectInterface;
+    }
+
+    public void setParent(ObjectInterface objectInterface) {
+        this.objectInterface = objectInterface;
+    }
+
+    @XmlElement(type = ObjectData.class)
+    public ObjectInterface getParent() {
+        return objectInterface;
+    }
 
     @Override
     public void generateUUID() {
@@ -67,9 +87,9 @@ public abstract class ObjectEmbedded implements ObjectInterface {
 
     @Override
     public int hashCode() {
-        int _hash = 0;
-        _hash += (getId() != null ? getId().hashCode() : 0);
-        _hash += (getUUID() != null ? getUUID().hashCode() : 0);
+        int _hash = super.hashCode();
+        _hash += Objects.hashCode(getId());
+        _hash += Objects.hashCode(getUUID());
         return _hash;
     }
 
@@ -77,18 +97,20 @@ public abstract class ObjectEmbedded implements ObjectInterface {
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work
         // in the case the id fields are not set
+        if (object == null) {
+            return false;
+        }
+        if (!super.equals(object)) {
+            return false;
+        }
         if (!(object instanceof ObjectEmbedded)) {
             return false;
         }
-        ObjectEmbedded other = (ObjectEmbedded) object;
-        if ((this.getId() == null && other.getId() != null)
-                || (this.getId() != null
-                && !this.getId().equals(other.getId()))) {
+        final ObjectEmbedded other = (ObjectEmbedded) object;
+        if (!Objects.equals(this.getId(), other.getId())) {
             return false;
         }
-        if ((this.getUUID() == null && other.getUUID() != null)
-                || (this.getUUID() != null
-                && !this.getUUID().equals(other.getUUID()))) {
+        if (!Objects.equals(this.getUUID(), other.getUUID())) {
             return false;
         }
         return true;

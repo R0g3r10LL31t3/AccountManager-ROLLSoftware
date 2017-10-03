@@ -17,7 +17,7 @@
  */
 package com.rollsoftware.br.common.properties;
 
-import com.rollsoftware.br.accountmanager.db.internal.derby.DerbyProperties;
+import com.rollsoftware.br.common.db.internal.derby.DerbyProperties;
 import java.util.Properties;
 
 /**

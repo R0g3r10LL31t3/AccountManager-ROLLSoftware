@@ -70,6 +70,7 @@ public abstract class AbstractRepository<
         return "Edited(id,entity): " + entity;
     }
 
+    @Override
     public String edit(EntityManager em, T entity)
             throws SQLException, Exception {
         Callable callable = () -> {
