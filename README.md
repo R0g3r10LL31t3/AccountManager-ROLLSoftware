@@ -28,7 +28,7 @@ License dependences see lib folder.
 ## Contact
 Facebook: [to](https://www.facebook.com/rollsoftwarebr).
 
-e-mail: [mailto](rogerio_lecariao_leite@hotmail.com).
+e-mail: [mailto](rollsoftwarebrasil@gmail.com).
 
 phone: ?.
 
